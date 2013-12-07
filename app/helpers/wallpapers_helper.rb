@@ -1,0 +1,2 @@
+module WallpapersHelper
+end

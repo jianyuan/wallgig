@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @wallpaper.user
+%p
+  %b Purity:
+  = @wallpaper.purity
+%p
+  %b Processing:
+  = @wallpaper.processing
+%p
+  %b Image:
+  = @wallpaper.image
+%p
+  %b Image width:
+  = @wallpaper.image_width
+%p
+  %b Image height:
+  = @wallpaper.image_height
+
+= link_to 'Edit', edit_wallpaper_path(@wallpaper)
+\|
+= link_to 'Back', wallpapers_path

@@ -66,6 +66,7 @@ gem 'friendly_id', '~> 5.0.0'
 gem 'workflow', github: 'geekq/workflow'
 gem 'carrierwave'
 gem 'country_select'
+gem 'enumerize'
 
 # views
 gem 'haml-rails'

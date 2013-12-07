@@ -1,0 +1,12 @@
+= simple_form_for(@wallpaper) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :purity
+    = f.input :processing
+    = f.input :image
+    = f.input :image_width
+    = f.input :image_height
+
+  .form-actions
+    = f.button :submit

@@ -20,4 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  enumerize:
+    purity:
+      sfw: "SFW"
+      sketchy: "Sketchy"
+      nsfw: "NSFW"
