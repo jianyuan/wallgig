@@ -1,29 +1,9 @@
-%h1 Listing wallpapers
+%h1 Latest Wallpapers
 
-%table
-  %tr
-    %th User
-    %th Purity
-    %th Processing
-    %th Image
-    %th Image width
-    %th Image height
-    %th
-    %th
-    %th
-
+%section.wallpaper-list
   - @wallpapers.each do |wallpaper|
-    %tr
-      %td= wallpaper.user
-      %td= wallpaper.purity
-      %td= wallpaper.processing
-      %td= wallpaper.image
-      %td= wallpaper.image_width
-      %td= wallpaper.image_height
-      %td= link_to 'Show', wallpaper
-      %td= link_to 'Edit', edit_wallpaper_path(wallpaper)
-      %td= link_to 'Destroy', wallpaper, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Wallpaper', new_wallpaper_path
+    %article.wallpaper-list-item
+      = link_to wallpaper do
+        = image_tag wallpaper.thumbnail_image.url, width: 250, height: 188
+      .overlay.overlay-bottom
+        #{wallpaper.image_width}x#{wallpaper.image_height}

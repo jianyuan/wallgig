@@ -1,11 +1,11 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user, except: [:index, :show]
   before_action :set_wallpaper, only: [:show, :edit, :update, :destroy]
 
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    @wallpapers = Wallpaper.all
+    @wallpapers = Wallpaper.accessible_by(current_ability, :read).order(created_at: :desc)
   end
 
   # GET /wallpapers/1
@@ -76,6 +76,6 @@ class WallpapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wallpaper_params
-      params.require(:wallpaper).permit(:purity, :image, :image_width, :image_height)
+      params.require(:wallpaper).permit(:purity, :image)
     end
 end

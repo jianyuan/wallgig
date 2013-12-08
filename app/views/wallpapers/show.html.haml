@@ -1,24 +1,15 @@
-%p#notice= notice
+.row
+  .col-lg-2
+    %h3 Uploaded by
+    %h5= user_tag @wallpaper.user
+    %small #{time_ago_in_words @wallpaper.created_at} ago
 
-%p
-  %b User:
-  = @wallpaper.user
-%p
-  %b Purity:
-  = @wallpaper.purity
-%p
-  %b Processing:
-  = @wallpaper.processing
-%p
-  %b Image:
-  = @wallpaper.image
-%p
-  %b Image width:
-  = @wallpaper.image_width
-%p
-  %b Image height:
-  = @wallpaper.image_height
+    %p
+      %b Purity:
+      = @wallpaper.purity
 
-= link_to 'Edit', edit_wallpaper_path(@wallpaper)
-\|
-= link_to 'Back', wallpapers_path
+    = link_to 'Edit', edit_wallpaper_path(@wallpaper)
+    \|
+    = link_to 'Back', wallpapers_path
+  .col-lg-10.col-wallpaper
+    = image_tag @wallpaper.image.url, class: 'img-wallpaper state-1'

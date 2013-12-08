@@ -50,6 +50,7 @@ group :development, :test do
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'sinatra', '>= 1.3.0', :require => nil
 end
 
 # auth
@@ -64,16 +65,20 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 # models
 gem 'friendly_id', '~> 5.0.0'
 gem 'workflow', github: 'geekq/workflow'
-gem 'carrierwave'
+gem 'dragonfly', '~> 1.0.0'
 gem 'country_select'
 gem 'enumerize'
 
 # views
+gem 'slim'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'active_link_to'
 
 # assets
 gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
+
+# services
+gem 'sidekiq'
 
 # utilities

@@ -3,10 +3,7 @@
 
   .form-inputs
     = f.input :purity
-    = f.input :processing
-    = f.input :image
-    = f.input :image_width
-    = f.input :image_height
+    = f.input :image, as: :file unless @wallpaper.persisted?
 
   .form-actions
     = f.button :submit

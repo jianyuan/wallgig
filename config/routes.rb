@@ -1,12 +1,21 @@
 Wallgig::Application.routes.draw do
-  resources :wallpapers
+  root 'wallpapers#index'
 
   devise_for :users
+  resources :users
+
+  resources :wallpapers
+
+  if Rails.env.development?
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
+  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -10,7 +10,7 @@
     = csrf_meta_tags
   %body{:class => "#{controller_name.parameterize} #{action_name.parameterize}"}
     %nav.navbar.navbar-default.navbar-static-top{:role => "navigation"}
-      .container
+      .container.container-full
         = link_to 'Wallgig', root_path, class: 'navbar-brand'
         %ul.nav.navbar-nav
           %li= link_to 'Upload', new_wallpaper_path
@@ -24,7 +24,7 @@
           - else
             %li= link_to 'Sign Up', new_user_registration_path
             %li= link_to 'Sign In', new_user_session_path
-    .container
+    .container.container-full
       = bootstrap_flash
       = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false

@@ -1,3 +1,71 @@
-// Place all the styles related to the Wallpapers controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+body.wallpapers.show {
+  height: 100%;
+}
+
+.col-wallpaper {
+  text-align: center;
+}
+
+.img-wallpaper {
+  box-shadow: #666 2px 2px 10px;
+
+  &.state-1 {
+    max-width: 90%;
+    max-height: 90%;
+    cursor: -webkit-zoom-in;  cursor: zoom-in;
+  }
+
+  &.state-2 {
+    max-height: 90%;
+  }
+
+  &.state-3 {
+    cursor: -webkit-zoom-out;  cursor: zoom-out;
+  }
+}
+
+
+.wallpaper-list {
+  overflow: hidden;
+}
+
+.wallpaper-list-item {
+  width: 250px;
+  height: 188px;
+  margin: 10px 20px;
+  float: left;
+  position: relative;
+  overflow: hidden;
+  .overlay {
+    position: absolute;
+    // display: none;
+  }
+  &:hover .overlay {
+    // display: block;
+  }
+  .overlay-bottom {
+    left: 0;
+    right: 0;
+    bottom: -35px;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    line-height: 35px;
+    text-align: center;
+  }
+  &:hover .overlay-bottom {
+    bottom: 0;
+    -webkit-transition-property: bottom;
+    -moz-transition-property: bottom;
+    -o-transition-property: bottom;
+    transition-property: bottom;
+    -webkit-transition-duration: 0.1s;
+    -moz-transition-duration: 0.1s;
+    -o-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+    -webkit-transition-timing-function: ease-in;
+    -moz-transition-timing-function: ease-in;
+    -o-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+  }
+}

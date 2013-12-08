@@ -6,6 +6,7 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
+    can :read, Wallpaper, processing: false
     can :manage, Wallpaper, user_id: user.id
 
     # Define abilities for the passed in user here. For example:
