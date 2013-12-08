@@ -20,7 +20,7 @@
 class Wallpaper < ActiveRecord::Base
   belongs_to :user
   has_many :wallpaper_colors, dependent: :destroy
-  has_many :colors, through: :wallpaper_colors
+  has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
 
   # Purity
   extend Enumerize
@@ -55,6 +55,12 @@ class Wallpaper < ActiveRecord::Base
   scope :processing, -> { where(processing: true ) }
   scope :processed, -> { where(processing: false) }
   scope :visible, -> { processed }
+  scope :near_to_color, ->(color) {
+    color_ids = Kolor.near_to(color).map(&:id)
+    joins(:colors)
+      .select('wallpapers.*')
+      .where(colors: { id: color_ids }).group('wallpapers.id')
+  }
 
   after_create :queue_create_thumbnails
   after_create :queue_extract_dominant_colors

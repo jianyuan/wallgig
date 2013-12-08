@@ -90,3 +90,4 @@ gem 'sidekiq'
 
 # utilities
 gem 'miro'
+gem 'color'

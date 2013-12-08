@@ -5,7 +5,9 @@ class WallpapersController < ApplicationController
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    @wallpapers = Wallpaper.accessible_by(current_ability, :read).order(created_at: :desc)
+    @wallpapers = Wallpaper.accessible_by(current_ability, :read)
+                           .near_to_color(params[:color])
+                           .order(created_at: :desc)
   end
 
   # GET /wallpapers/1
