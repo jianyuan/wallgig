@@ -21,6 +21,8 @@
 class User < ActiveRecord::Base
   has_many :wallpapers
 
+  rolify
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -31,4 +33,9 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false },
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
             length: { maximum: 50 }
+
+  def admin?
+    has_role? :admin
+  end
+
 end

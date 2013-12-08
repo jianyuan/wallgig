@@ -6,11 +6,10 @@ Wallgig::Application.routes.draw do
 
   resources :wallpapers
 
-  # if Rails.env.development?
-  # @todo add security
+  authenticate :user, ->(u) { u.admin? } do
     require 'sidekiq/web'
     mount Sidekiq::Web => '/sidekiq'
-  # end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

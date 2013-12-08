@@ -61,6 +61,7 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 
 # auth
 gem 'devise'
+gem 'rolify'
 gem 'cancan'
 gem 'omniauth'
 gem 'omniauth-facebook'
