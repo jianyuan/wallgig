@@ -24,7 +24,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Purity
   extend Enumerize
-  enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw
+  enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true
 
   # Image
   attr_readonly :image

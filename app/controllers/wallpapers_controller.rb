@@ -7,6 +7,7 @@ class WallpapersController < ApplicationController
   def index
     @wallpapers = Wallpaper.accessible_by(current_ability, :read)
                            .near_to_color(params[:color])
+                           .with_purity(:sfw)
                            .order(created_at: :desc)
   end
 
