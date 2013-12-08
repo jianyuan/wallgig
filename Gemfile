@@ -85,6 +85,7 @@ gem 'active_link_to'
 # assets
 gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
 gem 'bourbon'
+gem 'jquery-turbolinks'
 
 # services
 gem 'sidekiq'
