@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   def show
     @wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :read)
+                       .with_purity(:sfw)
   end
 
   private
