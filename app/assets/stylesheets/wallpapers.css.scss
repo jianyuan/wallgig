@@ -7,7 +7,9 @@ body.wallpapers.show {
 }
 
 .img-wallpaper {
-  box-shadow: #666 2px 2px 10px;
+  @include box-shadow(#666 2px 2px 10px);
+  @include transition(1s);
+  @include transition-timing-function(ease-in);
 
   &.state-1 {
     max-width: 90%;
