@@ -17,4 +17,4 @@
     \|
     = link_to 'Back', wallpapers_path
   .col-lg-10.col-wallpaper
-    = image_tag @wallpaper.image.url, class: 'img-wallpaper state-1'
+    = image_tag @wallpaper.image.url, class: "img-wallpaper img-#{@wallpaper.format} state-1"

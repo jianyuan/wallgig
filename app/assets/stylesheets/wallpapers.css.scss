@@ -4,6 +4,7 @@ body.wallpapers.show {
 
 .col-wallpaper {
   text-align: center;
+  height: 100%;
 }
 
 .img-wallpaper {
@@ -17,8 +18,12 @@ body.wallpapers.show {
     cursor: -webkit-zoom-in;  cursor: zoom-in;
   }
 
-  &.state-2 {
+  &.state-2.img-landscape {
     max-height: 90%;
+  }
+
+  &.state-2.img-portrait {
+    max-width: 90%;
   }
 
   &.state-3 {
@@ -73,7 +78,9 @@ body.wallpapers.show {
 }
 
 
-/* Color bar */
+/*
+  Color bar
+ */
 ul.color-bar {
   list-style: none;
   width: 100%;
@@ -90,11 +97,12 @@ ul.color-bar {
     display: block;
     width: 100%;
     height: 100%;
+    @include transition(all 0.1s);
+    @include transition-timing-function(ease-in);
   }
 
   a:hover {
     height: 200%;
-    @include transition(height 0.1s);
-    @include transition-timing-function(ease-in);
+  @include box-shadow(#666 0px 1px 10px);
   }
 }
