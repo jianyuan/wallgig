@@ -6,6 +6,8 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
+    can :read, User
+
     can :read, Wallpaper, processing: false
     can :manage, Wallpaper, user_id: user.id
 

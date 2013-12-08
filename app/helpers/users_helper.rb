@@ -1,15 +1,27 @@
 module UsersHelper
   def user_tag(user)
+    link_to user.username, user, class: css_class_for_user(user)
+  end
+
+  def css_class_for_user(user)
     if user.has_role? :developer
-      css_class = 'user-developer'
+      'user-developer'
     elsif user.has_role? :admin
-      css_class = 'user-admin'
+      'user-admin'
     elsif user.has_role? :moderator
-      css_class = 'user-moderator'
-    else
-      css_class = nil
+      'user-moderator'
     end
- 
-    link_to user.username, user, class: css_class
+  end
+
+  def role_name_for_user(user)
+    if user.has_role? :developer
+      'Developer'
+    elsif user.has_role? :admin
+      'Admin'
+    elsif user.has_role? :moderator
+      'Moderator'
+    else
+      'Member'
+    end
   end
 end

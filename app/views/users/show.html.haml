@@ -1,0 +1,8 @@
+%h1{class: css_class_for_user(@user)}= @user.username
+%h4= role_name_for_user(@user)
+
+%h2
+  Uploads
+  %small= @wallpapers.size
+
+= render template: 'wallpapers/index'
