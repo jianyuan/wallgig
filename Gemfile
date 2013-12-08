@@ -56,8 +56,8 @@ group :development, :test do
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'sinatra', '>= 1.3.0', :require => nil
 end
+gem 'sinatra', '>= 1.3.0', :require => nil
 
 # auth
 gem 'devise'
