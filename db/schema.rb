@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131207231147) do
+ActiveRecord::Schema.define(version: 20131208163851) do
+
+  create_table "colors", force: true do |t|
+    t.integer "red"
+    t.integer "green"
+    t.integer "blue"
+    t.string  "hex"
+  end
+
+  add_index "colors", ["hex"], name: "index_colors_on_hex", unique: true
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -32,6 +41,15 @@ ActiveRecord::Schema.define(version: 20131207231147) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
+
+  create_table "wallpaper_colors", force: true do |t|
+    t.integer "wallpaper_id"
+    t.integer "color_id"
+    t.float   "percentage"
+  end
+
+  add_index "wallpaper_colors", ["color_id"], name: "index_wallpaper_colors_on_color_id"
+  add_index "wallpaper_colors", ["wallpaper_id"], name: "index_wallpaper_colors_on_wallpaper_id"
 
   create_table "wallpapers", force: true do |t|
     t.integer  "user_id"

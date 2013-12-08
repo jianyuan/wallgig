@@ -19,6 +19,8 @@
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user
+  has_many :wallpaper_colors, dependent: :destroy
+  has_many :colors, through: :wallpaper_colors
 
   # Purity
   extend Enumerize
@@ -55,10 +57,20 @@ class Wallpaper < ActiveRecord::Base
   scope :visible, -> { processed }
 
   after_create :queue_create_thumbnails
+  after_create :queue_extract_dominant_colors
   after_save :update_processing_status, if: :processing?
+
+  def image_storage_path(i)
+    name = File.basename(image_uid, (image.ext || '.jpg'))
+    [File.dirname(image_uid), "#{name}_#{i.width}x#{i.height}.#{i.format}"].join('/')
+  end
 
   def queue_create_thumbnails
     WallpaperResizerWorker.perform_async(self.id)
+  end
+
+  def queue_extract_dominant_colors
+    WallpaperExtractDominantColorsWorker.perform_async(self.id)
   end
 
   def update_processing_status
@@ -72,9 +84,21 @@ class Wallpaper < ActiveRecord::Base
     standard_image.present? && large_image.present? && thumbnail_image.present?
   end
 
-  def image_storage_path(i)
-    name = File.basename(image_uid, (image.ext || '.jpg'))
-    [File.dirname(image_uid), "#{name}_#{i.width}x#{i.height}.#{i.format}"].join('/')
+  def extract_dominant_colors
+    return unless image.present?
+    dominant_colors = Miro::DominantColors.new(image.path)
+    hexes = dominant_colors.to_hex
+    rgbs = dominant_colors.to_rgb
+    percentages = dominant_colors.by_percentage
+
+    # clear any old colors
+    wallpaper_colors.clear
+
+    hexes.each_with_index do |hex, i|
+      hex = hex[1..-1]
+      color = Color.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
+      self.wallpaper_colors.create color: color, percentage: percentages[i]
+    end
   end
 
 end

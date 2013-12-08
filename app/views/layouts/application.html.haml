@@ -25,6 +25,8 @@
             %li= link_to 'Sign Up', new_user_registration_path
             %li= link_to 'Sign In', new_user_session_path
     .container.container-full
+      .alert.alert-danger
+        Warning! This website is under heavy development. Wallpapers uploaded here <strong>may be deleted</strong>.
       = bootstrap_flash
       = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false

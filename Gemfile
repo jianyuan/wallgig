@@ -83,8 +83,10 @@ gem 'active_link_to'
 
 # assets
 gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
+gem 'bourbon'
 
 # services
 gem 'sidekiq'
 
 # utilities
+gem 'miro'

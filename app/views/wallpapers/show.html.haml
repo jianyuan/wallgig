@@ -1,5 +1,10 @@
 .row
   .col-lg-2
+    %ul.color-bar
+      - @wallpaper.colors.each do |color|
+        %li
+          = link_to '', wallpapers_path(color: color.hex), style: "background-color: \##{color.hex}"
+
     %h3 Uploaded by
     %h5= user_tag @wallpaper.user
     %small #{time_ago_in_words @wallpaper.created_at} ago

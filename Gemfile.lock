@@ -92,6 +92,11 @@ GEM
       sshkit (~> 1.2.0)
     celluloid (0.14.1)
       timers (>= 1.0.0)
+    chunky_png (1.2.9)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.3)
+      climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -159,6 +164,9 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     minitest (4.7.5)
+    miro (0.2.3)
+      cocaine
+      oily_png
     multi_json (1.8.2)
     multipart-post (1.2.0)
     net-scp (1.1.2)
@@ -170,6 +178,8 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
+    oily_png (1.1.0)
+      chunky_png (~> 1.2.7)
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
@@ -286,6 +296,7 @@ DEPENDENCIES
   annotate
   better_errors
   binding_of_caller
+  bourbon
   cancan
   capistrano (~> 3.0.0)
   capistrano-bundler
@@ -300,6 +311,7 @@ DEPENDENCIES
   haml-rails
   jbuilder (~> 1.2)
   jquery-rails
+  miro
   omniauth
   omniauth-facebook
   pg
