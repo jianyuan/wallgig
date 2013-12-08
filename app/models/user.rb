@@ -34,8 +34,16 @@ class User < ActiveRecord::Base
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
             length: { maximum: 50 }
 
+  def developer?
+    has_role? :developer
+  end
+
   def admin?
     has_role? :admin
+  end
+
+  def moderator?
+    has_role? :moderator
   end
 
 end

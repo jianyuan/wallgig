@@ -6,6 +6,10 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
+    if user.moderator?
+      can :manage, :all
+    end
+
     can :read, User
 
     can :read, Wallpaper, processing: false
