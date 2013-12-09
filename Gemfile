@@ -88,7 +88,7 @@ gem 'bourbon'
 gem 'jquery-turbolinks'
 
 # services
-gem 'sidekiq'
+gem 'sidekiq', github: 'mperham/sidekiq'
 
 # utilities
 gem 'miro'
