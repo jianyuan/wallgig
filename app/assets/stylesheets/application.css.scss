@@ -15,8 +15,10 @@
 @import "slate_theme";
 @import "twitter/bootstrap";
 
-body {
-  // background-color: #1E1E1E;
+html, body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .container-full {

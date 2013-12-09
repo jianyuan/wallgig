@@ -15,4 +15,5 @@
 //= require jquery_ujs
 // require turbolinks
 //= require twitter/bootstrap
+//= require panzoom
 //= require_tree .

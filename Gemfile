@@ -75,6 +75,7 @@ gem 'workflow', github: 'geekq/workflow'
 gem 'dragonfly', '~> 1.0.0'
 gem 'country_select'
 gem 'enumerize'
+gem 'kaminari'
 
 # views
 gem 'slim'

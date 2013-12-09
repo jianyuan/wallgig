@@ -9,6 +9,7 @@ class WallpapersController < ApplicationController
                            .near_to_color(params[:color])
                            .with_purity(:sfw)
                            .order(created_at: :desc)
+                           .page(params[:page]).per(20)
   end
 
   # GET /wallpapers/1

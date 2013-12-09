@@ -323,6 +323,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   jquery-turbolinks
+  kaminari
   miro
   omniauth
   omniauth-facebook

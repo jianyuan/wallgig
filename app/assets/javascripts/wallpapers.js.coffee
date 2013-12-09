@@ -3,7 +3,11 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $('.img-wallpaper').click ->
+  return unless $('body.wallpapers.show').length == 1
+
+  $imgWallpaper = $('.img-wallpaper')
+
+  $imgWallpaper.click ->
     $this = $(this)
     if $this.is('.state-1')
       $this.removeClass('state-1')
