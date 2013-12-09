@@ -102,7 +102,7 @@ class Wallpaper < ActiveRecord::Base
 
     hexes.each_with_index do |hex, i|
       hex = hex[1..-1]
-      color = Color.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
+      color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
       self.wallpaper_colors.create color: color, percentage: percentages[i]
     end
   end
