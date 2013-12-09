@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :read)
                        .with_purity(:sfw)
+                       .page(params[:page])
   end
 
   private
