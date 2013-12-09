@@ -33,16 +33,17 @@ body.wallpapers.show {
 
 
 .wallpaper-list {
-  overflow: hidden;
+  text-align: center;
 }
 
 .wallpaper-list-item {
+  display: inline-block;
   width: 250px;
   height: 188px;
   margin: 10px 20px;
-  float: left;
   position: relative;
   overflow: hidden;
+  @include box-shadow(#101010 2px 2px 5px);
   .overlay {
     position: absolute;
     // display: none;
@@ -55,7 +56,8 @@ body.wallpapers.show {
     right: 0;
     bottom: -35px;
     height: 35px;
-    background-color: rgba(0, 0, 0, 0.4);
+    // background-color: rgba(0, 0, 0, 0.4);
+    @include background(linear-gradient(transparent, #000));
     color: white;
     line-height: 35px;
     text-align: center;
