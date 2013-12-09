@@ -18,15 +18,7 @@ body.wallpapers.show {
     cursor: -webkit-zoom-in;  cursor: zoom-in;
   }
 
-  &.state-2.img-landscape {
-    max-height: 90%;
-  }
-
-  &.state-2.img-portrait {
-    max-width: 90%;
-  }
-
-  &.state-3 {
+  &.state-2 {
     cursor: -webkit-zoom-out;  cursor: zoom-out;
   }
 }
