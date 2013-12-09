@@ -90,6 +90,7 @@ gem 'jquery-turbolinks'
 
 # services
 gem 'sidekiq', github: 'mperham/sidekiq'
+gem 'doorkeeper', '~> 0.7.0'
 
 # utilities
 gem 'miro'

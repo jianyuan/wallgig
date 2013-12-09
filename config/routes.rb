@@ -1,6 +1,7 @@
 Wallgig::Application.routes.draw do
   root 'wallpapers#index'
 
+  use_doorkeeper
   devise_for :users
   resources :users
 
