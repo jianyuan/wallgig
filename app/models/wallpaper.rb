@@ -51,6 +51,9 @@ class Wallpaper < ActiveRecord::Base
     end
   end
 
+  # Tags
+  acts_as_taggable
+
   # Pagination
   paginates_per 20
 
@@ -63,6 +66,7 @@ class Wallpaper < ActiveRecord::Base
   scope :processed, -> { where(processing: false) }
   scope :visible, -> { processed }
   scope :near_to_color, ->(color) {
+    return if color.blank?
     color_ids = Kolor.near_to(color).map(&:id)
     # where(primary_color_id: color_ids) # @todo improve color search algorithm
     joins(:wallpaper_colors)

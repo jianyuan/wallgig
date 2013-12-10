@@ -4,18 +4,31 @@
       - @wallpaper.wallpaper_colors.each do |color|
         %li
           = link_to '', wallpapers_path(color: color.hex), style: "background-color: \##{color.hex}"
+    %hr/
+
+    - if @wallpaper.tags.any?
+      %ul.tags
+        - @wallpaper.tag_list.each do |tag|
+          %li
+            = link_to wallpapers_path(tag: tag) do
+              = tag
+      %hr/
 
     %h3 Uploaded by
     %h5= user_tag @wallpaper.user
     %small #{time_ago_in_words @wallpaper.created_at} ago
 
+    %hr/
+
     %p
       %b Purity:
       = @wallpaper.purity
 
-    = link_to 'Edit', edit_wallpaper_path(@wallpaper)
-    \|
-    = link_to 'Back', wallpapers_path
+    %hr/
+
+    - if can? :update, @wallpaper
+      = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-default'
+    = link_to 'Back', wallpapers_path, class: 'btn btn-link'
   .col-lg-10.col-wallpaper
     .img-wallpaper-parent
       = image_tag @wallpaper.image.url, class: "img-wallpaper img-#{@wallpaper.format} state-1"

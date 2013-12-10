@@ -76,6 +76,7 @@ gem 'dragonfly', '~> 1.0.0'
 gem 'country_select'
 gem 'enumerize'
 gem 'kaminari'
+gem 'acts-as-taggable-on'
 
 # views
 gem 'slim'
