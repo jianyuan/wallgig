@@ -8,6 +8,10 @@ class UsersController < ApplicationController
                        .accessible_by(current_ability, :read)
                        .with_purity(:sfw)
                        .page(params[:page])
+
+    if request.xhr?
+      render layout: false, template: 'wallpapers/index'
+    end
   end
 
   private

@@ -9,7 +9,7 @@ class WallpapersController < ApplicationController
                            .with_purity(:sfw)
                            .order(created_at: :desc)
                            .near_to_color(params[:color])
-                           .page(params[:page]).per(20)
+                           .page(params[:page])
 
     if request.xhr?
       render layout: false

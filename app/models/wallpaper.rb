@@ -51,9 +51,14 @@ class Wallpaper < ActiveRecord::Base
     end
   end
 
+  # Pagination
+  paginates_per 20
+
+  # Validation
   validates :image, presence: true
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
 
+  # Scopes
   scope :processing, -> { where(processing: true ) }
   scope :processed, -> { where(processing: false) }
   scope :visible, -> { processed }
@@ -71,6 +76,7 @@ class Wallpaper < ActiveRecord::Base
       # .order('wallpaper_colors.percentage DESC')
   }
 
+  # Callbacks
   after_create :queue_create_thumbnails
   after_create :queue_extract_dominant_colors
   after_save :update_processing_status, if: :processing?
