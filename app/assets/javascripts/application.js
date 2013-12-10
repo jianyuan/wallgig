@@ -16,4 +16,5 @@
 // require turbolinks
 //= require twitter/bootstrap
 //= require panzoom
+//= require jquery.inview
 //= require_tree .

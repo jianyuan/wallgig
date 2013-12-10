@@ -10,6 +10,10 @@ class WallpapersController < ApplicationController
                            .with_purity(:sfw)
                            .order(created_at: :desc)
                            .page(params[:page]).per(20)
+
+    if request.xhr?
+      render layout: false
+    end
   end
 
   # GET /wallpapers/1
