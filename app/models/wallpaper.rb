@@ -107,22 +107,26 @@ class Wallpaper < ActiveRecord::Base
     end
   end
 
-  def format
-    if image_height.nil? || image_width.nil?
-      :unknown
-    elsif image_height <= image_width
-      :landscape
-    else
-      :portrait
+  module ImageFormatMethods
+    def format
+      if image_height.nil? || image_width.nil?
+        :unknown
+      elsif image_height <= image_width
+        :landscape
+      else
+        :portrait
+      end
+    end
+
+    def portrait?
+      format == :portrait
+    end
+
+    def landscape?
+      format == :landscape
     end
   end
 
-  def portrait?
-    format == :portrait
-  end
-
-  def landscape?
-    format == :landscape
-  end
+  include ImageFormatMethods
 
 end

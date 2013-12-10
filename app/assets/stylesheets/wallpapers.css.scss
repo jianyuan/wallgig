@@ -50,10 +50,15 @@ body.wallpapers.show {
   margin: 10px 20px;
   position: relative;
   overflow: hidden;
+  @include transition(all 0.1s ease-in);
   @include box-shadow(#101010 2px 2px 5px);
+
+  &:hover {
+    @include box-shadow(#181818 0px 0px 5px);
+  }
   .overlay {
     position: absolute;
-    // display: none;
+    @include transition(all 0.1s ease-in);
   }
   &:hover .overlay {
     // display: block;
@@ -64,25 +69,13 @@ body.wallpapers.show {
     bottom: -35px;
     height: 35px;
     // background-color: rgba(0, 0, 0, 0.4);
-    @include background(linear-gradient(transparent, #000));
+    @include background(linear-gradient(transparent, #101010));
     color: white;
     line-height: 35px;
     text-align: center;
   }
   &:hover .overlay-bottom {
     bottom: 0;
-    -webkit-transition-property: bottom;
-    -moz-transition-property: bottom;
-    -o-transition-property: bottom;
-    transition-property: bottom;
-    -webkit-transition-duration: 0.1s;
-    -moz-transition-duration: 0.1s;
-    -o-transition-duration: 0.1s;
-    transition-duration: 0.1s;
-    -webkit-transition-timing-function: ease-in;
-    -moz-transition-timing-function: ease-in;
-    -o-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
   }
 }
 

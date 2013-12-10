@@ -95,3 +95,4 @@ gem 'doorkeeper', '~> 0.7.0'
 # utilities
 gem 'miro'
 gem 'color'
+gem 'phashion'
