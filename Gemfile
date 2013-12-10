@@ -89,10 +89,11 @@ gem 'bourbon'
 gem 'jquery-turbolinks'
 
 # services
+gem 'newrelic_rpm'
 gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'doorkeeper', '~> 0.7.0'
 
 # utilities
 gem 'miro'
 gem 'color'
-gem 'phashion'
+# gem 'phashion'
