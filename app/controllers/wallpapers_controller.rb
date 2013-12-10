@@ -5,14 +5,19 @@ class WallpapersController < ApplicationController
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    @wallpapers = Wallpaper.accessible_by(current_ability, :read)
-                           .with_purity(:sfw)
-                           .order(created_at: :desc)
-                           .near_to_color(params[:color])
-                           .page(params[:page])
+    query = Wallpaper.accessible_by(current_ability, :read)
+                     .order(created_at: :desc)
+
+    query = query.tagged_with(params[:tag]) if params[:tag].present?
+    query = query.near_to_color(params[:color]) if params[:color].present?
+    query = query.with_purity(:sfw)
+    
+    @wallpapers = query.page(params[:page])
+
+    @tags = Wallpaper.tag_counts_on(:tags)
 
     if request.xhr?
-      render layout: false
+      render partial: 'list', layout: false
     end
   end
 
@@ -85,6 +90,6 @@ class WallpapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wallpaper_params
-      params.require(:wallpaper).permit(:purity, :image)
+      params.require(:wallpaper).permit(:purity, :image, :tag_list)
     end
 end

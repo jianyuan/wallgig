@@ -1,9 +1,6 @@
+.well.text-center
+  - tag_cloud(@tags, %w(tag-size-1 tag-size-2 tag-size-3 tag-size-4)) do |tag, css_class|
+    = link_to tag.name, wallpapers_path(tag: tag.name), :class => css_class
+
 - cache @wallpapers do
-  %section.wallpaper-list
-    - @wallpapers.each do |wallpaper|
-      %article.wallpaper-list-item
-        = link_to wallpaper do
-          = image_tag wallpaper.thumbnail_image.url, width: 250, height: 188
-        .overlay.overlay-bottom
-          #{wallpaper.image_width}x#{wallpaper.image_height}
-  = link_to_next_page @wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg'
+  = render 'list'

@@ -6,14 +6,18 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
+    can :read, User
+
     if user.moderator?
       can :manage, :all
     end
 
-    can :read, User
-
     can :read, Wallpaper, processing: false
     can :manage, Wallpaper, user_id: user.id
+
+    if user.persisted?
+      can :update, Wallpaper
+    end
 
     # Define abilities for the passed in user here. For example:
     #
