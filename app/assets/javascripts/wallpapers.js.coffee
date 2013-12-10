@@ -16,9 +16,12 @@ $ ->
       return unless visible
       $this = $(this)
       url = $this.attr 'href'
-      $this.remove()
+      $this.unbind 'inview'
+      $this.replaceWith('<hr /><div class="loading" />')
       $.get url, (html) ->
-        $('#main').append('<hr />').append(html)
+        $main = $('#main')
+        $main.find('.loading').remove()
+        $main.append(html)
         $('[rel=next]').bind('inview', loadNextPage)
 
     $('[rel=next]').bind('inview', loadNextPage)
