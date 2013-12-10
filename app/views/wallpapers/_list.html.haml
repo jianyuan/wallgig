@@ -1,8 +1,8 @@
 %section.wallpaper-list
   - @wallpapers.each do |wallpaper|
-    %article.wallpaper-list-item
+    %article.wallpaper-list-item{class: "wallpaper-#{wallpaper.purity}"}
       = link_to wallpaper do
         = image_tag wallpaper.thumbnail_image.url, width: 250, height: 188
       .overlay.overlay-bottom
         #{wallpaper.image_width}x#{wallpaper.image_height}
-= link_to_next_page @wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg'
+= link_to_next_page @wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params

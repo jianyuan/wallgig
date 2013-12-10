@@ -77,6 +77,14 @@ body.wallpapers.show {
   &:hover .overlay-bottom {
     bottom: 0;
   }
+
+  /* Purity */
+  &.wallpaper-sketchy {
+    border: 2px solid #fda500;
+  }
+  &.wallpaper-nsfw {
+    border: 2px solid #bf0600;
+  }
 }
 
 

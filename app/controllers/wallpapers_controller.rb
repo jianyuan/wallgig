@@ -9,9 +9,14 @@ class WallpapersController < ApplicationController
     query = Wallpaper.accessible_by(current_ability, :read)
                      .order(created_at: :desc)
 
-    query = query.tagged_with(params[:tag]) if params[:tag].present?
-    query = query.near_to_color(params[:color]) if params[:color].present?
-    query = query.with_purity(:sfw)
+    query = query.tagged_with(search_params[:tag]) if search_params[:tag].present?
+    query = query.near_to_color(search_params[:color]) if search_params[:color].present?
+
+    if search_params[:purity].present?
+      query = query.with_purity(*search_params[:purity])
+    else
+      query = query.with_purity(:sfw)
+    end
     
     @wallpapers = query.page(params[:page])
 
@@ -99,5 +104,9 @@ class WallpapersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def wallpaper_params
       params.require(:wallpaper).permit(:purity, :image, :tag_list)
+    end
+
+    def search_params
+      params.permit(:tag, :color, purity: [])
     end
 end
