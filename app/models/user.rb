@@ -46,4 +46,8 @@ class User < ActiveRecord::Base
     has_role? :moderator
   end
 
+  def to_param
+    username
+  end
+
 end
