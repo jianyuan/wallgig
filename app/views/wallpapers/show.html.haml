@@ -1,7 +1,7 @@
 .row
   .col-lg-2
     %ul.color-bar
-      - @wallpaper.colors.each do |color|
+      - @wallpaper.wallpaper_colors.each do |color|
         %li
           = link_to '', wallpapers_path(color: color.hex), style: "background-color: \##{color.hex}"
 

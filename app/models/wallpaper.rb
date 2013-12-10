@@ -19,7 +19,7 @@
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user
-  has_many :wallpaper_colors, dependent: :destroy
+  has_many :wallpaper_colors, -> { order(percentage: :desc) }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
 
   # Purity
