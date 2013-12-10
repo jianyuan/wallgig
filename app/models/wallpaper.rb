@@ -60,9 +60,15 @@ class Wallpaper < ActiveRecord::Base
   scope :near_to_color, ->(color) {
     color_ids = Kolor.near_to(color).map(&:id)
     # where(primary_color_id: color_ids) # @todo improve color search algorithm
-    joins(:colors)
-      .select('wallpapers.*')
-      .where(colors: { id: color_ids }).group('wallpapers.id')
+    joins(:wallpaper_colors)
+      .where(wallpaper_colors: { color_id: color_ids })
+      .except(:order)
+      .order('wallpaper_colors.percentage DESC')
+      .references(:wallpaper_colors)
+      # .select('wallpapers.*')
+      # .where(wallpaper_colors: { color_id: color_ids })
+      # .group('wallpapers.id')
+      # .order('wallpaper_colors.percentage DESC')
   }
 
   after_create :queue_create_thumbnails

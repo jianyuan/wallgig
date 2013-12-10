@@ -6,9 +6,9 @@ class WallpapersController < ApplicationController
   # GET /wallpapers.json
   def index
     @wallpapers = Wallpaper.accessible_by(current_ability, :read)
-                           .near_to_color(params[:color])
                            .with_purity(:sfw)
                            .order(created_at: :desc)
+                           .near_to_color(params[:color])
                            .page(params[:page]).per(20)
 
     if request.xhr?

@@ -11,7 +11,7 @@ $ ->
         $this.removeClass('state-2')
         $this.addClass('state-1')
 
-  if $('body.wallpapers.index').length == 1
+  if $('body.wallpapers.index, body.users.show').length == 1
     loadNextPage = (event, visible) ->
       return unless visible
       $this = $(this)
