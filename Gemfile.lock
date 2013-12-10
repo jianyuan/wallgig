@@ -157,7 +157,11 @@ GEM
     hashie (2.0.5)
     hike (1.2.3)
     httpauth (0.2.0)
+    httpclient (2.3.4.1)
     i18n (0.6.9)
+    impressionist (1.4.13)
+      httpclient (~> 2.2)
+      nokogiri (>= 1.5.0)
     inherited_resources (1.4.1)
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0.0.rc)
@@ -183,6 +187,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mini_portile (0.5.2)
     minitest (4.7.5)
     miro (0.2.3)
       cocaine
@@ -193,6 +198,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
     newrelic_rpm (3.6.8.164)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
     oauth2 (0.8.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
@@ -328,6 +335,7 @@ DEPENDENCIES
   enumerize
   friendly_id (~> 5.0.0)
   haml-rails
+  impressionist
   jbuilder (~> 1.2)
   jquery-rails
   jquery-turbolinks

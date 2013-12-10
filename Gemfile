@@ -77,6 +77,7 @@ gem 'country_select'
 gem 'enumerize'
 gem 'kaminari'
 gem 'acts-as-taggable-on'
+gem 'impressionist'
 
 # views
 gem 'slim'
