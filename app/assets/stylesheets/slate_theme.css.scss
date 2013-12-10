@@ -41,6 +41,7 @@ $link-hover-color:      #fff;
 
 // $font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-heading:    'Roboto Condensed', sans-serif;
 $font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:        $font-family-sans-serif !default;
@@ -121,7 +122,7 @@ $btn-font-weight:                normal !default;
 
 $btn-default-color:              #fff;
 $btn-default-bg:                 $gray-dark;
-$btn-default-border:             $btn-default-bg;
+$btn-default-border:             rgba(0,0,0,.5);
 
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
@@ -444,13 +445,13 @@ $modal-inner-padding:         20px !default;
 $modal-title-padding:         15px !default;
 $modal-title-line-height:     $line-height-base !default;
 
-$modal-content-bg:                             #fff !default;
-$modal-content-border-color:                   rgba(0,0,0,.2) !default;
-$modal-content-fallback-border-color:          #999 !default;
+$modal-content-bg:                             lighten($body-bg, 3%);
+$modal-content-border-color:                   rgba(0,0,0,.2);
+$modal-content-fallback-border-color:          #999;
 
-$modal-backdrop-bg:           #000 !default;
-$modal-header-border-color:   #e5e5e5 !default;
-$modal-footer-border-color:   $modal-header-border-color !default;
+$modal-backdrop-bg:           #000;
+$modal-header-border-color:   darken($gray-darker, 5%);
+$modal-footer-border-color:   $modal-header-border-color;
 
 
 // Alerts

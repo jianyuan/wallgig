@@ -1,6 +1,7 @@
 class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity]
+  impressionist actions: [:show] # Increase view count
 
   # GET /wallpapers
   # GET /wallpapers.json
@@ -25,7 +26,6 @@ class WallpapersController < ApplicationController
   # GET /wallpapers/1.json
   def show
     authorize! :read, @wallpaper
-    impressionist @wallpaper # Increase view count
   end
 
   # GET /wallpapers/new
@@ -80,6 +80,13 @@ class WallpapersController < ApplicationController
       format.html { redirect_to wallpapers_url }
       format.json { head :no_content }
     end
+  end
+
+  # PATCH /wallpapers/1/update_purity.js
+  def update_purity
+    authorize! :update, @wallpaper
+    @wallpaper.purity = params[:purity]
+    @wallpaper.save
   end
 
   private

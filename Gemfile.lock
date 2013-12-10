@@ -134,6 +134,11 @@ GEM
     dragonfly (1.0.1)
       multi_json (~> 1.0)
       rack
+    eco (1.0.0)
+      coffee-script
+      eco-source
+      execjs
+    eco-source (1.1.0.rc.1)
     enumerize (0.7.0)
       activesupport (>= 3.2)
     erubis (2.7.0)
@@ -334,6 +339,7 @@ DEPENDENCIES
   devise
   doorkeeper (~> 0.7.0)
   dragonfly (~> 1.0.0)
+  eco
   enumerize
   friendly_id (~> 5.0.0)
   haml-rails

@@ -17,4 +17,7 @@
 //= require twitter/bootstrap
 //= require panzoom
 //= require jquery.inview
+//= require spin
+//= require ladda
 //= require_tree .
+//= require_tree ../templates/.

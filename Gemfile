@@ -84,6 +84,7 @@ gem 'slim'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'active_link_to'
+gem 'eco'
 
 # assets
 gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'

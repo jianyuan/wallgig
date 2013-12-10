@@ -108,3 +108,31 @@ ul.color-bar {
     @include box-shadow(#101010 0px 2px 10px);
   }
 }
+
+/*
+  Purity
+ */
+.btn-group-purity {
+  .btn {
+    font-weight: bold;
+    font-family: $font-family-heading;
+  }
+}
+.btn-sfw {
+  color: $btn-success-bg;
+  &.btn-active {
+    @extend .btn-success;
+  }
+}
+.btn-sketchy {
+  color: $btn-warning-bg;
+  &.btn-active {
+    @extend .btn-warning;
+  }
+}
+.btn-nsfw {
+  color: $btn-danger-bg;
+  &.btn-active {
+    @extend .btn-danger;
+  }
+}

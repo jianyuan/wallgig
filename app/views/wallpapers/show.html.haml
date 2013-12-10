@@ -20,6 +20,15 @@
 
     %hr/
 
+    .btn-group.btn-group-justified.btn-group-purity
+      - Wallpaper.purity.options.each_entry do |label, value|
+        = link_to label, update_purity_wallpaper_path(@wallpaper, value),
+                  class: "btn btn-#{value} #{'btn-active' if @wallpaper.purity == value} ladda-button",
+                  method: :patch, remote: true,
+                  data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
+
+    %hr/
+
     %p
       %b Purity:
       = @wallpaper.purity

@@ -5,7 +5,11 @@ Wallgig::Application.routes.draw do
   devise_for :users
   resources :users
 
-  resources :wallpapers
+  resources :wallpapers do
+    member do
+      patch 'update_purity/:purity', action: :update_purity, as: :update_purity
+    end
+  end
 
   # API
   namespace :api, defaults: {format: 'json'} do

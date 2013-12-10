@@ -27,3 +27,17 @@ $ ->
       ga('send', 'pageview', url) if ga?
 
     $('[rel=next]').bind('inview', loadNextPage)
+
+  if $('.btn-group-purity').length
+    Ladda.bind '.btn-group-purity .btn'
+    $this = $(this)
+    $this.on 'ajax:success', (event, data, status, xhr) ->
+      $("[data-action=change-purity][data-wallpaper-id=#{ data.id }]")
+        .removeClass 'btn-active'
+      $("[data-action=change-purity][data-wallpaper-id=#{ data.id }][data-purity=#{ data.purity }]")
+        .addClass 'btn-active'
+    $this.on 'ajax:error', (event, xhr, status, error) ->
+      # alert error
+      Wallgig.Utilities.alert 'Error!', xhr.responseText || error
+    $this.on 'ajax:complete', (event, xhr, status) ->
+      Ladda.stopAll()
