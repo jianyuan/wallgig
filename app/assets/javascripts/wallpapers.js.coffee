@@ -24,4 +24,6 @@ $ ->
         $main.append(html)
         $('[rel=next]').bind('inview', loadNextPage)
 
+      ga('send', 'pageview', url) if ga?
+
     $('[rel=next]').bind('inview', loadNextPage)

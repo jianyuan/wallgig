@@ -54,7 +54,7 @@ body.wallpapers.show {
   @include box-shadow(#101010 2px 2px 5px);
 
   &:hover {
-    @include box-shadow(#181818 0px 0px 5px);
+    @include box-shadow(#000 0px 0px 25px);
   }
   .overlay {
     position: absolute;

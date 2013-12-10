@@ -21,7 +21,9 @@
           -# %li= link_to 'Toplist', '#'
           -# %li= link_to 'Comments', '#'
         %p.navbar-text
-          %small Last code revision: #{time_ago_in_words(last_deploy_time)} ago
+          %small
+            Last code revision: #{time_ago_in_words(last_deploy_time)} ago.
+            = link_to 'View Changelog', 'http://forums.wallgig.net/t/wallgig-changelog/6'
         %ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
             %li= link_to current_user.username, edit_user_registration_path
