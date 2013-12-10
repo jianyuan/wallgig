@@ -15,12 +15,14 @@
 #  standard_image_uid  :string(255)
 #  large_image_uid     :string(255)
 #  thumbnail_image_uid :string(255)
+#  primary_color_id    :integer
 #
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user
   has_many :wallpaper_colors, -> { order(percentage: :desc) }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
+  belongs_to :primary_color, class_name: 'Kolor'
 
   # Purity
   extend Enumerize
@@ -57,6 +59,7 @@ class Wallpaper < ActiveRecord::Base
   scope :visible, -> { processed }
   scope :near_to_color, ->(color) {
     color_ids = Kolor.near_to(color).map(&:id)
+    # where(primary_color_id: color_ids) # @todo improve color search algorithm
     joins(:colors)
       .select('wallpapers.*')
       .where(colors: { id: color_ids }).group('wallpapers.id')
@@ -98,13 +101,17 @@ class Wallpaper < ActiveRecord::Base
     percentages = dominant_colors.by_percentage
 
     # clear any old colors
+    self.primary_color = nil
     wallpaper_colors.clear
 
     hexes.each_with_index do |hex, i|
       hex = hex[1..-1]
       color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
+      self.primary_color = color if i == 0
       self.wallpaper_colors.create color: color, percentage: percentages[i]
     end
+
+    self.save
   end
 
   module ImageFormatMethods
