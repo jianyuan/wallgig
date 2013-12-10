@@ -63,6 +63,9 @@ class Wallpaper < ActiveRecord::Base
   # Validation
   validates :image, presence: true
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
+  validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
+  validates_property :width,     of: :image, in: (600..10240),                on: :create
+  validates_property :width,     of: :image, in: (600..10240),                on: :create
 
   # Scopes
   scope :processing, -> { where(processing: true ) }
