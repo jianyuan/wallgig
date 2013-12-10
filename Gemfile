@@ -99,3 +99,6 @@ gem 'doorkeeper', '~> 0.7.0'
 gem 'miro'
 gem 'color'
 # gem 'phashion'
+
+# rack
+gem 'rack-cache', require:  'rack/cache', group: :production
