@@ -25,6 +25,7 @@ class WallpapersController < ApplicationController
   # GET /wallpapers/1.json
   def show
     authorize! :read, @wallpaper
+    impressionist @wallpaper # Increase view count
   end
 
   # GET /wallpapers/new

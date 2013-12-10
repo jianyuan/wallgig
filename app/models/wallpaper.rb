@@ -57,6 +57,9 @@ class Wallpaper < ActiveRecord::Base
   # Pagination
   paginates_per 20
 
+  # Views
+  is_impressionable counter_cache: true, unique: :session_hash
+
   # Validation
   validates :image, presence: true
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
