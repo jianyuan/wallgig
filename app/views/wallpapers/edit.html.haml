@@ -1,7 +1,9 @@
-%h1 Editing wallpaper
+.row
+  .col-lg-6.col-lg-offset-3
+    %h1 Editing wallpaper
 
-= render 'form'
+    = render 'form'
 
-= link_to 'Show', @wallpaper
-\|
-= link_to 'Back', wallpapers_path
+    %hr/
+
+    = link_to 'Cancel', @wallpaper, class: 'btn btn-link'

@@ -21,4 +21,13 @@ module ApplicationHelper
     flash_messages.join("\n").html_safe
   end
 
+  def container_class_for(controller_name, action_name)
+    case [controller_name, action_name]
+    when ['wallpapers', 'index'],
+         ['wallpapers', 'show'],
+         ['users', 'show'] then
+      'container-full'
+    end
+  end
+
 end

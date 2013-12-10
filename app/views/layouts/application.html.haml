@@ -29,7 +29,7 @@
           - else
             %li= link_to 'Sign Up', new_user_registration_path
             %li= link_to 'Sign In', new_user_session_path
-    #main.container.container-full
+    #main.container{class: container_class_for(controller_name, action_name)}
       -# .alert.alert-danger
       -# Warning! This website is under heavy development. Wallpapers uploaded here <strong>may be deleted</strong>.
       .alert.alert-success
