@@ -95,6 +95,7 @@ gem 'jquery-turbolinks'
 gem 'newrelic_rpm'
 gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'doorkeeper', '~> 0.7.0'
+gem 'tire'
 
 # utilities
 gem 'miro'
