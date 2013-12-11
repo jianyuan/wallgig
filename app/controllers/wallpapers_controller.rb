@@ -20,7 +20,7 @@ class WallpapersController < ApplicationController
     
     @wallpapers = query.page(params[:page])
 
-    @tags = Wallpaper.tag_counts_on(:tags)
+    @tags = Wallpaper.tag_counts_on(:tags).limit(20)
 
     if request.xhr?
       render partial: 'list', layout: false
