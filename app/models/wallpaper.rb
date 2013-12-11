@@ -62,7 +62,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Search
   include Tire::Model::Search
-  include Tire::Model::Callbacks
+  # include Tire::Model::Callbacks
 
   tire do
     mapping do
@@ -106,9 +106,9 @@ class Wallpaper < ActiveRecord::Base
         }
       end,
       primary_color: {
-        red: primary_color.red,
-        green: primary_color.green,
-        blue: primary_color.blue
+        red: primary_color.try(:red),
+        green: primary_color.try(:green),
+        blue: primary_color.try(:blue)
       },
       thumbnail_image_uid: thumbnail_image_uid,
       created_at: created_at,

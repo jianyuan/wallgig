@@ -116,54 +116,66 @@ class WallpapersController < ApplicationController
 
     if params[:color].present? && (color = Color::RGB.from_html(params[:color]) rescue false)
       threshold = params[:threshold] || 1
-      query[:function_score] = {
-        boost_mode: 'replace',
-        filter: {
-          range: {
-            # :'colors.percentage' => {
-            #   gte: 0.5
-            # }
-            # :'colors.red' => {
-            #   gte: color.red - threshold,
-            #   lte: color.red + threshold
-            # },
-            # :'colors.green' => {
-            #   gte: color.green - threshold,
-            #   lte: color.green + threshold
-            # },
-            # :'colors.blue' => {
-            #   gte: color.blue - threshold,
-            #   lte: color.blue + threshold
-            # }
-            :'primary_color.red' => {
-              gte: color.red - threshold,
-              lte: color.red + threshold
-            },
-            :'primary_color.green' => {
-              gte: color.green - threshold,
-              lte: color.green + threshold
-            },
-            :'primary_color.blue' => {
-              gte: color.blue - threshold,
-              lte: color.blue + threshold
+      # query[:function_score] = {
+      #   boost_mode: 'replace',
+      #   filter: {
+      #     range: {
+      #       # :'colors.percentage' => {
+      #       #   gte: 0.5
+      #       # }
+      #       # :'colors.red' => {
+      #       #   gte: color.red - threshold,
+      #       #   lte: color.red + threshold
+      #       # },
+      #       # :'colors.green' => {
+      #       #   gte: color.green - threshold,
+      #       #   lte: color.green + threshold
+      #       # },
+      #       # :'colors.blue' => {
+      #       #   gte: color.blue - threshold,
+      #       #   lte: color.blue + threshold
+      #       # }
+      #       :'primary_color.red' => {
+      #         gte: color.red - threshold,
+      #         lte: color.red + threshold
+      #       },
+      #       :'primary_color.green' => {
+      #         gte: color.green - threshold,
+      #         lte: color.green + threshold
+      #       },
+      #       :'primary_color.blue' => {
+      #         gte: color.blue - threshold,
+      #         lte: color.blue + threshold
+      #       }
+      #     }
+      #   },
+      #   script_score: {
+      #     params: {
+      #       red: color.red,
+      #       green: color.green,
+      #       blue: color.blue
+      #     },
+      #     script: "-1 * (abs(doc['primary_color.red'].value - red) + abs(doc['primary_color.green'].value - green) + abs(doc['primary_color.blue'].value - blue))"
+      #     # script: "-((abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue))) * (1 - doc['colors.percentage'].value)"
+      #   }
+      # }
+
+      query[:bool] = {
+        :should => [
+          {
+            :fuzzy => {
+              :'primary_color.red' => {
+                :value => color.red.to_i
+              }
             }
           }
-        },
-        script_score: {
-          params: {
-            red: color.red,
-            green: color.green,
-            blue: color.blue
-          },
-          script: "-1 * (abs(doc['primary_color.red'].value - red) + abs(doc['primary_color.green'].value - green) + abs(doc['primary_color.blue'].value - blue))"
-          # script: "-((abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue))) * (1 - doc['colors.percentage'].value)"
-        }
+        ]
       }
     else
       query[:match_all] = {}
     end
     # @wallpapers = Wallpaper.tire.search nil, query: query
-    @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: true)
+    @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: Rails.env.production?)
     @results = @query.results
   end
 
