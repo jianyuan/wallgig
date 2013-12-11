@@ -155,7 +155,7 @@ class WallpapersController < ApplicationController
             green: color.green,
             blue: color.blue
           },
-          script: "-((abs(doc['primary_color.red'].value - red) + abs(doc['primary_color.green'].value - green) + abs(doc['primary_color.blue'].value - blue)))"
+          script: "-1 * (abs(doc['primary_color.red'].value - red) + abs(doc['primary_color.green'].value - green) + abs(doc['primary_color.blue'].value - blue))"
           # script: "-((abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue))) * (1 - doc['colors.percentage'].value)"
         }
       }
@@ -163,7 +163,7 @@ class WallpapersController < ApplicationController
       query[:match_all] = {}
     end
     # @wallpapers = Wallpaper.tire.search nil, query: query
-    @query = Tire.search(Wallpaper.tire.index.name, size: 200, query: query)
+    @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: true)
     @results = @query.results
   end
 
