@@ -1,1 +1,5 @@
-= debug @wallpapers
+- @results.each_with_hit do |result, hit|
+  = link_to result.id, "http://wallgig.net/wallpapers/#{result.id}"
+  - if result.thumbnail_image?
+    = image_tag result.thumbnail_image.url
+= debug @results

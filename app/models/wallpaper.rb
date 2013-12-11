@@ -66,30 +66,33 @@ class Wallpaper < ActiveRecord::Base
 
   tire do
     mapping do
-      indexes :id,         type: 'string', index: 'not_analyzed'
-      indexes :width,      type: 'integer'
-      indexes :height,     type: 'integer'
-      indexes :purity,     type: 'string'
-      indexes :tags,       type: 'string', analyzer: 'keyword'
+      indexes :id,                  type: 'string', index: 'not_analyzed'
+      indexes :user_id,             type: 'integer', index: 'not_analyzed'
+      indexes :width,               type: 'integer'
+      indexes :height,              type: 'integer'
+      indexes :purity,              type: 'string'
+      indexes :tags,                type: 'string', analyzer: 'keyword'
       indexes :colors do
-        indexes :red,      type: 'integer'
-        indexes :green,    type: 'integer'
-        indexes :blue,     type: 'integer'
-        indexes :count,    type: 'float'
+        indexes :red,               type: 'integer'
+        indexes :green,             type: 'integer'
+        indexes :blue,              type: 'integer'
+        indexes :count,             type: 'float'
       end
       indexes :primary_color do
-        indexes :red,      type: 'integer'
-        indexes :green,    type: 'integer'
-        indexes :blue,     type: 'integer'
+        indexes :red,               type: 'integer'
+        indexes :green,             type: 'integer'
+        indexes :blue,              type: 'integer'
       end
-      indexes :created_at, type: 'date_time'
-      indexes :views,      type: 'integer'
+      indexes :thumbnail_image_uid, type: 'string', index: 'not_analyzed'
+      indexes :created_at,          type: 'date_time'
+      indexes :views,               type: 'integer'
     end
   end
 
   def to_indexed_json
     {
       id: id,
+      user_id: user_id,
       width: image_width,
       height: image_height,
       purity: purity,
@@ -107,6 +110,7 @@ class Wallpaper < ActiveRecord::Base
         green: primary_color.green,
         blue: primary_color.blue
       },
+      thumbnail_image_uid: thumbnail_image_uid,
       created_at: created_at,
       views: impressions_count
     }.to_json
@@ -172,23 +176,30 @@ class Wallpaper < ActiveRecord::Base
 
   def extract_dominant_colors
     return unless image.present?
+
+    # Update primary color
+    Miro.options[:color_count] = 1
+    primary_color = Miro::DominantColors.new(image.path)
+    primary_color_hex = primary_color.to_hex[0][1..-1]
+    primary_color_rgb = primary_color.to_rgb[0]
+    color = Kolor.find_or_create_by(hex: primary_color_hex, red: primary_color_rgb[0], green: primary_color_rgb[1], blue: primary_color_rgb[2])
+    self.update(primary_color: color)
+
+    # Update other 5 colors
+    Miro.options[:color_count] = 5
     dominant_colors = Miro::DominantColors.new(image.path)
     hexes = dominant_colors.to_hex
     rgbs = dominant_colors.to_rgb
     percentages = dominant_colors.by_percentage
 
-    # clear any old colors
-    self.primary_color = nil
+    # Clear any old colors
     wallpaper_colors.clear
 
     hexes.each_with_index do |hex, i|
       hex = hex[1..-1]
       color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
-      self.primary_color = color if i == 0
       self.wallpaper_colors.create color: color, percentage: percentages[i]
     end
-
-    self.save
   end
 
   module ImageFormatMethods
