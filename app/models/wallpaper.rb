@@ -177,29 +177,23 @@ class Wallpaper < ActiveRecord::Base
   def extract_dominant_colors
     return unless image.present?
 
-    # Update primary color
-    Miro.options[:color_count] = 1
-    primary_color = Miro::DominantColors.new(image.path)
-    primary_color_hex = primary_color.to_hex[0][1..-1]
-    primary_color_rgb = primary_color.to_rgb[0]
-    color = Kolor.find_or_create_by(hex: primary_color_hex, red: primary_color_rgb[0], green: primary_color_rgb[1], blue: primary_color_rgb[2])
-    self.update(primary_color: color)
-
-    # Update other 5 colors
-    Miro.options[:color_count] = 5
     dominant_colors = Miro::DominantColors.new(image.path)
     hexes = dominant_colors.to_hex
     rgbs = dominant_colors.to_rgb
     percentages = dominant_colors.by_percentage
 
-    # Clear any old colors
+    # Clear old colors
+    self.primary_color = nil
     wallpaper_colors.clear
 
     hexes.each_with_index do |hex, i|
       hex = hex[1..-1]
       color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
+      self.primary_color = color if i == 0
       self.wallpaper_colors.create color: color, percentage: percentages[i]
     end
+
+    self.save
   end
 
   module ImageFormatMethods

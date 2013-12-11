@@ -115,7 +115,7 @@ class WallpapersController < ApplicationController
     query = Hash.new({})
 
     if params[:color].present? && (color = Color::RGB.from_html(params[:color]) rescue false)
-      threshold = params[:threshold] || 1
+      threshold = params[:threshold].to_i || 1
       # query[:function_score] = {
       #   boost_mode: 'replace',
       #   filter: {
@@ -160,54 +160,46 @@ class WallpapersController < ApplicationController
       #   }
       # }
 
-      query[:bool] = {
-        :should => [
-          {
-            :fuzzy => {
-              :'primary_color.red' => {
-                :value => color.red.to_i,
-                :boost => 10
+      query[:function_score] = {
+        boost_mode: 'replace',
+        filter: {
+          and: {
+            filters: [
+              {
+                range: {
+                  :'colors.red' => {
+                    gte: color.red - threshold,
+                    lte: color.red + threshold
+                  }
+                }
+              },
+              {
+                range: {
+                  :'colors.green' => {
+                    gte: color.green - threshold,
+                    lte: color.green + threshold
+                  }
+                }
+              },
+              {
+                range: {
+                  :'colors.blue' => {
+                    gte: color.blue - threshold,
+                    lte: color.blue + threshold
+                  }
+                }
               }
-            }
-          },
-          {
-            :fuzzy => {
-              :'primary_color.green' => {
-                :value => color.green.to_i,
-                :boost => 10
-              }
-            }
-          },
-          {
-            :fuzzy => {
-              :'primary_color.blue' => {
-                :value => color.blue.to_i,
-                :boost => 10
-              }
-            }
-          },
-          {
-            :fuzzy => {
-              :'colors.red' => {
-                :value => color.red.to_i
-              }
-            }
-          },
-          {
-            :fuzzy => {
-              :'colors.green' => {
-                :value => color.green.to_i
-              }
-            }
-          },
-          {
-            :fuzzy => {
-              :'colors.blue' => {
-                :value => color.blue.to_i
-              }
-            }
+            ]
           }
-        ]
+        },
+        script_score: {
+          params: {
+            red: color.red,
+            green: color.green,
+            blue: color.blue
+          },
+          script: "-1 * (abs(doc['colors.red'].value - red)  * doc['colors.percentage'].value + abs(doc['colors.green'].value - green) * doc['colors.percentage'].value + abs(doc['colors.blue'].value - blue) * doc['colors.percentage'].value)"
+        }
       }
     else
       query[:match_all] = {}
