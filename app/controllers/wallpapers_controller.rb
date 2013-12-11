@@ -94,6 +94,20 @@ class WallpapersController < ApplicationController
     @wallpaper.save
   end
 
+  def elasticsearch
+    @wallpapers = Wallpaper.tire.search load: true do
+      query do
+        boolean do
+          # should { string 'width:1920' }
+          # should { string 'height:1080' }
+          should { string 'tags:anime' }
+        end
+      end
+      # facet('current-tags', global: true) { terms :tags }
+      # sort { by :created_at, 'asc' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_wallpaper

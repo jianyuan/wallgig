@@ -6,6 +6,9 @@ Wallgig::Application.routes.draw do
   resources :users
 
   resources :wallpapers do
+    collection do
+      get 'elasticsearch'
+    end
     member do
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
                        .page(params[:page])
 
     if request.xhr?
-      render layout: false, template: 'wallpapers/index'
+      render partial: 'wallpapers/list', layout: false
     end
   end
 

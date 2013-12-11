@@ -2,5 +2,4 @@
   - tag_cloud(@tags, %w(tag-size-1 tag-size-2 tag-size-3 tag-size-4)) do |tag, css_class|
     = link_to tag.name, wallpapers_path(tag: tag.name), :class => css_class
 
-- cache @wallpapers do
-  = render 'list'
+= render 'list'

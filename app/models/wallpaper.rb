@@ -60,9 +60,64 @@ class Wallpaper < ActiveRecord::Base
   # Views
   is_impressionable counter_cache: true #, unique: :session_hash
 
+  # Search
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
+  tire do
+    mapping do
+      indexes :id,         type: 'string', index: 'not_analyzed'
+      indexes :width,      type: 'integer'
+      indexes :height,     type: 'integer'
+      indexes :purity,     type: 'string'
+      indexes :tags,       type: 'string', analyzer: 'keyword'
+      indexes :colors do
+        indexes :red,      type: 'integer'
+        indexes :green,    type: 'integer'
+        indexes :blue,     type: 'integer'
+        indexes :count,    type: 'float'
+      end
+      indexes :primary_color do
+        indexes :red,      type: 'integer'
+        indexes :green,    type: 'integer'
+        indexes :blue,     type: 'integer'
+      end
+      indexes :created_at, type: 'date_time'
+      indexes :views,      type: 'integer'
+    end
+  end
+
+  def to_indexed_json
+    {
+      id: id,
+      width: image_width,
+      height: image_height,
+      purity: purity,
+      tags: tag_list,
+      colors: wallpaper_colors.map do |color|
+        {
+          red: color.red,
+          green: color.green,
+          blue: color.blue,
+          percentage: color.percentage
+        }
+      end,
+      primary_color: {
+        red: primary_color.red,
+        green: primary_color.green,
+        blue: primary_color.blue
+      },
+      created_at: created_at,
+      views: impressions_count
+    }.to_json
+  end
+
+  def remove_index
+    self.index.remove self
+  end
+
   # Validation
   validates :image, presence: true
-  validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
   validates_property :width,     of: :image, in: (600..10240),                on: :create
   validates_property :width,     of: :image, in: (600..10240),                on: :create

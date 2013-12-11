@@ -12,5 +12,5 @@ class WallpaperColor < ActiveRecord::Base
   belongs_to :wallpaper
   belongs_to :color, class_name: 'Kolor'
 
-  delegate :hex, to: :color
+  delegate :red, :green, :blue, :hex, to: :color
 end

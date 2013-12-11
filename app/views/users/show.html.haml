@@ -5,4 +5,5 @@
   Uploads
   %small= @wallpapers.size
 
-= render partial: 'wallpapers/list'
+- cache @wallpapers do
+  = render partial: 'wallpapers/list'

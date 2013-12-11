@@ -75,6 +75,7 @@ GEM
     annotate (2.6.0)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
+    ansi (1.4.3)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.1)
@@ -160,6 +161,7 @@ GEM
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hashie (2.0.5)
+    hashr (0.0.22)
     hike (1.2.3)
     httpauth (0.2.0)
     httpclient (2.3.4.1)
@@ -259,6 +261,8 @@ GEM
     ref (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rolify (3.2.0)
     sass (3.2.12)
     sass-rails (4.0.1)
@@ -304,6 +308,14 @@ GEM
     tilt (1.4.1)
     timers (1.1.0)
     tins (0.13.1)
+    tire (0.6.1)
+      activemodel (>= 3.0)
+      activesupport
+      ansi
+      hashr (~> 0.0.19)
+      multi_json (~> 1.3)
+      rake
+      rest-client (~> 1.6)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -364,6 +376,7 @@ DEPENDENCIES
   slim
   sqlite3
   therubyracer
+  tire
   turbolinks
   uglifier (>= 1.3.0)
   workflow!
