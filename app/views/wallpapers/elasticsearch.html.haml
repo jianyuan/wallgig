@@ -1,3 +1,4 @@
+%div{style: "background-color: \##{params[:color]}; width: 100px; height: 100px;"}
 - @results.each_with_hit do |result, hit|
   = link_to result.id, "http://wallgig.net/wallpapers/#{result.id}"
   - if result.thumbnail_image.present?

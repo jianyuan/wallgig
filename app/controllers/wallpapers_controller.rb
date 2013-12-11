@@ -165,7 +165,45 @@ class WallpapersController < ApplicationController
           {
             :fuzzy => {
               :'primary_color.red' => {
+                :value => color.red.to_i,
+                :boost => 10
+              }
+            }
+          },
+          {
+            :fuzzy => {
+              :'primary_color.green' => {
+                :value => color.green.to_i,
+                :boost => 10
+              }
+            }
+          },
+          {
+            :fuzzy => {
+              :'primary_color.blue' => {
+                :value => color.blue.to_i,
+                :boost => 10
+              }
+            }
+          },
+          {
+            :fuzzy => {
+              :'colors.red' => {
                 :value => color.red.to_i
+              }
+            }
+          },
+          {
+            :fuzzy => {
+              :'colors.green' => {
+                :value => color.green.to_i
+              }
+            }
+          },
+          {
+            :fuzzy => {
+              :'colors.blue' => {
+                :value => color.blue.to_i
               }
             }
           }
