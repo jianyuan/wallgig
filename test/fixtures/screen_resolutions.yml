@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: screen_resolutions
+#
+#  id       :integer          not null, primary key
+#  width    :integer
+#  height   :integer
+#  category :string(255)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  width: 1
+  height: 1
+  category: MyString
+
+two:
+  width: 1
+  height: 1
+  category: MyString

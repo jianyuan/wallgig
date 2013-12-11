@@ -18,6 +18,11 @@ class WallpapersController < ApplicationController
       query = query.with_purity(:sfw)
     end
     
+    if search_params[:resolution].present?
+      search_width, search_height = search_params[:resolution].split('x', 2)
+      query = query.where(image_width: search_width, image_height: search_height)
+    end
+
     @wallpapers = query.page(params[:page])
 
     @tags = Wallpaper.tag_counts_on(:tags).limit(20)
@@ -222,6 +227,6 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:tag, :color, purity: [])
+      params.permit(:tag, :color, :resolution, purity: [])
     end
 end

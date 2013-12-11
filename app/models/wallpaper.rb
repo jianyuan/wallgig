@@ -16,6 +16,7 @@
 #  large_image_uid     :string(255)
 #  thumbnail_image_uid :string(255)
 #  primary_color_id    :integer
+#  impressions_count   :integer          default(0)
 #
 
 class Wallpaper < ActiveRecord::Base
