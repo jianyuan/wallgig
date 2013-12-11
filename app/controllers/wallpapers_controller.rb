@@ -96,11 +96,14 @@ class WallpapersController < ApplicationController
 
   def elasticsearch
     @wallpapers = Wallpaper.tire.search load: true do
+      size 200
+      # page params[:page] || 1
       query do
         boolean do
+          # must { string 'purity:sfw' }
           # should { string 'width:1920' }
           # should { string 'height:1080' }
-          should { string 'tags:anime' }
+          # should { string 'tags:anime' }
         end
       end
       # facet('current-tags', global: true) { terms :tags }
