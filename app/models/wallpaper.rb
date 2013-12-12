@@ -256,6 +256,7 @@ class Wallpaper < ActiveRecord::Base
     {
       id: id,
       user_id: user_id,
+      user: user.try(:username),
       purity: purity,
       tags: tag_list,
       width: image_width,
