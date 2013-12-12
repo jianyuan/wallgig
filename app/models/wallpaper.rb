@@ -236,13 +236,7 @@ class Wallpaper < ActiveRecord::Base
             end
           end
 
-          if params[:purity].present?
-            params[:purity].each do |purity|
-              must { term :purity, purity }
-            end
-          else
-            must { term :purity, :sfw }
-          end
+          must { terms :purity, params[:purity] || ['sfw'] }
         end
       end
       sort { by :created_at, 'desc' } if params[:query].blank?
