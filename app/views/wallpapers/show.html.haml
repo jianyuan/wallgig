@@ -3,35 +3,36 @@
     %ul.color-bar
       - @wallpaper.wallpaper_colors.each do |color|
         %li
-          = link_to '', wallpapers_path(color: color.hex), style: "background-color: \##{color.hex}"
+          = link_to '', wallpapers_path(colors: [color.hex]), style: "background-color: \##{color.hex}"
+    %hr/
+
+    %section.media.media-user
+      = link_to @wallpaper.user, class: 'pull-left' do
+        = image_tag gravatar_url(@wallpaper.user, 80), alt: @wallpaper.user.username, class: 'media-object'
+      .media-body
+        %h3.media-heading Uploaded by
+        %h5= user_tag @wallpaper.user
+        %small #{time_ago_in_words @wallpaper.created_at} ago
     %hr/
 
     - if @wallpaper.tags.any?
-      %ul.tags
+      %ul.list-inline
         - @wallpaper.tag_list.each do |tag|
           %li
-            = link_to wallpapers_path(tag: tag) do
+            = link_to wallpapers_path(tags: [tag]), class: 'btn btn-sm btn-default' do
               = tag
       %hr/
 
-    %h3 Uploaded by
-    %h5= user_tag @wallpaper.user
-    %small #{time_ago_in_words @wallpaper.created_at} ago
-
-    %hr/
 
     .btn-group.btn-group-justified.btn-group-purity
       - Wallpaper.purity.options.each_entry do |label, value|
         = link_to label, update_purity_wallpaper_path(@wallpaper, value),
-                  class: "btn btn-#{value} #{'btn-active' if @wallpaper.purity == value} ladda-button",
+                  class: "btn btn-sm btn-#{value} #{'btn-active' if @wallpaper.purity == value} ladda-button",
                   method: :patch, remote: true,
                   data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
 
     %hr/
 
-    %p
-      %b Purity:
-      = @wallpaper.purity
     %p
       %b Views:
       = @wallpaper.impressions_count
