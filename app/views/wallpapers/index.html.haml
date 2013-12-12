@@ -1,5 +1,19 @@
-.well.text-center
-  - tag_cloud(@tags, %w(tag-size-1 tag-size-2 tag-size-3 tag-size-4)) do |tag, css_class|
-    = link_to tag.name, wallpapers_path(tag: tag.name), :class => css_class
+.well
+  %h4 Popular tags
+  %ul.list-inline
+    - @wallpapers.facets['tags']['terms'].each do |facet|
+      %li
+        - if search_params[:tags].present? && search_params[:tags].include?(facet['term'])
+          = link_to wallpapers_path(search_params.merge(tags: (search_params[:tags] - [facet['term']]))), class: 'btn btn-danger' do
+            %span.glyphicon.glyphicon-minus
+            = facet['term']
+            %small= facet['count']
+        - else
+          = link_to wallpapers_path(search_params.merge(tags: ((search_params[:tags] || []) + [facet['term']]))), class: 'btn btn-link' do
+            %span.glyphicon.glyphicon-plus
+            = facet['term']
+            %small= facet['count']
+
+= render 'list'
 
 = render 'list'

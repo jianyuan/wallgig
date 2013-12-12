@@ -24,32 +24,34 @@ class WallpapersController < ApplicationController
 
     # query = query.tire.search params[:q], load: true
 
-    payload = {}
-    payload[:size] = 20
-    payload[:from] = params[:page] || 1
-    payload[:query] = {
-      :bool => {
-        :must => [
-          {
-            :terms => {
-              :purity => [:sfw, :sketchy, :nsfw]
-            }
-          }
-        ]
-      }
-    }
-    payload[:sort] = [
-      {
-        :created_at => {
-          :order => :desc
-        }
-      }
-    ]
+    # payload = {}
+    # payload[:size] = 20
+    # payload[:from] = params[:page] || 1
+    # payload[:query] = {
+    #   :bool => {
+    #     :must => [
+    #       {
+    #         :terms => {
+    #           :purity => [:sfw, :sketchy, :nsfw]
+    #         }
+    #       }
+    #     ]
+    #   }
+    # }
+    # payload[:sort] = [
+    #   {
+    #     :created_at => {
+    #       :order => :desc
+    #     }
+    #   }
+    # ]
 
-    @query = Tire.search(Wallpaper.tire.index.name, payload: payload, load: true)
-    @wallpapers = @query.results
+    # @query = Tire.search(Wallpaper.tire.index.name, payload: payload, load: true)
+    # @wallpapers = @query.results
 
-    @tags = Wallpaper.tag_counts_on(:tags).limit(20)
+    # @tags = Wallpaper.tag_counts_on(:tags).limit(20)
+
+    @wallpapers = Wallpaper.search(search_params)
 
     if request.xhr?
       render partial: 'list', layout: false
@@ -282,6 +284,6 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:color, :resolution, purity: [], tags: [])
+      params.permit(:page, :color, :resolution, purity: [], tags: [])
     end
 end

@@ -225,7 +225,7 @@ class Wallpaper < ActiveRecord::Base
 
 
   def self.search(params)
-    tire.search load: true, page: params[:page], per_page: 1 do
+    tire.search load: true, page: params[:page], per_page: 20 do
       query do
         boolean do
           must { string params[:query], default_operator: 'AND' } if params[:query].present?
@@ -247,14 +247,12 @@ class Wallpaper < ActiveRecord::Base
       end
       sort { by :created_at, 'desc' } if params[:query].blank?
       facet 'tags' do
-        terms :tags
+        terms :tags, size: 20
       end
-      puts to_curl
     end
   end
 
   def to_indexed_json
-    # to_json(methods: [:tag_list])
     {
       id: id,
       user_id: user_id,
