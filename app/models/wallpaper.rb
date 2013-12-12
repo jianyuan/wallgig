@@ -230,18 +230,18 @@ class Wallpaper < ActiveRecord::Base
         boolean do
           must { string params[:query], default_operator: 'AND', lenient: true } if params[:query].present?
 
-          must { terms :tags, params[:tags] } if params[:tags].present?
-
-          must do
-            if params[:purity].present?
-              if params[:purity].is_a? Array
-                terms :purity, params[:purity]
-              else
-                term :purity, params[:purity]
-              end
-            else
-              term :purity, :sfw
+          if params[:tags].present?
+            params[:tags].each do |tag|
+              must { term :tags, tag }
             end
+          end
+
+          if params[:purity].present?
+            params[:purity].each do |purity|
+              must { term :purity, purity }
+            end
+          else
+            must { term :purity, :sfw }
           end
         end
       end
@@ -250,7 +250,7 @@ class Wallpaper < ActiveRecord::Base
         terms :tags, size: 20
       end
       facet 'purity' do
-        terms :purity
+        terms :purity, all_terms: true
       end
     end
   end
