@@ -40,6 +40,7 @@
 
     - if can? :update, @wallpaper
       = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-default'
+    = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-link'
     = link_to 'Back', wallpapers_path, class: 'btn btn-link'
   .col-lg-10.col-wallpaper
     .img-wallpaper-parent

@@ -17,6 +17,7 @@
 #  thumbnail_image_uid :string(255)
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
+#  cached_tag_list     :text
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -59,7 +60,10 @@ class Wallpaper < ActiveRecord::Base
   paginates_per 20
 
   # Views
-  is_impressionable counter_cache: true #, unique: :session_hash
+  is_impressionable counter_cache: true
+
+  # Paper trail
+  has_paper_trail only: [:purity, :cached_tag_list]
 
   # Search
   include Tire::Model::Search
@@ -129,7 +133,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Scopes
   scope :processing, -> { where(processing: true ) }
-  scope :processed, -> { where(processing: false) }
+  scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
   scope :near_to_color, ->(color) {
     return if color.blank?
@@ -157,11 +161,11 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def queue_create_thumbnails
-    WallpaperResizerWorker.perform_async(self.id)
+    WallpaperResizerWorker.perform_async(id)
   end
 
   def queue_extract_dominant_colors
-    WallpaperExtractDominantColorsWorker.perform_async(self.id)
+    WallpaperExtractDominantColorsWorker.perform_async(id)
   end
 
   def update_processing_status

@@ -1,0 +1,20 @@
+%table.table
+  %thead
+    %tr
+      %th Version #
+      %th User
+      %th Date/Time
+      %th Event
+      %th Purity
+      %th Tags
+  %tbody
+    - @wallpaper.versions.order(created_at: :desc).each do |version|
+      - wallpaper = version.reify
+      - user = User.find(version.whodunnit)
+      %tr
+        %td #{version.id}.#{version.index}
+        %td= link_to user.username, user
+        %td= version.created_at
+        %td= version.event.humanize
+        %td= wallpaper.purity_text
+        %td= wallpaper.cached_tag_list

@@ -1,29 +1,60 @@
 class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
   impressionist actions: [:show] # Increase view count
 
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    query = Wallpaper.accessible_by(current_ability, :read)
-                     .order(created_at: :desc)
+    # query = Wallpaper.accessible_by(current_ability, :read)
+                     # .order(created_at: :desc)
 
-    query = query.tagged_with(search_params[:tag]) if search_params[:tag].present?
-    query = query.near_to_color(search_params[:color]) if search_params[:color].present?
+    # query = query.tagged_with(search_params[:tag]) if search_params[:tag].present?
+    # query = query.near_to_color(search_params[:color]) if search_params[:color].present?
 
-    if search_params[:purity].present?
-      query = query.with_purity(*search_params[:purity])
-    else
-      query = query.with_purity(:sfw)
-    end
+    # if search_params[:purity].present?
+    #   query = query.with_purity(*search_params[:purity])
+    # else
+    #   query = query.with_purity(:sfw)
+    # end
     
+<<<<<<< HEAD
     if search_params[:resolution].present?
       search_width, search_height = search_params[:resolution].split('x', 2)
       query = query.where(image_width: search_width, image_height: search_height)
     end
 
     @wallpapers = query.page(params[:page])
+=======
+    # @wallpapers = query.page(params[:page])
+
+    # query = query.tire.search params[:q], load: true
+
+    payload = {}
+    payload[:size] = 20
+    payload[:from] = params[:page] || 1
+    payload[:query] = {
+      :bool => {
+        :must => [
+          {
+            :terms => {
+              :purity => [:sfw, :sketchy, :nsfw]
+            }
+          }
+        ]
+      }
+    }
+    payload[:sort] = [
+      {
+        :created_at => {
+          :order => :desc
+        }
+      }
+    ]
+
+    @query = Tire.search(Wallpaper.tire.index.name, payload: payload, load: true)
+    @wallpapers = @query.results
+>>>>>>> Tests
 
     @tags = Wallpaper.tag_counts_on(:tags).limit(20)
 
@@ -99,6 +130,10 @@ class WallpapersController < ApplicationController
     @wallpaper.save
   end
 
+  # GET /wallpapers/1/history
+  def history
+  end
+
   def elasticsearch
     # @wallpapers = Wallpaper.tire.search load: true do
     #   size 200
@@ -166,6 +201,7 @@ class WallpapersController < ApplicationController
       # }
 
       query[:function_score] = {
+<<<<<<< HEAD
         boost_mode: 'replace',
         filter: {
           and: {
@@ -191,19 +227,79 @@ class WallpapersController < ApplicationController
                   :'colors.blue' => {
                     gte: color.blue - threshold,
                     lte: color.blue + threshold
+=======
+        query: {
+          bool: {
+            must: [
+              {
+                fuzzy: {
+                  :'colors.red' => {
+                    value: color.red.to_i,
+                    min_similarity: threshold
+                  }
+                },
+                fuzzy: {
+                  :'colors.green' => {
+                    value: color.green.to_i,
+                    min_similarity: threshold
+                  }
+                },
+                fuzzy: {
+                  :'colors.blue' => {
+                    value: color.blue.to_i,
+                    min_similarity: threshold
+>>>>>>> Tests
                   }
                 }
               }
             ]
           }
         },
+<<<<<<< HEAD
+=======
+        # boost_mode: 'replace',
+        # filter: {
+        #   and: {
+        #     filters: [
+        #       {
+        #         range: {
+        #           :'colors.red' => {
+        #             gte: color.red - threshold,
+        #             lte: color.red + threshold
+        #           }
+        #         }
+        #       },
+        #       {
+        #         range: {
+        #           :'colors.green' => {
+        #             gte: color.green - threshold,
+        #             lte: color.green + threshold
+        #           }
+        #         }
+        #       },
+        #       {
+        #         range: {
+        #           :'colors.blue' => {
+        #             gte: color.blue - threshold,
+        #             lte: color.blue + threshold
+        #           }
+        #         }
+        #       }
+        #     ]
+        #   }
+        # },
+>>>>>>> Tests
         script_score: {
           params: {
             red: color.red,
             green: color.green,
             blue: color.blue
           },
+<<<<<<< HEAD
           script: "-1 * (abs(doc['colors.red'].value - red)  * doc['colors.percentage'].value + abs(doc['colors.green'].value - green) * doc['colors.percentage'].value + abs(doc['colors.blue'].value - blue) * doc['colors.percentage'].value)"
+=======
+          script: "-1 * (abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue)) * (1 - doc['colors.percentage'].value)"
+>>>>>>> Tests
         }
       }
     else

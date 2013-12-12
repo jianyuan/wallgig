@@ -78,6 +78,7 @@ gem 'enumerize'
 gem 'kaminari'
 gem 'acts-as-taggable-on'
 gem 'impressionist'
+gem 'paper_trail', '~> 3.0.0'
 
 # views
 gem 'slim'

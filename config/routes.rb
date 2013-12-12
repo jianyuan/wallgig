@@ -10,6 +10,7 @@ Wallgig::Application.routes.draw do
       get 'elasticsearch'
     end
     member do
+      get 'history'
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end
   end
