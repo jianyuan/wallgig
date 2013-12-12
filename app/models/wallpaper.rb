@@ -225,23 +225,46 @@ class Wallpaper < ActiveRecord::Base
 
 
   def self.search(params)
-    tire.search load: true, page: params[:page], per_page: 20 do
+    tire.search load: true, page: params[:page], per_page: 1 do
       query do
         boolean do
           must { string params[:query], default_operator: 'AND' } if params[:query].present?
-          must { term :purity, params[:purity] } if params[:purity].present?
+
+          must { terms :tags, params[:tags] } if params[:tags].present?
+
+          must do
+            if params[:purity].present?
+              if params[:purity].is_a? Array
+                terms :purity, params[:purity]
+              else
+                term :purity, params[:purity]
+              end
+            else
+              term :purity, :sfw
+            end
+          end
         end
       end
       sort { by :created_at, 'desc' } if params[:query].blank?
       facet 'tags' do
         terms :tags
       end
-      to_json
+      puts to_curl
     end
   end
 
   def to_indexed_json
-    to_json
+    # to_json(methods: [:tag_list])
+    {
+      id: id,
+      user_id: user_id,
+      purity: purity,
+      tags: tag_list,
+      width: image_width,
+      height: image_height,
+      created_at: created_at,
+      updated_at: updated_at
+    }.to_json
   end
 
 end

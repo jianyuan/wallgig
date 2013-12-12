@@ -3,6 +3,8 @@ class WallpapersController < ApplicationController
   before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
   impressionist actions: [:show] # Increase view count
 
+  helper_method :search_params
+
   # GET /wallpapers
   # GET /wallpapers.json
   def index
@@ -280,6 +282,6 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:tag, :color, :resolution, purity: [])
+      params.permit(:color, :resolution, purity: [], tags: [])
     end
 end

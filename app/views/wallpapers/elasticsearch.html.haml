@@ -1,6 +1,30 @@
-%div{style: "background-color: \##{params[:color]}; width: 100px; height: 100px;"}
-- @results.each_with_hit do |result, hit|
-  = link_to result.id, "http://wallgig.net/wallpapers/#{result.id}"
-  - if result.thumbnail_image.present?
-    = image_tag result.thumbnail_image.url
-= debug @results
+%div{style: "background-color: \##{search_params[:color]}; width: 100px; height: 100px;"}
+-# @results.each_with_hit do |result, hit|
+  -# = link_to result.id, "http://wallgig.net/wallpapers/#{result.id}"
+  -# - if result.thumbnail_image.present?
+    -# = image_tag result.thumbnail_image.url
+= debug @wallpapers.facets['tags']['terms']
+.well
+  %h3
+    Search by Tags
+  %ul.list-unstyled
+    - @wallpapers.facets['tags']['terms'].each do |facet|
+      %li
+        - if search_params[:tags].present? && search_params[:tags].include?(facet['term'])
+          = link_to elasticsearch_wallpapers_path(search_params.merge(tags: (search_params[:tags] - [facet['term']]))) do
+            %span.glyphicon.glyphicon-minus
+            = facet['term']
+            %small= facet['count']
+        - else
+          = link_to elasticsearch_wallpapers_path(search_params.merge(tags: ((search_params[:tags] || []) + [facet['term']]))) do
+            %span.glyphicon.glyphicon-plus
+            = facet['term']
+            %small= facet['count']
+
+
+- @wallpapers.each do |wallpaper|
+  .well
+    = image_tag wallpaper.thumbnail_image.url, width: 40, height: 40
+    = wallpaper.purity
+    = wallpaper.tag_list
+= paginate @wallpapers
