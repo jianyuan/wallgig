@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
   impressionist actions: [:show] # Increase view count
 
   # GET /wallpapers
@@ -119,6 +119,10 @@ class WallpapersController < ApplicationController
     authorize! :update, @wallpaper
     @wallpaper.purity = params[:purity]
     @wallpaper.save
+  end
+
+  # GET /wallpapers/1/history
+  def history
   end
 
   def elasticsearch
@@ -276,6 +280,6 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:tag, :color, purity: [])
+      params.permit(:tag, :color, :resolution, purity: [])
     end
 end

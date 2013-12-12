@@ -67,7 +67,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Search
   include Tire::Model::Search
-  # include Tire::Model::Callbacks
+  include Tire::Model::Callbacks
 
   # tire do
   #   mapping do
@@ -187,7 +187,7 @@ class Wallpaper < ActiveRecord::Base
     rgbs = dominant_colors.to_rgb
     percentages = dominant_colors.by_percentage
 
-    # Clear old colors
+    # clear any old colors
     self.primary_color = nil
     wallpaper_colors.clear
 

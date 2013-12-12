@@ -15,7 +15,26 @@
           Wallgig
           %small.text-danger &beta;
         %ul.nav.navbar-nav
-          %li= link_to 'Upload', new_wallpaper_path
+          %li
+            = link_to new_wallpaper_path do
+              %strong Upload
+          %li.dropdown
+            %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}} 
+              Resolution
+              %b.caret
+            - cache expires_in: 15.minutes do
+              %ul.dropdown-menu
+                - last_screen_resolution_category = nil
+                - ScreenResolution.all.each do |screen_resolution|
+                  - if last_screen_resolution_category != screen_resolution.category
+                    - unless last_screen_resolution_category.nil?
+                      %li.divider
+                    %li.dropdown-header= screen_resolution.category_text
+                    - last_screen_resolution_category = screen_resolution.category
+                  %li
+                    = link_to wallpapers_path(resolution: screen_resolution) do
+                      = screen_resolution
+                      %small.text-muted.pull-right= screen_resolution.wallpapers.size
           %li= link_to 'Forums', 'http://forums.wallgig.net'
           -# %li= link_to 'Random', '#'
           -# %li= link_to 'Toplist', '#'
@@ -47,11 +66,5 @@
       = bootstrap_flash
       = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
-    :javascript
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-46307212-1', 'wallgig.net');
-      ga('send', 'pageview');
+    = render 'shared/google_analytics'
+    = render 'shared/gosquared_analytics'
