@@ -1,19 +1,40 @@
 .well
-  %h4 Popular tags
-  %ul.list-inline
+  %h5 Popular tags
+  %ul.list-inline.list-facet
     - @wallpapers.facets['tags']['terms'].each do |facet|
       %li
-        - if search_params[:tags].present? && search_params[:tags].include?(facet['term'])
-          = link_to wallpapers_path(search_params.merge(tags: (search_params[:tags] - [facet['term']]))), class: 'btn btn-danger' do
+        - if search_params[:tags].is_a?(Array) && search_params[:tags].include?(facet['term'])
+          = link_to wallpapers_path(search_params.merge(tags: (search_params[:tags] - [facet['term']]))), class: 'btn btn-sm btn-success' do
             %span.glyphicon.glyphicon-minus
             = facet['term']
             %small= facet['count']
         - else
-          = link_to wallpapers_path(search_params.merge(tags: ((search_params[:tags] || []) + [facet['term']]))), class: 'btn btn-link' do
+          = link_to wallpapers_path(search_params.merge(tags: ((search_params[:tags] || []) + [facet['term']]))), class: 'btn btn-sm btn-link' do
             %span.glyphicon.glyphicon-plus
             = facet['term']
             %small= facet['count']
 
-= render 'list'
+  %h5 Purity
+  %ul.list-inline.list-facet
+    - @wallpapers.facets['purity']['terms'].each do |facet|
+      %li
+        - if search_params[:purity].is_a?(Array) && search_params[:purity].include?(facet['term'])
+          = link_to wallpapers_path(search_params.merge(purity: (search_params[:purity] - [facet['term']]))), class: 'btn btn-sm btn-success' do
+            %span.glyphicon.glyphicon-minus
+            = facet['term']
+            %small= facet['count']
+        - else
+          = link_to wallpapers_path(search_params.merge(purity: ((search_params[:purity] || []) + [facet['term']]))), class: 'btn btn-sm btn-link' do
+            %span.glyphicon.glyphicon-plus
+            = facet['term']
+            %small= facet['count']
+
+  %h5 Query string
+  = form_tag wallpapers_path(search_params), method: :get do
+    .input-group
+      = text_field_tag :query, search_params[:query], class: 'form-control input-md', placeholder: 'e.g. width:>1920 height:>1080'
+      .input-group-btn
+        = submit_tag 'Search', class: 'btn btn-default btn-md'
+
 
 = render 'list'

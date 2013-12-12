@@ -144,3 +144,14 @@ ul.color-bar {
     @extend .btn-danger;
   }
 }
+
+/*
+  Facet
+ */
+.list-facet {
+  .btn-success {
+    &:hover {
+      @extend .btn-danger;
+    }
+  }
+}

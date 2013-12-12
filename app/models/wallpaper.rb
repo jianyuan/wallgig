@@ -228,7 +228,7 @@ class Wallpaper < ActiveRecord::Base
     tire.search load: true, page: params[:page], per_page: 20 do
       query do
         boolean do
-          must { string params[:query], default_operator: 'AND' } if params[:query].present?
+          must { string params[:query], default_operator: 'AND', lenient: true } if params[:query].present?
 
           must { terms :tags, params[:tags] } if params[:tags].present?
 
@@ -248,6 +248,9 @@ class Wallpaper < ActiveRecord::Base
       sort { by :created_at, 'desc' } if params[:query].blank?
       facet 'tags' do
         terms :tags, size: 20
+      end
+      facet 'purity' do
+        terms :purity
       end
     end
   end
