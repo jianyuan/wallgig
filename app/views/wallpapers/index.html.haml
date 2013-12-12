@@ -2,30 +2,48 @@
   %h5 Popular tags
   %ul.list-inline.list-facet
     - @wallpapers.facets['tags']['terms'].each do |facet|
+      - tags = search_params[:tags] || []
+      - term = facet['term']
+      - count = facet['count']
       %li
-        - if search_params[:tags].is_a?(Array) && search_params[:tags].include?(facet['term'])
-          = link_to wallpapers_path(search_params.merge(tags: (search_params[:tags] - [facet['term']]))), class: 'btn btn-sm btn-success' do
+        - if search_params[:tags].is_a?(Array) && search_params[:tags].include?(term)
+          = link_to wallpapers_path(search_params.merge(tags: (tags - [term]))), class: 'btn btn-sm btn-success' do
             %span.glyphicon.glyphicon-minus
-            = facet['term']
-            %small= facet['count']
+            = term
+            %small= count
         - else
-          = link_to wallpapers_path(search_params.merge(tags: ((search_params[:tags] || []) + [facet['term']]))), class: 'btn btn-sm btn-link' do
+          = link_to wallpapers_path(search_params.merge(tags: (tags + [term]))), class: 'btn btn-sm btn-link' do
             %span.glyphicon.glyphicon-plus
-            = facet['term']
-            %small= facet['count']
+            = term
+            %small= count
 
-  %h5 Purity
-  %ul.list-inline.list-facet
-    - Wallpaper.purity.options.each_entry do |label, value|
-      - purity = search_params[:purity] || ['sfw']
-      - active = (search_params[:purity].blank? && value == 'sfw') || search_params[:purity].try(:include?, value)
-      %li
-        - if active
-          = link_to label, wallpapers_path(search_params.merge(purity: (purity - [value]))),
-                    class: "btn btn-sm btn-#{value} btn-active"
-        - else
-          = link_to label, wallpapers_path(search_params.merge(purity: (purity + [value]))),
-                    class: "btn btn-sm btn-#{value}"
+  .row
+    .col-lg-2
+      %h5 Purity
+      %ul.list-inline.list-facet
+        - Wallpaper.purity.options.each_entry do |label, value|
+          - purity = search_params[:purity] || ['sfw']
+          - active = (search_params[:purity].blank? && value == 'sfw') || search_params[:purity].try(:include?, value)
+          %li
+            - if active
+              = link_to label, wallpapers_path(search_params.merge(purity: (purity - [value]))),
+                        class: "btn btn-sm btn-#{value} btn-active"
+            - else
+              = link_to label, wallpapers_path(search_params.merge(purity: (purity + [value]))),
+                        class: "btn btn-sm btn-#{value}"
+
+    .col-lg-10
+      %h5 Resolution
+      .list-facet
+        - ScreenResolution.all.each do |screen_resolution|
+          - active = [screen_resolution.width.to_s, screen_resolution.height.to_s] == [search_params[:width], search_params[:height]]
+          - css_class = active ? 'success' : 'link'
+          - if active
+            = link_to wallpapers_path(search_params.merge(width: nil, height: nil)), class: "btn btn-sm btn-#{css_class}" do
+              = screen_resolution
+          - else
+            = link_to wallpapers_path(search_params.merge(width: screen_resolution.width, height: screen_resolution.height)), class: "btn btn-sm btn-#{css_class}" do
+              = screen_resolution
 
   %h5 Query string
   = form_tag wallpapers_path(search_params), method: :get do

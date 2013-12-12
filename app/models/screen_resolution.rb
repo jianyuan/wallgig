@@ -15,7 +15,6 @@ class ScreenResolution < ActiveRecord::Base
   def to_s
     "#{width}x#{height}"
   end
-  alias to_param to_s
 
   def wallpapers
     Wallpaper.where(image_width: width, image_height: height)

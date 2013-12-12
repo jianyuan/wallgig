@@ -237,6 +237,9 @@ class Wallpaper < ActiveRecord::Base
           end
 
           must { terms :purity, params[:purity] || ['sfw'] }
+
+          must { term :width,  params[:width]  } if params[:width].present?
+          must { term :height, params[:height] } if params[:height].present?
         end
       end
       sort { by :created_at, 'desc' } if params[:query].blank?

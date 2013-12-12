@@ -18,23 +18,6 @@
           %li
             = link_to new_wallpaper_path do
               %strong Upload
-          %li.dropdown
-            %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}} 
-              Resolution
-              %b.caret
-            - cache expires_in: 15.minutes do
-              %ul.dropdown-menu
-                - last_screen_resolution_category = nil
-                - ScreenResolution.all.each do |screen_resolution|
-                  - if last_screen_resolution_category != screen_resolution.category
-                    - unless last_screen_resolution_category.nil?
-                      %li.divider
-                    %li.dropdown-header= screen_resolution.category_text
-                    - last_screen_resolution_category = screen_resolution.category
-                  %li
-                    = link_to wallpapers_path(resolution: screen_resolution) do
-                      = screen_resolution
-                      %small.text-muted.pull-right= screen_resolution.wallpapers.size
           %li= link_to 'Forums', 'http://forums.wallgig.net'
           %li= link_to '#wallgig @ irc.rizon.net', 'irc://irc.rizon.net/wallgig'
           -# %li= link_to 'Random', '#'
