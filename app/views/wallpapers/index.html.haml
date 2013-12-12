@@ -22,10 +22,10 @@
       %li
         - if active
           = link_to label, wallpapers_path(search_params.merge(purity: (purity - [value]))),
-                    class: "btn btn-#{value} btn-active"
+                    class: "btn btn-sm btn-#{value} btn-active"
         - else
           = link_to label, wallpapers_path(search_params.merge(purity: (purity + [value]))),
-                    class: "btn btn-#{value}"
+                    class: "btn btn-sm btn-#{value}"
 
   %h5 Query string
   = form_tag wallpapers_path(search_params), method: :get do

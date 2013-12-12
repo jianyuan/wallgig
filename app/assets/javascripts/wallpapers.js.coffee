@@ -11,23 +11,22 @@ $ ->
         $this.removeClass('state-2')
         $this.addClass('state-1')
 
-  # disable infinite scroll
-  # if $('body.wallpapers.index, body.users.show').length == 1
-  #   loadNextPage = (event, visible) ->
-  #     return unless visible
-  #     $this = $(this)
-  #     url = $this.attr 'href'
-  #     $this.unbind 'inview'
-  #     $this.replaceWith('<hr /><div class="loading" />')
-  #     $.get url, (html) ->
-  #       $main = $('#main')
-  #       $main.find('.loading').remove()
-  #       $main.append(html)
-  #       $('[rel=next]').bind('inview', loadNextPage)
+  if $('body.wallpapers.index, body.users.show').length == 1
+    loadNextPage = (event, visible) ->
+      return unless visible
+      $this = $(this)
+      url = $this.attr 'href'
+      $this.unbind 'inview'
+      $this.replaceWith('<hr /><div class="loading" />')
+      $.get url, (html) ->
+        $main = $('#main')
+        $main.find('.loading').remove()
+        $main.append(html)
+        $('[rel=next]').bind('inview', loadNextPage)
 
-  #     ga('send', 'pageview', url) if ga?
+      ga('send', 'pageview', url) if ga?
 
-  #   $('[rel=next]').bind('inview', loadNextPage)
+    $('[rel=next]').bind('inview', loadNextPage)
 
   if $('.btn-group-purity').length
     Ladda.bind '.btn-group-purity .btn'
