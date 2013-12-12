@@ -67,7 +67,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Search
   include Tire::Model::Search
-  include Tire::Model::Callbacks
+  # include Tire::Model::Callbacks
 
   # tire do
   #   mapping do
@@ -154,6 +154,7 @@ class Wallpaper < ActiveRecord::Base
   after_create :queue_create_thumbnails
   after_create :queue_extract_dominant_colors
   after_save :update_processing_status, if: :processing?
+  after_commit :update_index, unless: :processing?
 
   def image_storage_path(i)
     name = File.basename(image_uid, (image.ext || '.jpg'))
@@ -232,7 +233,7 @@ class Wallpaper < ActiveRecord::Base
 
           if params[:tags].present?
             params[:tags].each do |tag|
-              must { term :tags, tag }
+              must { term :tags, tag.downcase }
             end
           end
 
@@ -244,7 +245,7 @@ class Wallpaper < ActiveRecord::Base
       end
       sort { by :created_at, 'desc' } if params[:query].blank?
       facet 'tags' do
-        terms :tags, size: 20
+        terms :tags, all_terms: true, size: 20
       end
       facet 'purity' do
         terms :purity, all_terms: true
