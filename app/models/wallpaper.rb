@@ -16,6 +16,8 @@
 #  large_image_uid     :string(255)
 #  thumbnail_image_uid :string(255)
 #  primary_color_id    :integer
+#  impressions_count   :integer          default(0)
+#  cached_tag_list     :text
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -58,63 +60,70 @@ class Wallpaper < ActiveRecord::Base
   paginates_per 20
 
   # Views
-  is_impressionable counter_cache: true #, unique: :session_hash
+  is_impressionable counter_cache: true
+
+  # Paper trail
+  has_paper_trail only: [:purity, :cached_tag_list]
 
   # Search
   include Tire::Model::Search
-  include Tire::Model::Callbacks
+  # include Tire::Model::Callbacks
 
-  tire do
-    mapping do
-      indexes :id,         type: 'string', index: 'not_analyzed'
-      indexes :width,      type: 'integer'
-      indexes :height,     type: 'integer'
-      indexes :purity,     type: 'string'
-      indexes :tags,       type: 'string', analyzer: 'keyword'
-      indexes :colors do
-        indexes :red,      type: 'integer'
-        indexes :green,    type: 'integer'
-        indexes :blue,     type: 'integer'
-        indexes :count,    type: 'float'
-      end
-      indexes :primary_color do
-        indexes :red,      type: 'integer'
-        indexes :green,    type: 'integer'
-        indexes :blue,     type: 'integer'
-      end
-      indexes :created_at, type: 'date_time'
-      indexes :views,      type: 'integer'
-    end
-  end
+  # tire do
+  #   mapping do
+  #     indexes :id,                  type: 'string', index: 'not_analyzed'
+  #     indexes :user_id,             type: 'integer', index: 'not_analyzed'
+  #     indexes :width,               type: 'integer'
+  #     indexes :height,              type: 'integer'
+  #     indexes :purity,              type: 'string'
+  #     indexes :tags,                type: 'string', analyzer: 'keyword'
+  #     indexes :colors do
+  #       indexes :red,               type: 'integer'
+  #       indexes :green,             type: 'integer'
+  #       indexes :blue,              type: 'integer'
+  #       indexes :count,             type: 'float'
+  #     end
+  #     indexes :primary_color do
+  #       indexes :red,               type: 'integer'
+  #       indexes :green,             type: 'integer'
+  #       indexes :blue,              type: 'integer'
+  #     end
+  #     indexes :thumbnail_image_uid, type: 'string', index: 'not_analyzed'
+  #     indexes :created_at,          type: 'date_time'
+  #     indexes :views,               type: 'integer'
+  #   end
+  # end
 
-  def to_indexed_json
-    {
-      id: id,
-      width: image_width,
-      height: image_height,
-      purity: purity,
-      tags: tag_list,
-      colors: wallpaper_colors.map do |color|
-        {
-          red: color.red,
-          green: color.green,
-          blue: color.blue,
-          percentage: color.percentage
-        }
-      end,
-      primary_color: {
-        red: primary_color.red,
-        green: primary_color.green,
-        blue: primary_color.blue
-      },
-      created_at: created_at,
-      views: impressions_count
-    }.to_json
-  end
+  # def to_indexed_json
+  #   {
+  #     id: id,
+  #     user_id: user_id,
+  #     width: image_width,
+  #     height: image_height,
+  #     purity: purity,
+  #     tags: tag_list,
+  #     colors: wallpaper_colors.map do |color|
+  #       {
+  #         red: color.red,
+  #         green: color.green,
+  #         blue: color.blue,
+  #         percentage: color.percentage
+  #       }
+  #     end,
+  #     primary_color: {
+  #       red: primary_color.try(:red),
+  #       green: primary_color.try(:green),
+  #       blue: primary_color.try(:blue)
+  #     },
+  #     thumbnail_image_uid: thumbnail_image_uid,
+  #     created_at: created_at,
+  #     views: impressions_count
+  #   }.to_json
+  # end
 
-  def remove_index
-    self.index.remove self
-  end
+  # def remove_index
+  #   self.index.remove self
+  # end
 
   # Validation
   validates :image, presence: true
@@ -124,7 +133,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Scopes
   scope :processing, -> { where(processing: true ) }
-  scope :processed, -> { where(processing: false) }
+  scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
   scope :near_to_color, ->(color) {
     return if color.blank?
@@ -152,11 +161,11 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def queue_create_thumbnails
-    WallpaperResizerWorker.perform_async(self.id)
+    WallpaperResizerWorker.perform_async(id)
   end
 
   def queue_extract_dominant_colors
-    WallpaperExtractDominantColorsWorker.perform_async(self.id)
+    WallpaperExtractDominantColorsWorker.perform_async(id)
   end
 
   def update_processing_status
@@ -172,12 +181,13 @@ class Wallpaper < ActiveRecord::Base
 
   def extract_dominant_colors
     return unless image.present?
+
     dominant_colors = Miro::DominantColors.new(image.path)
     hexes = dominant_colors.to_hex
     rgbs = dominant_colors.to_rgb
     percentages = dominant_colors.by_percentage
 
-    # clear any old colors
+    # Clear old colors
     self.primary_color = nil
     wallpaper_colors.clear
 
@@ -212,5 +222,26 @@ class Wallpaper < ActiveRecord::Base
   end
 
   include ImageFormatMethods
+
+
+  def self.search(params)
+    tire.search load: true, page: params[:page], per_page: 20 do
+      query do
+        boolean do
+          must { string params[:query], default_operator: 'AND' } if params[:query].present?
+          must { term :purity, params[:purity] } if params[:purity].present?
+        end
+      end
+      sort { by :created_at, 'desc' } if params[:query].blank?
+      facet 'tags' do
+        terms :tags
+      end
+      to_json
+    end
+  end
+
+  def to_indexed_json
+    to_json
+  end
 
 end

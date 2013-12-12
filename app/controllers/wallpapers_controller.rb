@@ -258,8 +258,9 @@ class WallpapersController < ApplicationController
       query[:match_all] = {}
     end
     # @wallpapers = Wallpaper.tire.search nil, query: query
-    @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: Rails.env.production?)
-    @results = @query.results
+    # @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: Rails.env.production?)
+    # @results = @query.results
+    @wallpapers = Wallpaper.search(params)
   end
 
   private
