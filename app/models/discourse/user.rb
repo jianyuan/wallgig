@@ -58,14 +58,24 @@ module Discourse
 
     after_create :create_user_stat
 
-    def self.new_from_user(user)
-      User.new do |u|
-        u.refresh_from_user(user)
-        u.active = true
-        u.email_digests = true
-        u.trust_level = 0
-        u.approved = true
-        u.digest_after_days = 7
+    class << self
+      def find_or_create_by_user(user)
+        return find(user.discourse_user_id) if user.discourse_user_id.present?
+
+        discourse_user = new_from_user(user)
+        discourse_user.save!
+        discourse_user
+      end
+
+      def new_from_user(user)
+        User.new do |u|
+          u.refresh_from_user(user)
+          u.active = true
+          u.email_digests = true
+          u.trust_level = 0
+          u.approved = true
+          u.digest_after_days = 7
+        end
       end
     end
 
@@ -76,9 +86,10 @@ module Discourse
       self.username_lower = user.username.downcase
     end
 
-    def regenerate_auth_token!
+    def new_auth_token
       self.auth_token = SecureRandom.hex(16)
-      self.save!
+      save!
+      auth_token
     end
 
     private

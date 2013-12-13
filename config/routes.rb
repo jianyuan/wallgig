@@ -2,7 +2,9 @@ Wallgig::Application.routes.draw do
   root 'wallpapers#index'
 
   use_doorkeeper
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'sessions'
+  }
   resources :users
 
   resources :wallpapers do

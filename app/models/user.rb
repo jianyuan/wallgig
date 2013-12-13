@@ -53,21 +53,20 @@ class User < ActiveRecord::Base
     username
   end
 
-  def refresh_discourse_user
-    if discourse_user_id.nil?
-      create_discourse_user
-    else
-      du = Discourse::User.find(discourse_user_id)
-      du.refresh_from_user(self)
-      du.save
-    end
+  def discourse_user
+    Discourse::User.find(discourse_user_id) if discourse_user_id.present?
   end
 
-  private
-    def create_discourse_user
-      du = Discourse::User.new_from_user(self)
-      du.save!
-      self.update_attribute(:discourse_user_id, du.id)
-    end
+  def refresh_discourse_user
+    du = discourse_user
+    return if du.blank?
+    du.refresh_from_user(self)
+    du.save
+  end
+
+  def create_discourse_user
+    self.discourse_user_id = Discourse::User.find_or_create_by_user(self).id
+    save!
+  end
 
 end
