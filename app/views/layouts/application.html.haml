@@ -19,7 +19,7 @@
             = link_to new_wallpaper_path do
               %strong Upload
           %li= link_to 'Forums', 'http://forums.wallgig.net'
-          %li= link_to '#wallgig @ irc.rizon.net', 'irc://irc.rizon.net/wallgig'
+          %li= link_to '#wallgig @ irc.rizon.net', irc_url_for_user(current_user)
           -# %li= link_to 'Random', '#'
           -# %li= link_to 'Toplist', '#'
           -# %li= link_to 'Comments', '#'

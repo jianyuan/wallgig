@@ -99,6 +99,7 @@ gem 'doorkeeper', '~> 0.7.0'
 gem 'tire'
 
 # utilities
+gem 'pry-rails'
 gem 'miro'
 gem 'color'
 # gem 'phashion'
