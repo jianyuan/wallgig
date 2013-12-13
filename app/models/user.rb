@@ -16,6 +16,7 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  username               :string(255)
+#  discourse_user_id      :integer
 #
 
 class User < ActiveRecord::Base
@@ -34,6 +35,8 @@ class User < ActiveRecord::Base
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
             length: { maximum: 50 }
 
+  after_create :create_discourse_user
+
   def developer?
     has_role? :developer
   end
@@ -49,5 +52,22 @@ class User < ActiveRecord::Base
   def to_param
     username
   end
+
+  def refresh_discourse_user
+    if discourse_user_id.nil?
+      create_discourse_user
+    else
+      du = Discourse::User.find(discourse_user_id)
+      du.refresh_from_user(self)
+      du.save
+    end
+  end
+
+  private
+    def create_discourse_user
+      du = Discourse::User.new_from_user(self)
+      du.save!
+      self.update_attribute(:discourse_user_id, du.id)
+    end
 
 end
