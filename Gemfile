@@ -103,6 +103,7 @@ gem 'dotenv-rails'
 gem 'pry-rails'
 gem 'miro'
 gem 'color'
+gem 'httparty'
 # gem 'phashion'
 
 # rack
