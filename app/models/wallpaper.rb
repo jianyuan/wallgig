@@ -265,15 +265,17 @@ class Wallpaper < ActiveRecord::Base
 
   def to_indexed_json
     {
-      id: id,
-      user_id: user_id,
-      user: user.try(:username),
-      purity: purity,
-      tags: tag_list,
-      width: image_width,
-      height: image_height,
-      created_at: created_at,
-      updated_at: updated_at
+      id:              id,
+      user_id:         user_id,
+      user:            user.try(:username),
+      purity:          purity,
+      tags:            tag_list,
+      width:           image_width,
+      height:          image_height,
+      created_at:      created_at,
+      updated_at:      updated_at,
+      views:           impressions_count,
+      views_this_week: impressions_count(start_date: Date.now.beginning_of_week)
     }.to_json
   end
 
