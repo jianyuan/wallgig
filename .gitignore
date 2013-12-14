@@ -18,3 +18,6 @@
 /public/system/*
 /public/uploads/*
 dump.rdb
+
+/.env
+/.env.development
