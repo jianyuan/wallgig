@@ -18,6 +18,7 @@
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
+#  gravity             :string(255)
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -29,23 +30,24 @@ class Wallpaper < ActiveRecord::Base
   # Purity
   extend Enumerize
   enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true
+  enumerize :image_gravity, in: Dragonfly::ImageMagick::Processors::Thumb::GRAVITIES.keys
 
   # Image
   attr_readonly :image
 
   dragonfly_accessor :image
 
-  dragonfly_accessor :standard_image do
-    storage_options do |i|
-      { path: image_storage_path(i) }
-    end
-  end
+  # dragonfly_accessor :standard_image do
+  #   storage_options do |i|
+  #     { path: image_storage_path(i) }
+  #   end
+  # end
 
-  dragonfly_accessor :large_image do
-    storage_options do |i|
-      { path: image_storage_path(i) }
-    end
-  end
+  # dragonfly_accessor :large_image do
+  #   storage_options do |i|
+  #     { path: image_storage_path(i) }
+  #   end
+  # end
 
   dragonfly_accessor :thumbnail_image do
     storage_options do |i|
@@ -153,6 +155,7 @@ class Wallpaper < ActiveRecord::Base
   # Callbacks
   after_create :queue_create_thumbnails
   after_create :queue_extract_dominant_colors
+  around_save :check_image_gravity_changed
   after_save :update_processing_status, if: :processing?
   after_commit :update_index, unless: :processing?
 
@@ -177,7 +180,8 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def has_image_sizes?
-    standard_image.present? && large_image.present? && thumbnail_image.present?
+    # standard_image.present? && large_image.present? && thumbnail_image.present?
+    thumbnail_image.present?
   end
 
   def extract_dominant_colors
@@ -200,6 +204,12 @@ class Wallpaper < ActiveRecord::Base
     end
 
     self.save
+  end
+
+  def check_image_gravity_changed
+    image_gravity_changed = image_gravity_changed?
+    yield
+    queue_create_thumbnails if image_gravity_changed
   end
 
   module ImageFormatMethods

@@ -280,7 +280,7 @@ class WallpapersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wallpaper_params
-      params.require(:wallpaper).permit(:purity, :image, :tag_list)
+      params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity)
     end
 
     def search_params

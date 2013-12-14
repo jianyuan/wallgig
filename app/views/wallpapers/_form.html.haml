@@ -5,6 +5,7 @@
     = f.input :purity
     = f.input :image, as: :file unless @wallpaper.persisted?
     = f.input :tag_list, hint: 'Separated by commas'
+    = f.input :image_gravity, hint: 'Thumbnails will cropped to size. Therefore, please select the best anchor point to perform this operation.'
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary btn-lg'

@@ -25,3 +25,13 @@ en:
       sfw: "SFW"
       sketchy: "Sketchy"
       nsfw: "NSFW"
+    image_gravity:
+      nw: "North West"
+      n:  "North"
+      ne: "North East"
+      w:  "West"
+      c:  "Center"
+      e:  "East"
+      sw: "South West"
+      s:  "South"
+      se: "South East"

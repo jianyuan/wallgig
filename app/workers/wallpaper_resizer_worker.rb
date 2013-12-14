@@ -12,10 +12,10 @@ class WallpaperResizerWorker
   end
 
   def generate_images
-    generate_standard_image
-    generate_image(:standard_image, :large_image, '1500x', '-quality 80')
-    # generate_image(:standard_image, :thumbnail_image, '500x500>', '-quality 70')
-    generate_image(:standard_image, :thumbnail_image, '250x188#', '-quality 70')
+    # generate_standard_image
+    # generate_image(:standard_image, :large_image, '1500x', '-quality 80')
+    # generate_image(:standard_image, :thumbnail_image, '250x188#', '-quality 70')
+    generate_image(:image, :thumbnail_image, "250x188\##{@wallpaper.image_gravity}", '-quality 70')
   end
 
   def generate_image(source, target, size, encode_opts)

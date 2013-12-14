@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131213043330) do
+ActiveRecord::Schema.define(version: 20131214204953) do
 
   create_table "colors", force: true do |t|
     t.integer "red"
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 20131213043330) do
     t.integer  "primary_color_id"
     t.integer  "impressions_count",   default: 0
     t.text     "cached_tag_list"
+    t.string   "image_gravity"
   end
 
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree
