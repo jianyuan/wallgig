@@ -1,4 +1,5 @@
 Wallgig::Application.routes.draw do
+  ActiveAdmin.routes(self)
   root 'wallpapers#index'
 
   use_doorkeeper
