@@ -21,7 +21,7 @@ ActiveAdmin.register Wallpaper do
     end
     column 'Thumbnail' do |wallpaper|
       link_to admin_wallpaper_path(wallpaper) do
-        image_tag wallpaper.thumbnail_image.thumb('125x94#').url
+        image_tag wallpaper.thumbnail_image.url
       end
     end
     column :purity

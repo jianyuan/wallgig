@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
         panel 'Recent Wallpapers' do
           ul do
             Wallpaper.order(created_at: :desc).includes(:user).map do |wallpaper|
-              li link_to("Uploaded by #{wallpaper.user.username} #{time_ago_in_words(wallpaper.created_at)} ago", admin_wallpaper_path(wallpaper))
+              li link_to("Uploaded by #{wallpaper.user.try(:username)} #{time_ago_in_words(wallpaper.created_at)} ago", admin_wallpaper_path(wallpaper))
             end
           end
         end
