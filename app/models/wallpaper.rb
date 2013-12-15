@@ -263,4 +263,7 @@ class Wallpaper < ActiveRecord::Base
     }.to_json
   end
 
+  def to_s
+    "Wallpaper \##{id}"
+  end
 end

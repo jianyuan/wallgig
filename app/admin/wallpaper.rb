@@ -1,6 +1,4 @@
 ActiveAdmin.register Wallpaper do
-  # menu label: 'Wallpapers'
-
   permit_params :purity, :tag_list
 
   index do
@@ -10,18 +8,23 @@ ActiveAdmin.register Wallpaper do
     end
     column 'Thumbnail' do |wallpaper|
       link_to admin_wallpaper_path(wallpaper) do
-        image_tag wallpaper.thumbnail_image.url, width: 125, height: 94
+        if wallpaper.thumbnail_image.present?
+          image_tag wallpaper.thumbnail_image.url, width: 125, height: 94
+        else
+          'Processing'
+        end
       end
     end
     column :purity, &:purity_text
     column :tag_list, sortable: false
     column 'Views', :impressions_count
-    column 'Favourites', :favourites_count
-    column 'User' do |wallpaper|
-      return if wallpaper.user.blank?
-      link_to wallpaper.user.username, admin_user_path(wallpaper.user)
+    column 'Favourites', sortable: :favourites_count do |wallpaper|
+      link_to wallpaper.favourites_count, admin_favourites_path(q: { wallpaper_id_eq: wallpaper })
     end
-    column :processing
+    column :user
+    column :processing, sortable: :processing do |wallpaper|
+      status_tag wallpaper.processing? ? 'Yes' : 'No'
+    end
     column :created_at
     column :updated_at
     actions
