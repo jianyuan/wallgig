@@ -15,7 +15,7 @@
         %small #{time_ago_in_words @wallpaper.created_at} ago
     %hr/
 
-    = render 'favourite_button', wallpaper: @wallpaper
+    = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
     %hr/
 
     - if @wallpaper.tags.any?

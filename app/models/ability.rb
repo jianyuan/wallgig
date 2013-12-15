@@ -12,12 +12,14 @@ class Ability
       can :manage, :all
     end
 
-    can :manage, Favourite, user_id: user.id
+    can :crud, Collection, user_id: user.id
+
+    can :crud, Favourite, user_id: user.id
 
     can :read, Wallpaper, processing: false
-    can :manage, Wallpaper, user_id: user.id
+    can :crud, Wallpaper, user_id: user.id
 
-    can :manage, User, id: user.id
+    can :crud, User, id: user.id
 
     if user.persisted?
       can :update, Wallpaper
