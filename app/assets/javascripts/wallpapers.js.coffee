@@ -41,3 +41,10 @@ $ ->
       Wallgig.Utilities.alert 'Error!', xhr.responseText || error
     $this.on 'ajax:complete', (event, xhr, status) ->
       Ladda.stopAll()
+
+  if $('#wallpaper_tag_list').length
+    $tagList = $('#wallpaper_tag_list')
+    $tagList.tagsinput()
+    $tagList.tagsinput('input').typeahead
+      name: 'tags'
+      prefetch: $tagList.data('prefetch-path')

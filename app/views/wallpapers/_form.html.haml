@@ -4,7 +4,9 @@
   .form-inputs
     = f.input :purity
     = f.input :image, as: :file unless @wallpaper.persisted?
-    = f.input :tag_list, hint: 'Separated by commas'
+    .form-group
+      = f.label :tag_list
+      = f.text_field :tag_list, class: 'form-control', data: { prefetch_path: api_v1_tags_path }
     = f.input :image_gravity, hint: 'Thumbnails will cropped to size. Therefore, please select the best anchor point to perform this operation.'
 
   .form-actions

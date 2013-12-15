@@ -44,8 +44,11 @@ Wallgig::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :users, only: [:me] do
-        get 'me', on: :collection
+        collection do
+          get :me
+        end
       end
+      resources :tags, only: [:index]
     end
   end
 
