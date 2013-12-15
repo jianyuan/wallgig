@@ -22,8 +22,8 @@
           %li= link_to '#wallgig @ irc.rizon.net', irc_url(current_user)
         %p.navbar-text
           %small
-            - if last_deploy_time.nil?
-              Last updated #{time_ago_in_words(Time.now)} ago
+            - unless last_deploy_time.nil?
+              Last updated #{time_ago_in_words(last_deploy_time)} ago
               |
             = link_to 'Changelog', 'http://forums.wallgig.net/t/wallgig-features-roadmap-changelog/6'
             |
