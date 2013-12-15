@@ -20,6 +20,7 @@
 #
 
 class User < ActiveRecord::Base
+  has_many :collections, dependent: :destroy
   has_many :wallpapers
 
   rolify

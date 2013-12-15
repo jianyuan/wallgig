@@ -1,4 +1,6 @@
 Wallgig::Application.routes.draw do
+  resources :collections
+
   root 'wallpapers#index'
 
   # Users
@@ -6,7 +8,9 @@ Wallgig::Application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'sessions'
   }
-  resources :users
+  resources :users do
+    resources :collections
+  end
 
   # Wallpapers
   resources :wallpapers do
