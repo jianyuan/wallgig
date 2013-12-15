@@ -3,7 +3,7 @@
   %h5
     %ul.list-inline
       %li Collected by #{link_to_user @collection.user}
-      %li= pluralize @collection.wallpapers.size, 'wallpaper'
+      %li= pluralize @wallpapers.size, 'wallpaper'
       %li= pluralize @collection.impressions_count, 'view'
 
 = render 'wallpapers/list', wallpapers: @wallpapers

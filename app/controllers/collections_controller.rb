@@ -5,7 +5,8 @@ class CollectionsController < ApplicationController
   # GET /collections/1
   # GET /collections/1.json
   def show
-    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :read).page(params[:page])
+    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :read)
+                                        .page(params[:page])
 
     if request.xhr?
       render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }
