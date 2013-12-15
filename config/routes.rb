@@ -6,10 +6,13 @@ Wallgig::Application.routes.draw do
   # Account
   namespace :account do
     # Collections
-    resources :collections do
+    resources :collections, except: :show do
       resources :wallpapers
     end
   end
+
+  # Collections
+  resources :collections, only: :show
 
   # Users
   devise_for :users, controllers: {

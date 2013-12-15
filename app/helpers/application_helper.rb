@@ -21,15 +21,6 @@ module ApplicationHelper
     flash_messages.join("\n").html_safe
   end
 
-  def container_class_for(controller_name, action_name)
-    case [controller_name, action_name]
-    when ['wallpapers', 'index'],
-         ['wallpapers', 'show'],
-         ['users', 'show'] then
-      'container-full'
-    end
-  end
-
   def gravatar_url(user, size=200)
     gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
     "http://gravatar.com/avatar/#{gravatar_id}.png?d=identicon&s=#{size}"

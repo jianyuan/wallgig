@@ -6,7 +6,7 @@ module Account
     # GET /collections
     # GET /collections.json
     def index
-      @collections = Collection.all
+      @collections = current_user.collections
     end
 
     # GET /collections/1
@@ -30,7 +30,7 @@ module Account
 
       respond_to do |format|
         if @collection.save
-          format.html { redirect_to @collection, notice: 'Collection was successfully created.' }
+          format.html { redirect_to account_collections_url, notice: 'Collection was successfully created.' }
           format.json { render action: 'show', status: :created, location: @collection }
         else
           format.html { render action: 'new' }
@@ -44,7 +44,7 @@ module Account
     def update
       respond_to do |format|
         if @collection.update(collection_params)
-          format.html { redirect_to @collection, notice: 'Collection was successfully updated.' }
+          format.html { redirect_to account_collections_url, notice: 'Collection was successfully updated.' }
           format.json { head :no_content }
         else
           format.html { render action: 'edit' }
@@ -58,7 +58,7 @@ module Account
     def destroy
       @collection.destroy
       respond_to do |format|
-        format.html { redirect_to collections_url }
+        format.html { redirect_to account_collections_url }
         format.json { head :no_content }
       end
     end

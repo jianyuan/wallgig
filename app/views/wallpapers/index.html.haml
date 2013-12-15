@@ -1,5 +1,5 @@
 .well
-  %h5 Popular tags
+  %h5 Tags
   %ul.list-inline.list-facet
     - @wallpapers.facets['tags']['terms'].each do |facet|
       - tags = search_params[:tags] || []
