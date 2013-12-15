@@ -4,6 +4,11 @@
       %article.wallpaper-list-item{class: "wallpaper-#{wallpaper.purity}"}
         = link_to wallpaper do
           = image_tag wallpaper.thumbnail_image.url, width: 250, height: 188
+        .overlay.overlay-left
+          %span.label.label-default
+            %strong= wallpaper.favourites.size
+            %small
+              %span.glyphicon.glyphicon-star
         .overlay.overlay-bottom
           #{wallpaper.image_width}x#{wallpaper.image_height}
 

@@ -19,7 +19,7 @@
             = link_to new_wallpaper_path do
               %strong Upload
           %li= link_to 'Forums', 'http://forums.wallgig.net'
-          - if current_user && current_user.has_role?(:donator)
+          - if user_signed_in? && current_user.has_role?(:donator)
             %li
               <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">
               <input type="hidden" name="cmd" value="_s-xclick">
@@ -52,7 +52,7 @@
             %li= link_to 'Sign Up', new_user_registration_path
             %li= link_to 'Sign In', new_user_session_path
     #main.container.container-full
-      - unless current_user && current_user.has_role?(:donator)
+      - unless user_signed_in? && current_user.has_role?(:donator)
         .alert.alert-success
           Your contribution will help pay for hosting and development costs during the initial phases. Any amount will help. Thank you!
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -65,5 +65,5 @@
       = bootstrap_flash
       = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
-    = render 'shared/google_analytics'
-    = render 'shared/gosquared_analytics'
+    = render partial: 'shared/google_analytics'
+    = render partial: 'shared/gosquared_analytics'

@@ -77,6 +77,18 @@ body.wallpapers.show {
   &:hover .overlay-bottom {
     bottom: 0;
   }
+  .overlay-left {
+    top: 5px;
+    left: -50px;
+    width: 50px;
+    color: white;
+    .label {
+      border: 1px $gray-dark solid;
+    }
+  }
+  &:hover .overlay-left {
+    left: 0;
+  }
 
   /* Purity */
   &.wallpaper-sketchy {
