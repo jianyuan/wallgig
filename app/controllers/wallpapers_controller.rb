@@ -11,7 +11,7 @@ class WallpapersController < ApplicationController
     @wallpapers = Wallpaper.search(search_params)
 
     if request.xhr?
-      render partial: 'list', layout: false
+      render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }
     end
   end
 
