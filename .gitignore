@@ -20,4 +20,7 @@
 dump.rdb
 
 /.env
-/.env.development
+/.env.production
+/config/database.yml
+/config/deploy.rb
+/config/deploy/*
