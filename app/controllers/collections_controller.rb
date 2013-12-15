@@ -1,4 +1,6 @@
 class CollectionsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_user
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
 
   # GET /collections
@@ -62,9 +64,13 @@ class CollectionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find_by!(username: params[:user_id])
+      authorize! :manage, @user
+    end
+
     def set_collection
-      @collection = Collection.find(params[:id])
+      @collection = @user.collections.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

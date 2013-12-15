@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20131215025804) do
   create_table "collections", force: true do |t|
     t.integer  "user_id"
     t.string   "name"
-    t.boolean  "public"
+    t.boolean  "public",     default: true
     t.string   "ancestry"
     t.integer  "position"
     t.datetime "created_at"

@@ -15,6 +15,8 @@ class Ability
     can :read, Wallpaper, processing: false
     can :manage, Wallpaper, user_id: user.id
 
+    can :manage, User, id: user.id
+
     if user.persisted?
       can :update, Wallpaper
     end

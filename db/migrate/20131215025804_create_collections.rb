@@ -3,7 +3,7 @@ class CreateCollections < ActiveRecord::Migration
     create_table :collections do |t|
       t.references :user, index: true
       t.string :name
-      t.boolean :public
+      t.boolean :public, default: true
       t.string :ancestry
       t.integer :position
 
