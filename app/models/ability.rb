@@ -6,16 +6,28 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
-    can :read, User
-
     if user.moderator?
       can :manage, :all
     end
 
-    can :read, Wallpaper, processing: false
-    can :manage, Wallpaper, user_id: user.id
+    # Collection
+    can :read, Collection, public: true
+    can :crud, Collection, user_id: user.id
 
+    # Favourite
+    can :crud, Favourite, user_id: user.id
+
+    # Wallpaper
+    can :read, Wallpaper, processing: false
+    can :crud, Wallpaper, user_id: user.id
+
+    # User
+    can :read, User
+    can :crud, User, id: user.id
+
+    # Signed in users
     if user.persisted?
+      # Wallpaper
       can :update, Wallpaper
     end
 

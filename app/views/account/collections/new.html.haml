@@ -1,0 +1,10 @@
+.row
+  .col-lg-offset-4.col-lg-4
+    .page-header
+      %h1 New collection
+
+    = render 'form'
+
+    %hr/
+
+    = link_to 'Cancel', account_collections_path, class: 'btn btn-link btn-md'

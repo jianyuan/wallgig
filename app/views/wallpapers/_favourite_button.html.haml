@@ -1,0 +1,13 @@
+%div{:data => {:action => 'favourite', :'wallpaper-id' => wallpaper.id}}
+  .row
+    .col-sm-4
+      - if favourite.present?
+        = link_to wallpaper_favourite_path(wallpaper, favourite), method: :delete, remote: true, class: 'btn btn-success btn-block', data: { disable_with: '&hellip;' } do
+          %span.glyphicon.glyphicon-heart-empty
+      - else
+        = link_to wallpaper_favourites_path(wallpaper), method: :post, remote: true, class: 'btn btn-default btn-block', data: { disable_with: '&hellip;' } do
+          %span.glyphicon.glyphicon-heart
+    - if favourite.present?
+      .col-sm-8
+        = simple_form_for([@wallpaper, favourite], method: :patch, remote: true, data: { action: 'change-collection' }) do |f|
+          - f.association :collection, label: false, collection: current_user.collections, include_blank: 'No Collection'

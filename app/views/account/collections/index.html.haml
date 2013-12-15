@@ -1,0 +1,33 @@
+.row
+  .col-lg-offset-4.col-lg-4
+    .page-header
+      = link_to 'New', new_account_collection_path, class: 'btn btn-default btn-lg pull-right'
+      %h1 Collections
+
+    %table.table
+      %thead
+        %tr
+          %th
+          %th Name
+          %th.text-center Public
+          %th
+      %tbody
+        - @collections.each do |collection|
+          %tr{:class => (unless collection.public? then 'danger' end)}
+            %td
+              - unless collection.first?
+                = link_to move_up_account_collection_path(collection), method: :patch, class: 'btn btn-link btn-xs' do
+                  %span.glyphicon.glyphicon-arrow-up
+              - unless collection.last?
+                = link_to move_down_account_collection_path(collection), method: :patch, class: 'btn btn-link btn-xs' do
+                  %span.glyphicon.glyphicon-arrow-down
+            %td= collection.name
+            %td.text-center
+              - unless collection.public?
+                %span.glyphicon.glyphicon-eye-close
+            %td.text-right
+              = link_to 'Show', collection_path(collection), class: 'btn btn-link btn-xs'
+              = link_to edit_account_collection_path(collection), class: 'btn btn-info btn-xs' do
+                %span.glyphicon.glyphicon-pencil
+              = link_to account_collection_path(collection), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' do
+                %span.glyphicon.glyphicon-remove

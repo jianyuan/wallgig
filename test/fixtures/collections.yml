@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  name       :string(255)
+#  public     :boolean
+#  ancestry   :string(255)
+#  position   :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 
+  name: MyString
+  public: false
+  ancestry: MyString
+  position: 1
+
+two:
+  user_id: 
+  name: MyString
+  public: false
+  ancestry: MyString
+  position: 1

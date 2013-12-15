@@ -1,0 +1,9 @@
+= simple_form_for([:account, @collection]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :public
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary btn-md'
