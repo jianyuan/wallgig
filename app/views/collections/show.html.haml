@@ -2,7 +2,7 @@
   %h1= @collection.name
   %h5
     %ul.list-inline
-      %li Collected by #{user_tag @collection.user}
+      %li Collected by #{link_to_user @collection.user}
       %li= pluralize @collection.wallpapers.size, 'wallpaper'
       %li= pluralize @collection.impressions_count, 'view'
 

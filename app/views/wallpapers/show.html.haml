@@ -11,7 +11,7 @@
         = image_tag gravatar_url(@wallpaper.user, 80), alt: @wallpaper.user.username, class: 'media-object'
       .media-body
         %h3.media-heading Uploaded by
-        %h5= user_tag @wallpaper.user
+        %h5= link_to_user @wallpaper.user
         %small #{time_ago_in_words @wallpaper.created_at} ago
     %hr/
 

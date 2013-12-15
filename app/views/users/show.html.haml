@@ -1,5 +1,5 @@
-%h1{class: css_class_for_user(@user)}= @user.username
-%h4= role_name_for_user(@user)
+%h1= username_tag @user
+%h4= role_name_for @user
 
 - if @collections.any?
   %h2
