@@ -23,4 +23,8 @@ class Kolor < ActiveRecord::Base
         .where("(abs(#{color.red} - red) + abs(#{color.green} - green) + abs(#{color.blue} - blue)) / 3 < 15")
     end
   }
+
+  def to_html_hex
+    "\##{hex}" if hex.present?
+  end
 end
