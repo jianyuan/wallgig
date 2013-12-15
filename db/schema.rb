@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131215063700) do
+ActiveRecord::Schema.define(version: 20131215064211) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 20131215063700) do
     t.integer  "impressions_count",   default: 0
     t.text     "cached_tag_list"
     t.string   "image_gravity"
+    t.integer  "favourites_count",    default: 0
   end
 
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree

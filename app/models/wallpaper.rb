@@ -17,6 +17,7 @@
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
 #  image_gravity       :string(255)
+#  favourites_count    :integer          default(0)
 #
 
 class Wallpaper < ActiveRecord::Base

@@ -12,6 +12,6 @@
 
 class Favourite < ActiveRecord::Base
   belongs_to :user
-  belongs_to :wallpaper
+  belongs_to :wallpaper, counter_cache: true
   belongs_to :collection
 end
