@@ -9,6 +9,10 @@ class UsersController < ApplicationController
                        .with_purity(:sfw)
                        .page(params[:page])
 
+    @collections = @user.collections
+                        .accessible_by(current_ability, :read)
+                        .ordered
+
     if request.xhr?
       render partial: 'wallpapers/list', layout: false
     end

@@ -1,33 +1,32 @@
 module Account
   class CollectionsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_collection, only: [:show, :edit, :update, :destroy]
+    before_action :set_collection, only: [:show, :edit, :update, :destroy, :move_up, :move_down]
 
-    # GET /collections
-    # GET /collections.json
+    # GET /account/collections
+    # GET /account/collections.json
     def index
-      @collections = current_user.collections
+      @collections = current_user.collections.ordered
     end
 
-    # GET /collections/1
-    # GET /collections/1.json
+    # GET /account/collections/1
+    # GET /account/collections/1.json
     def show
     end
 
-    # GET /collections/new
+    # GET /account/collections/new
     def new
       @collection = current_user.collections.new
     end
 
-    # GET /collections/1/edit
+    # GET /account/collections/1/edit
     def edit
     end
 
-    # POST /collections
-    # POST /collections.json
+    # POST /account/collections
+    # POST /account/collections.json
     def create
       @collection = current_user.collections.new(collection_params)
-
       respond_to do |format|
         if @collection.save
           format.html { redirect_to account_collections_url, notice: 'Collection was successfully created.' }
@@ -39,8 +38,8 @@ module Account
       end
     end
 
-    # PATCH/PUT /collections/1
-    # PATCH/PUT /collections/1.json
+    # PATCH/PUT /account/collections/1
+    # PATCH/PUT /account/collections/1.json
     def update
       respond_to do |format|
         if @collection.update(collection_params)
@@ -53,14 +52,28 @@ module Account
       end
     end
 
-    # DELETE /collections/1
-    # DELETE /collections/1.json
+    # DELETE /account/collections/1
+    # DELETE /account/collections/1.json
     def destroy
       @collection.destroy
       respond_to do |format|
         format.html { redirect_to account_collections_url }
         format.json { head :no_content }
       end
+    end
+
+    # PATCH/PUT /account/collections/1/move_up
+    # PATCH/PUT /account/collections/1/move_up.json
+    def move_up
+      @collection.move_higher
+      redirect_to account_collections_url, notice: 'Collection was successfully reordered.'
+    end
+
+    # PATCH/PUT /account/collections/1/move_down
+    # PATCH/PUT /account/collections/1/move_down.json
+    def move_down
+      @collection.move_lower
+      redirect_to account_collections_url, notice: 'Collection was successfully reordered.'
     end
 
     private

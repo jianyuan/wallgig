@@ -1,0 +1,8 @@
+.page-header
+  %h1= @collection.name
+  %h5
+    %ul.list-inline
+      %li Collected by #{user_tag @collection.user}
+      %li= pluralize @collection.wallpapers.size, 'wallpaper'
+
+= render 'wallpapers/list', wallpapers: @wallpapers

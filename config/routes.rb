@@ -7,6 +7,11 @@ Wallgig::Application.routes.draw do
   namespace :account do
     # Collections
     resources :collections, except: :show do
+      member do
+        patch :move_up
+        patch :move_down
+      end
+
       resources :wallpapers
     end
   end

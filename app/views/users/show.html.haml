@@ -1,9 +1,19 @@
 %h1{class: css_class_for_user(@user)}= @user.username
 %h4= role_name_for_user(@user)
 
+- if @collections.any?
+  %h2
+    Collections
+    %small= @collections.size
+  %ul
+    - @collections.each do |collection|
+      %li
+        = link_to collection.name, collection
+        %small (#{collection.wallpapers.size})
+
 %h2
   Uploads
   %small= @wallpapers.size
 
 - cache @wallpapers do
-  = render partial: 'wallpapers/list'
+  = render 'wallpapers/list', wallpapers: @wallpapers

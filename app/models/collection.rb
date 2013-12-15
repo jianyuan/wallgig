@@ -15,6 +15,15 @@
 class Collection < ActiveRecord::Base
   belongs_to :user
   has_many :favourites, dependent: :nullify
+  has_many :wallpapers, through: :favourites
 
   acts_as_list scope: :user
+
+  validates :name, presence: true
+
+  scope :ordered, -> { order position: :asc }
+
+  def to_param
+    "#{id}-#{name.parameterize}"
+  end
 end
