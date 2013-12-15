@@ -11,9 +11,14 @@
         = link_to collection.name, collection
         %small (#{collection.wallpapers.accessible_by(current_ability, :read).size})
 
+- if @favourite_wallpapers.any?
+  %h2
+    Lastest Favourites
+    %small= @favourite_wallpapers.size
+  = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }
+
 %h2
   Uploads
   %small= @wallpapers.size
 
-- cache @wallpapers do
-  = render 'wallpapers/list', wallpapers: @wallpapers
+= render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }

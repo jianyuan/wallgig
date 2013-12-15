@@ -6,8 +6,11 @@ class UsersController < ApplicationController
   def show
     @wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :read)
-                       .with_purity(:sfw)
                        .page(params[:page])
+
+    @favourite_wallpapers = @user.favourite_wallpapers
+                                 .accessible_by(current_ability, :read)
+                                 .limit(6)
 
     @collections = @user.collections
                         .accessible_by(current_ability, :read)

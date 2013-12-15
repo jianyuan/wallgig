@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :collections, dependent: :destroy
   has_many :wallpapers
   has_many :favourites
-  has_many :wallpaper_favourites, through: :favourites, source: :user
+  has_many :favourite_wallpapers, through: :favourites, source: :wallpaper
 
   rolify
 

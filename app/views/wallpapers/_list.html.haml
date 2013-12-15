@@ -12,7 +12,8 @@
         .overlay.overlay-bottom
           #{wallpaper.image_width}x#{wallpaper.image_height}
 
-  = link_to_next_page wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params
+  - if wallpapers.respond_to? :total_pages
+    = link_to_next_page wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params
 
 - else
   %br/
