@@ -1,0 +1,7 @@
+%div{:data => {:action => 'favourite', :'wallpaper-id' => wallpaper.id}}
+  - if current_user.favourites.where(wallpaper: wallpaper).first.present?
+    = link_to wallpaper_favourite_path(wallpaper, current_user.favourites.where(wallpaper: wallpaper).first), method: :delete, remote: true, class: 'btn btn-success btn-block', disable_with: '&hellip;' do
+      %span.glyphicon.glyphicon-heart
+  - else
+    = link_to wallpaper_favourites_path(wallpaper), method: :post, remote: true, class: 'btn btn-default btn-block', disable_with: '&hellip;' do
+      %span.glyphicon.glyphicon-heart

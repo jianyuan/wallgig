@@ -14,8 +14,7 @@
 
 class Collection < ActiveRecord::Base
   belongs_to :user
+  has_many :favourites, dependent: :nullify
 
-  has_ancestry
-
-  acts_as_list scope: [:ancestry]
+  acts_as_list scope: :user
 end

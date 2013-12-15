@@ -1,26 +1,35 @@
 Wallgig::Application.routes.draw do
-  resources :collections
+  resources :favourites
 
   root 'wallpapers#index'
 
+  # Account
+  namespace :account do
+    # Collections
+    resources :collections do
+      resources :wallpapers
+    end
+  end
+
   # Users
-  use_doorkeeper
   devise_for :users, controllers: {
     sessions: 'sessions'
   }
-  resources :users do
-    resources :collections
-  end
+
+  resources :users
 
   # Wallpapers
   resources :wallpapers do
     collection do
       get 'elasticsearch'
     end
+
     member do
       get 'history'
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end
+
+    resources :favourites
   end
 
   # API
@@ -31,6 +40,9 @@ Wallgig::Application.routes.draw do
       end
     end
   end
+
+  # Oauth
+  use_doorkeeper
 
   # Admin routes
   authenticate :user, ->(u) { u.admin? } do

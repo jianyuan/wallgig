@@ -1,12 +1,9 @@
-= simple_form_for(@collection) do |f|
+= simple_form_for([:account, @collection]) do |f|
   = f.error_notification
 
   .form-inputs
-    = f.association :user
     = f.input :name
     = f.input :public
-    = f.input :ancestry
-    = f.input :position
 
   .form-actions
     = f.button :submit

@@ -24,6 +24,8 @@ class Wallpaper < ActiveRecord::Base
   has_many :wallpaper_colors, -> { order(percentage: :desc) }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
   belongs_to :primary_color, class_name: 'Kolor'
+  has_many :favourites, dependent: :destroy
+  has_many :favourited_users, through: :favourites, source: :wallpaper
 
   # Purity
   extend Enumerize

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131215025804) do
+ActiveRecord::Schema.define(version: 20131215035717) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -49,6 +49,18 @@ ActiveRecord::Schema.define(version: 20131215025804) do
   end
 
   add_index "colors", ["hex"], name: "index_colors_on_hex", unique: true, using: :btree
+
+  create_table "favourites", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "wallpaper_id"
+    t.integer  "collection_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "favourites", ["collection_id"], name: "index_favourites_on_collection_id", using: :btree
+  add_index "favourites", ["user_id"], name: "index_favourites_on_user_id", using: :btree
+  add_index "favourites", ["wallpaper_id"], name: "index_favourites_on_wallpaper_id", using: :btree
 
   create_table "impressions", force: true do |t|
     t.string   "impressionable_type"

@@ -12,6 +12,8 @@ class Ability
       can :manage, :all
     end
 
+    can :manage, Favourite, user_id: user.id
+
     can :read, Wallpaper, processing: false
     can :manage, Wallpaper, user_id: user.id
 
