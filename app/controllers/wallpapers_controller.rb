@@ -18,7 +18,7 @@ class WallpapersController < ApplicationController
   # GET /wallpapers/1
   # GET /wallpapers/1.json
   def show
-    authorize! :read, @wallpaper
+    authorize! :show, @wallpaper
   end
 
   # GET /wallpapers/new
@@ -215,7 +215,6 @@ class WallpapersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_wallpaper
       @wallpaper = Wallpaper.find(params[:id])
-      authorize! :read, @wallpaper
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

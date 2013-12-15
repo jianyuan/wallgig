@@ -5,7 +5,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1
   # GET /collections/1.json
   def show
-    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :read)
+    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :index)
                                         .page(params[:page])
 
     if request.xhr?

@@ -9,7 +9,7 @@
     - @collections.each do |collection|
       %li
         = link_to collection.name, collection
-        %small (#{collection.wallpapers.accessible_by(current_ability, :read).size})
+        %small (#{collection.wallpapers.accessible_by(current_ability, :index).size})
 
 - if @favourite_wallpapers.any?
   %h2

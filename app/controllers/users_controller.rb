@@ -5,15 +5,15 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @wallpapers = @user.wallpapers
-                       .accessible_by(current_ability, :read)
+                       .accessible_by(current_ability, :index)
                        .page(params[:page])
 
     @favourite_wallpapers = @user.favourite_wallpapers
-                                 .accessible_by(current_ability, :read)
+                                 .accessible_by(current_ability, :index)
                                  .limit(6)
 
     @collections = @user.collections
-                        .accessible_by(current_ability, :read)
+                        .accessible_by(current_ability, :index)
                         .ordered
 
     if request.xhr?
