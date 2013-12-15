@@ -137,20 +137,20 @@ class Wallpaper < ActiveRecord::Base
   scope :processing, -> { where(processing: true ) }
   scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
-  scope :near_to_color, ->(color) {
-    return if color.blank?
-    color_ids = Kolor.near_to(color).map(&:id)
-    # where(primary_color_id: color_ids) # @todo improve color search algorithm
-    joins(:wallpaper_colors)
-      .where(wallpaper_colors: { color_id: color_ids })
-      .except(:order)
-      .order('wallpaper_colors.percentage DESC')
-      .references(:wallpaper_colors)
-      # .select('wallpapers.*')
-      # .where(wallpaper_colors: { color_id: color_ids })
-      # .group('wallpapers.id')
-      # .order('wallpaper_colors.percentage DESC')
-  }
+  # scope :near_to_color, ->(color) {
+  #   return if color.blank?
+  #   color_ids = Kolor.near_to(color).map(&:id)
+  #   # where(primary_color_id: color_ids) # @todo improve color search algorithm
+  #   joins(:wallpaper_colors)
+  #     .where(wallpaper_colors: { color_id: color_ids })
+  #     .except(:order)
+  #     .order('wallpaper_colors.percentage DESC')
+  #     .references(:wallpaper_colors)
+  #     # .select('wallpapers.*')
+  #     # .where(wallpaper_colors: { color_id: color_ids })
+  #     # .group('wallpapers.id')
+  #     # .order('wallpaper_colors.percentage DESC')
+  # }
 
   # Callbacks
   after_create :queue_create_thumbnails
@@ -158,6 +158,36 @@ class Wallpaper < ActiveRecord::Base
   around_save :check_image_gravity_changed
   after_save :update_processing_status, if: :processing?
   after_commit :update_index, unless: :processing?
+
+  class << self
+    def search(params)
+      tire.search load: true, page: params[:page], per_page: (params[:per_page] || default_per_page) do
+        query do
+          boolean do
+            must { string params[:query], default_operator: 'AND', lenient: true } if params[:query].present?
+
+            if params[:tags].present?
+              params[:tags].each do |tag|
+                must { term :tags, tag.downcase }
+              end
+            end
+
+            must { terms :purity, params[:purity] || ['sfw'] }
+
+            must { term :width,  params[:width]  } if params[:width].present?
+            must { term :height, params[:height] } if params[:height].present?
+          end
+        end
+        sort { by :created_at, 'desc' } if params[:query].blank?
+        facet 'tags' do
+          terms :tags, all_terms: true, size: 20
+        end
+        facet 'purity' do
+          terms :purity, all_terms: true
+        end
+      end
+    end
+  end
 
   def image_storage_path(i)
     name = File.basename(image_uid, (image.ext || '.jpg'))
@@ -212,55 +242,22 @@ class Wallpaper < ActiveRecord::Base
     queue_create_thumbnails if image_gravity_changed
   end
 
-  module ImageFormatMethods
-    def format
-      if image_height.nil? || image_width.nil?
-        :unknown
-      elsif image_height <= image_width
-        :landscape
-      else
-        :portrait
-      end
-    end
-
-    def portrait?
-      format == :portrait
-    end
-
-    def landscape?
-      format == :landscape
+  def format
+    if image_height.nil? || image_width.nil?
+      :unknown
+    elsif image_height <= image_width
+      :landscape
+    else
+      :portrait
     end
   end
 
-  include ImageFormatMethods
+  def portrait?
+    format == :portrait
+  end
 
-
-  def self.search(params)
-    tire.search load: true, page: params[:page], per_page: 20 do
-      query do
-        boolean do
-          must { string params[:query], default_operator: 'AND', lenient: true } if params[:query].present?
-
-          if params[:tags].present?
-            params[:tags].each do |tag|
-              must { term :tags, tag.downcase }
-            end
-          end
-
-          must { terms :purity, params[:purity] || ['sfw'] }
-
-          must { term :width,  params[:width]  } if params[:width].present?
-          must { term :height, params[:height] } if params[:height].present?
-        end
-      end
-      sort { by :created_at, 'desc' } if params[:query].blank?
-      facet 'tags' do
-        terms :tags, all_terms: true, size: 20
-      end
-      facet 'purity' do
-        terms :purity, all_terms: true
-      end
-    end
+  def landscape?
+    format == :landscape
   end
 
   def to_indexed_json
@@ -275,7 +272,7 @@ class Wallpaper < ActiveRecord::Base
       created_at:      created_at,
       updated_at:      updated_at,
       views:           impressions_count,
-      views_this_week: impressions_count(start_date: Date.now.beginning_of_week)
+      views_this_week: impressions_count(start_date: Time.now.beginning_of_week)
     }.to_json
   end
 

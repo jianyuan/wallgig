@@ -19,14 +19,15 @@
             = link_to new_wallpaper_path do
               %strong Upload
           %li= link_to 'Forums', 'http://forums.wallgig.net'
-          %li= link_to '#wallgig @ irc.rizon.net', irc_url_for_user(current_user)
-          -# %li= link_to 'Random', '#'
-          -# %li= link_to 'Toplist', '#'
-          -# %li= link_to 'Comments', '#'
+          %li= link_to '#wallgig @ irc.rizon.net', irc_url(current_user)
         %p.navbar-text
           %small
-            Last code revision: #{time_ago_in_words(last_deploy_time)} ago.
-            = link_to 'View Changelog', 'http://forums.wallgig.net/t/wallgig-changelog/6'
+            - if last_deploy_time.nil?
+              Last updated #{time_ago_in_words(Time.now)} ago
+              |
+            = link_to 'Changelog', 'http://forums.wallgig.net/t/wallgig-features-roadmap-changelog/6'
+            |
+            = link_to 'Source Code', 'https://github.com/jianyuan/wallgig'
         %ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
             %li= link_to current_user.username, edit_user_registration_path
@@ -35,8 +36,6 @@
             %li= link_to 'Sign Up', new_user_registration_path
             %li= link_to 'Sign In', new_user_session_path
     #main.container{class: container_class_for(controller_name, action_name)}
-      -# .alert.alert-danger
-      -# Warning! This website is under heavy development. Wallpapers uploaded here <strong>may be deleted</strong>.
       .alert.alert-success
         Your contribution will help pay for hosting and development costs during the initial phases. Any amount will help. Thank you!
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -45,7 +44,6 @@
         <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
         <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
         </form>
-
 
       = bootstrap_flash
       = yield

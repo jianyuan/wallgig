@@ -35,7 +35,7 @@ module ApplicationHelper
     "http://gravatar.com/avatar/#{gravatar_id}.png?d=identicon&s=#{size}"
   end
 
-  def irc_url_for_user(user)
+  def irc_url(user=nil)
     url = "https://qchat.rizon.net/?channels=wallgig&prompt=1"
     url << "&nick=#{user.username.parameterize}" if user.present?
     url
