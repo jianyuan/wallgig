@@ -271,8 +271,7 @@ class Wallpaper < ActiveRecord::Base
       height:          image_height,
       created_at:      created_at,
       updated_at:      updated_at,
-      views:           impressions_count,
-      views_this_week: impressions_count(start_date: Time.now.beginning_of_week)
+      views:           impressions_count
     }.to_json
   end
 
