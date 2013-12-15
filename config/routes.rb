@@ -1,13 +1,14 @@
 Wallgig::Application.routes.draw do
-  ActiveAdmin.routes(self)
   root 'wallpapers#index'
 
+  # Users
   use_doorkeeper
   devise_for :users, controllers: {
     sessions: 'sessions'
   }
   resources :users
 
+  # Wallpapers
   resources :wallpapers do
     collection do
       get 'elasticsearch'
@@ -27,12 +28,13 @@ Wallgig::Application.routes.draw do
     end
   end
 
+  # Admin routes
   authenticate :user, ->(u) { u.admin? } do
     require 'sidekiq/web'
     mount Sidekiq::Web => '/sidekiq'
   end
 
-
+  ActiveAdmin.routes(self)
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

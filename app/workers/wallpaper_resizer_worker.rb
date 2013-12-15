@@ -12,9 +12,6 @@ class WallpaperResizerWorker
   end
 
   def generate_images
-    # generate_standard_image
-    # generate_image(:standard_image, :large_image, '1500x', '-quality 80')
-    # generate_image(:standard_image, :thumbnail_image, '250x188#', '-quality 70')
     generate_image(:image, :thumbnail_image, "250x188\##{@wallpaper.image_gravity}", '-quality 70')
   end
 
@@ -26,9 +23,5 @@ class WallpaperResizerWorker
     else
       raise "Source doesn't exist yet"
     end
-  end
-
-  def generate_standard_image
-    @wallpaper.standard_image = @wallpaper.image.thumb('3000x3000>')
   end
 end

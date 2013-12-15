@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131214214541) do
+ActiveRecord::Schema.define(version: 20131215010553) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -195,8 +195,6 @@ ActiveRecord::Schema.define(version: 20131214214541) do
     t.integer  "image_height"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "standard_image_uid"
-    t.string   "large_image_uid"
     t.string   "thumbnail_image_uid"
     t.integer  "primary_color_id"
     t.integer  "impressions_count",   default: 0

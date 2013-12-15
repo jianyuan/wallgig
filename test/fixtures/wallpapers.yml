@@ -12,13 +12,11 @@
 #  image_height        :integer
 #  created_at          :datetime
 #  updated_at          :datetime
-#  standard_image_uid  :string(255)
-#  large_image_uid     :string(255)
 #  thumbnail_image_uid :string(255)
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
-#  gravity             :string(255)
+#  image_gravity       :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

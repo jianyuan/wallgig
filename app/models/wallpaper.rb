@@ -12,13 +12,11 @@
 #  image_height        :integer
 #  created_at          :datetime
 #  updated_at          :datetime
-#  standard_image_uid  :string(255)
-#  large_image_uid     :string(255)
 #  thumbnail_image_uid :string(255)
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
-#  gravity             :string(255)
+#  image_gravity       :string(255)
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -36,18 +34,6 @@ class Wallpaper < ActiveRecord::Base
   attr_readonly :image
 
   dragonfly_accessor :image
-
-  # dragonfly_accessor :standard_image do
-  #   storage_options do |i|
-  #     { path: image_storage_path(i) }
-  #   end
-  # end
-
-  # dragonfly_accessor :large_image do
-  #   storage_options do |i|
-  #     { path: image_storage_path(i) }
-  #   end
-  # end
 
   dragonfly_accessor :thumbnail_image do
     storage_options do |i|
@@ -210,8 +196,7 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def has_image_sizes?
-    # standard_image.present? && large_image.present? && thumbnail_image.present?
-    thumbnail_image.present?
+    image.present? && thumbnail_image.present?
   end
 
   def extract_dominant_colors

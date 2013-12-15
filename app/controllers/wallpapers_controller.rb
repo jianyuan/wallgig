@@ -8,49 +8,6 @@ class WallpapersController < ApplicationController
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    # query = Wallpaper.accessible_by(current_ability, :read)
-                     # .order(created_at: :desc)
-
-    # query = query.tagged_with(search_params[:tag]) if search_params[:tag].present?
-    # query = query.near_to_color(search_params[:color]) if search_params[:color].present?
-
-    # if search_params[:purity].present?
-    #   query = query.with_purity(*search_params[:purity])
-    # else
-    #   query = query.with_purity(:sfw)
-    # end
-    
-    # @wallpapers = query.page(params[:page])
-
-    # query = query.tire.search params[:q], load: true
-
-    # payload = {}
-    # payload[:size] = 20
-    # payload[:from] = params[:page] || 1
-    # payload[:query] = {
-    #   :bool => {
-    #     :must => [
-    #       {
-    #         :terms => {
-    #           :purity => [:sfw, :sketchy, :nsfw]
-    #         }
-    #       }
-    #     ]
-    #   }
-    # }
-    # payload[:sort] = [
-    #   {
-    #     :created_at => {
-    #       :order => :desc
-    #     }
-    #   }
-    # ]
-
-    # @query = Tire.search(Wallpaper.tire.index.name, payload: payload, load: true)
-    # @wallpapers = @query.results
-
-    # @tags = Wallpaper.tag_counts_on(:tags).limit(20)
-
     @wallpapers = Wallpaper.search(search_params)
 
     if request.xhr?
@@ -130,23 +87,6 @@ class WallpapersController < ApplicationController
   end
 
   def elasticsearch
-    # @wallpapers = Wallpaper.tire.search load: true do
-    #   size 200
-    #   # page params[:page] || 1
-    #   query do
-    #     boolean do
-    #       # must { string 'purity:sfw' }
-    #       # should { string 'width:1920' }
-    #       # should { string 'height:1080' }
-    #       # should { string 'tags:anime' }
-    #     end
-    #     function_score do
-          
-    #     end
-    #   end
-    #   # facet('current-tags', global: true) { terms :tags }
-    #   # sort { by :created_at, 'asc' }
-    # end
     query = Hash.new({})
 
     if params[:color].present? && (color = Color::RGB.from_html(params[:color]) rescue false)
