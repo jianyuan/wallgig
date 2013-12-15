@@ -3,7 +3,7 @@ $ ->
     $('body').on 'ajax:success', '[data-action=favourite] [data-remote]', (event, data, status, xhr) ->
       $(this).closest('[data-action=favourite]').replaceWith data
 
-    $('form[data-action=change-collection] select').change ->
+    $('body').on 'change', 'form[data-action=change-collection] select', ->
       $(this).closest('form').submit()
 
     $('body').on 'ajax:beforeSend', 'form[data-action=change-collection]', ->
