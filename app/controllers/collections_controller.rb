@@ -1,5 +1,6 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show]
+  impressionist actions: [:show]
 
   # GET /collections/1
   # GET /collections/1.json

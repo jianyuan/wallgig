@@ -2,14 +2,15 @@
 #
 # Table name: collections
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer
-#  name       :string(255)
-#  public     :boolean
-#  ancestry   :string(255)
-#  position   :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  id                :integer          not null, primary key
+#  user_id           :integer
+#  name              :string(255)
+#  public            :boolean          default(TRUE)
+#  ancestry          :string(255)
+#  position          :integer
+#  created_at        :datetime
+#  updated_at        :datetime
+#  impressions_count :integer          default(0)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

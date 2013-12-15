@@ -4,5 +4,6 @@
     %ul.list-inline
       %li Collected by #{user_tag @collection.user}
       %li= pluralize @collection.wallpapers.size, 'wallpaper'
+      %li= pluralize @collection.impressions_count, 'view'
 
 = render 'wallpapers/list', wallpapers: @wallpapers
