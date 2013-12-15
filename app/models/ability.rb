@@ -23,7 +23,12 @@ class Ability
 
     # Wallpaper
     can :index, Wallpaper, processing: false, purity: :sfw
-    can :show, Wallpaper, processing: false
+    if user.persisted?
+      can :show, Wallpaper, processing: false
+    else
+      # Guests can view SFW wallpapers only
+      can :show, Wallpaper, processing: false, purity: :sfw
+    end
     can :crud, Wallpaper, user_id: user.id
 
     # User
