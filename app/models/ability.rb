@@ -4,7 +4,9 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    alias_action :create, :read, :update, :destroy, :to => :crud
+    clear_aliased_actions
+
+    alias_action :index, :create, :read, :update, :destroy, :to => :crud
 
     if user.admin? || user.developer?
       can :manage, :all
@@ -15,20 +17,19 @@ class Ability
     end
 
     # Collection
-    can :read, Collection, public: true
+    can [:index, :read], Collection, public: true
     can :crud, Collection, user_id: user.id
 
     # Favourite
     can :crud, Favourite, user_id: user.id
 
     # Wallpaper
-    can :index, Wallpaper, processing: false, purity: :sfw
     if user.persisted?
-      can :show, Wallpaper, processing: false
-    else
-      # Guests can view SFW wallpapers only
-      can :show, Wallpaper, processing: false, purity: :sfw
+      can :read, Wallpaper, processing: false
+      can :index, Wallpaper, processing: false, id: user.favourite_wallpaper_ids
     end
+    # Guests can view SFW wallpapers only
+    can [:index, :read], Wallpaper, processing: false, purity: 'sfw'
     can :crud, Wallpaper, user_id: user.id
 
     # User
