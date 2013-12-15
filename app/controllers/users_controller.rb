@@ -14,7 +14,7 @@ class UsersController < ApplicationController
                         .ordered
 
     if request.xhr?
-      render partial: 'wallpapers/list', layout: false
+      render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }
     end
   end
 
