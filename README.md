@@ -14,3 +14,6 @@
 * PostgreSQL
 * Redis
 * Elasticsearch
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jianyuan/wallgig/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
