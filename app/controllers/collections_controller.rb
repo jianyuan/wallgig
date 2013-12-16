@@ -5,6 +5,8 @@ class CollectionsController < ApplicationController
   # GET /collections
   def index
     @collections = Collection.includes(:user, :wallpapers)
+                             .accessible_by(current_ability, :index)
+                             .where({ wallpapers: { purity: 'sfw' }})
                              .where.not({ wallpapers: { id: nil } })
                              .order('collections.updated_at desc')
                              .page(params[:page])

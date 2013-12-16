@@ -14,6 +14,9 @@ class UsersController < ApplicationController
 
     @collections = @user.collections
                         .accessible_by(current_ability, :index)
+                        .includes(:user, :wallpapers)
+                        .where({ wallpapers: { purity: 'sfw' }})
+                        .where.not({ wallpapers: { id: nil } })
                         .ordered
   end
 
