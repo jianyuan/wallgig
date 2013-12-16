@@ -23,7 +23,7 @@
         .collapse.navbar-collapse#navbar-collapse
           %ul.nav.navbar-nav
             %li= link_to 'Wallpapers', wallpapers_path
-            %li= link_to 'Collections', '#'
+            %li= link_to 'Collections', collections_path
             %li= link_to 'Forums', 'http://forums.wallgig.net'
             - if user_signed_in? && current_user.has_role?(:donator)
               %li
@@ -53,7 +53,8 @@
               %li= link_to 'Sign Up', new_user_registration_path
               %li= link_to 'Sign In', new_user_session_path
     #main.container.container-full
-      - unless user_signed_in? && current_user.has_role?(:donator)
+      -# unless user_signed_in? && current_user.has_role?(:donator)
+      - if false
         .alert.alert-success
           Your contribution will help pay for hosting and development costs during the initial phases. Any amount will help. Thank you!
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

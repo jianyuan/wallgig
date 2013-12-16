@@ -1,55 +1,55 @@
-.row
-  .col-lg-2
-    %ul.color-bar
-      - @wallpaper.wallpaper_colors.each do |color|
-        %li
-          = link_to '', wallpapers_path(colors: [color.hex]), style: "background-color: \##{color.hex}"
-    %hr/
+.container-wallpaper
+  .row
+    .col-lg-2
+      .hide
+        %ul.color-bar
+          - @wallpaper.wallpaper_colors.each do |color|
+            %li
+              = link_to '', wallpapers_path(colors: [color.hex]), style: "background-color: \##{color.hex}"
+        %hr/
 
-    %section.media.media-user
-      = link_to @wallpaper.user, class: 'pull-left' do
-        = image_tag gravatar_url(@wallpaper.user, 80), alt: @wallpaper.user.username, class: 'media-object'
-      .media-body
-        %h3.media-heading Uploaded by
-        %h5= link_to_user @wallpaper.user
-        %small #{time_ago_in_words @wallpaper.created_at} ago
-    %hr/
+      .panel.panel-default
+        .panel-body
+          .media.media-user
+            = link_to @wallpaper.user, class: 'pull-left' do
+              = image_tag gravatar_url(@wallpaper.user, 80), alt: @wallpaper.user.username, class: 'media-object'
+            .media-body
+              %h4.media-heading= link_to_user @wallpaper.user
+              %small #{time_ago_in_words @wallpaper.created_at} ago
+  
+        - if user_signed_in?
+          .panel-body
+            = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
 
-    - if user_signed_in?
-      = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
-      %hr/
+        - if @wallpaper.tags.any?
+          .panel-body
+            %ul.list-tags
+              - @wallpaper.tag_list.each do |tag|
+                %li
+                  = link_to wallpapers_path(tags: [tag]), class: 'btn btn-sm btn-default' do
+                    = tag
+        .panel-body
+          %ul.list-metadata
+            %li
+              %strong Resolution
+              = @wallpaper.to_resolution_text
+            %li
+              %strong Views
+              = @wallpaper.impressions_count
+            %li
+              %strong Likes
+              = @wallpaper.favourites_count
+        .panel-body
+          .btn-group.btn-group-justified.btn-group-purity
+            - Wallpaper.purity.options.each_entry do |label, value|
+              = link_to label, update_purity_wallpaper_path(@wallpaper, value),
+                        class: "btn btn-sm btn-#{value} #{'btn-active' if @wallpaper.purity == value} ladda-button",
+                        method: :patch, remote: true,
+                        data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
 
-    - if @wallpaper.tags.any?
-      %ul.list-inline
-        - @wallpaper.tag_list.each do |tag|
-          %li
-            = link_to wallpapers_path(tags: [tag]), class: 'btn btn-sm btn-default' do
-              = tag
-      %hr/
-
-
-    .btn-group.btn-group-justified.btn-group-purity
-      - Wallpaper.purity.options.each_entry do |label, value|
-        = link_to label, update_purity_wallpaper_path(@wallpaper, value),
-                  class: "btn btn-sm btn-#{value} #{'btn-active' if @wallpaper.purity == value} ladda-button",
-                  method: :patch, remote: true,
-                  data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
-
-    %hr/
-
-    %p
-      %b Views:
-      = @wallpaper.impressions_count
-    %p
-      %b Favourites:
-      = @wallpaper.favourites.size
-
-    %hr/
-
-    - if can? :update, @wallpaper
-      = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-default'
-    = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-link'
-    = link_to 'Back', wallpapers_path, class: 'btn btn-link'
-  .col-lg-10.col-wallpaper
-    .img-wallpaper-parent
-      = image_tag @wallpaper.image.url, class: "img-wallpaper img-#{@wallpaper.format} state-1"
+      - if can? :update, @wallpaper
+        = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
+        = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
+      = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
+    .col-lg-10
+      = image_tag @wallpaper.image.url, class: "img-responsive img-#{@wallpaper.format}"

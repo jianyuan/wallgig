@@ -49,5 +49,6 @@ $ ->
       name: 'tags'
       prefetch: $tagList.data('prefetch-path')
 
-  $('[data-action=collect], [data-action=report]').click ->
+  $('[data-action=collect], [data-action=report]').click (event) ->
+    event.preventDefault()
     alert 'Coming soon!'
