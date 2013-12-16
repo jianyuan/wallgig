@@ -16,7 +16,8 @@
 
 @import "bourbon";
 @import "ladda";
-@import "slate_theme";
+// @import "slate_theme";
+@import "bootstrap_overrides";
 @import "twitter/bootstrap";
 
 html, body {
@@ -25,11 +26,19 @@ html, body {
   padding: 0;
 }
 
+body {
+  padding-top: 70px;
+}
+
 .container-full {
   width: 100%;
   margin: 0 auto;
 }
 
-@import "users";
-@import "wallpapers";
-@import "utilities";
+.open .dropdown-menu > li > a {
+  padding: 10px 20px;
+}
+
+// @import "users";
+// @import "wallpapers";
+// @import "utilities";
