@@ -1,3 +1,89 @@
-// Place all the styles related to the Collections controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.list-collection {
+  @extend .list-unstyled;
+  @extend .clearfix;
+  margin-left: -10px;
+  margin-right: -10px;
+  li {
+    width: 250px;
+    height: 354px;
+    margin: 10px;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    @include transition(all 0.1s ease-in);
+    background-color: white;
+    .row-collection {
+      margin-top: 5px;
+      margin-left: -5px;
+      @extend .clearfix;
+      img {
+        float: left;
+        margin-left: 5px;
+      }
+    }
+    .media-object {
+      height: 273px;
+    }
+    .media-body {
+      padding: 10px;
+    }
+    .media-heading {
+      height: 35px;
+    }
+    a {
+      text-decoration: none;
+    }
+    .overlay-bottom {
+      $overlay-height: 30px;
+      left: 0;
+      width: 100%;
+      bottom: -$overlay-height;
+      height: $overlay-height;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      text-align: center;
+      line-height: $overlay-height;
+      .btn {
+        color: white;
+        .glyphicon {
+          margin-right: 4px;
+        }
+      }
+    }
+    .overlay-left {
+      top: 5px;
+      left: 5px;
+      opacity: 0;
+    }
+    .overlay-right {
+      top: 0;
+      right: 0;
+      opacity: 0;
+      .btn-report {
+        text-shadow: black 1px 1px 1px;
+      }
+    }
+    .label {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  li:hover {
+    @include box-shadow(#666 0px 0px 5px);
+    .overlay {
+    }
+    .overlay-bottom {
+      bottom: 0;
+    }
+    .overlay-left, .overlay-right {
+      opacity: 1;
+    }
+  }
+  .purity-sfw {
+  }
+  .purity-sketchy {
+    border: 3px solid #fda500;
+  }
+  .purity-nsfw {
+    border: 3px solid #bf0600;
+  }
+}

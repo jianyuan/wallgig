@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def show
     @wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :index)
-                       .page(params[:page])
+                       .limit(6)
 
     @favourite_wallpapers = @user.favourite_wallpapers
                                  .accessible_by(current_ability, :index)
@@ -15,10 +15,6 @@ class UsersController < ApplicationController
     @collections = @user.collections
                         .accessible_by(current_ability, :index)
                         .ordered
-
-    if request.xhr?
-      render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }
-    end
   end
 
   private

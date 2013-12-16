@@ -11,7 +11,7 @@ $ ->
         $this.removeClass('state-2')
         $this.addClass('state-1')
 
-  if $('body.wallpapers.index, body.users.show').length == 1
+  if $('body.wallpapers.index, body.collections.show').length == 1
     loadNextPage = (event, visible) ->
       return unless visible
       $this = $(this)
@@ -24,7 +24,7 @@ $ ->
         $main.append(html)
         $('[rel=next]').bind('inview', loadNextPage)
 
-      ga('send', 'pageview', url) if ga?
+      ga('send', 'pageview', url) if ga
 
     $('[rel=next]').bind('inview', loadNextPage)
 

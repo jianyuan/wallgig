@@ -153,7 +153,7 @@ class Wallpaper < ActiveRecord::Base
       tire.search load: true, page: params[:page], per_page: (params[:per_page] || default_per_page) do
         query do
           boolean do
-            must { string params[:query], default_operator: 'AND', lenient: true } if params[:query].present?
+            must { string params[:q], default_operator: 'AND', lenient: true } if params[:q].present?
 
             if params[:tags].present?
               params[:tags].each do |tag|

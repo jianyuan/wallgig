@@ -24,6 +24,8 @@ class Collection < ActiveRecord::Base
 
   validates :name, presence: true
 
+  paginates_per 20
+
   scope :ordered, -> { order position: :asc }
 
   def to_param

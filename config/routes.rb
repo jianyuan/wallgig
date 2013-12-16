@@ -17,7 +17,7 @@ Wallgig::Application.routes.draw do
   end
 
   # Collections
-  resources :collections, only: :show
+  resources :collections, only: [:index, :show]
 
   # Users
   devise_for :users, controllers: {

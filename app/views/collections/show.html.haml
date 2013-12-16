@@ -1,9 +1,12 @@
 .page-header
-  %h1= @collection.name
-  %h5
-    %ul.list-inline
-      %li Collected by #{link_to_user @collection.user}
-      %li= pluralize @wallpapers.size, 'wallpaper'
-      %li= pluralize @collection.impressions_count, 'view'
+  %h2= @collection.name
+  .media.media-user
+    = link_to @collection.user, class: 'pull-left' do
+      = image_tag gravatar_url(@collection.user, 20), alt: @collection.user.username, class: 'media-object'
+    = link_to_user @collection.user
+  %hr/
+  %ul.list-inline
+    %li= pluralize @collection.wallpapers.size, 'wallpaper'
+    %li= pluralize @collection.impressions_count, 'view'
 
 = render 'wallpapers/list', wallpapers: @wallpapers

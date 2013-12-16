@@ -1,24 +1,23 @@
-%h1= username_tag @user
-%h4= role_name_for @user
+%h1
+  = username_tag @user
+  %small= role_name_for @user
 
 - if @collections.any?
-  %h2
+  %h3
+    Uploads
+    %small= @wallpapers.size
+  = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
+  = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
+    More
+    %span.glyphicon.glyphicon-chevron-right
+
+  %h3
     Collections
     %small= @collections.size
-  %ul
-    - @collections.each do |collection|
-      %li
-        = link_to collection.name, collection
-        %small (#{collection.wallpapers.accessible_by(current_ability, :index).size})
+  = render partial: 'collections/list', locals: {collections: @collections }
 
 - if @favourite_wallpapers.any?
-  %h2
-    Lastest Favourites
+  %h3
+    Recent likes
     %small= @favourite_wallpapers.size
   = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }
-
-%h2
-  Uploads
-  %small= @wallpapers.size
-
-= render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
