@@ -166,10 +166,14 @@ class Wallpaper < ActiveRecord::Base
             must { term :width,  params[:width]  } if params[:width].present?
             must { term :height, params[:height] } if params[:height].present?
 
-            must { term :colors, params[:color] } if params[:color].present?
+            if params[:colors].present?
+              params[:colors].each do |color|
+                must { term :colors, color.downcase }
+              end
+            end
           end
         end
-        sort { by :created_at, 'desc' } if params[:query].blank? || params[:color].blank?
+        sort { by :created_at, 'desc' } if params[:query].blank? || params[:colors].blank?
         facet 'tags' do
           terms :tags, size: 20 # all_terms: true
         end
