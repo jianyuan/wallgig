@@ -25,7 +25,8 @@
             %li= link_to 'Wallpapers', wallpapers_path
             %li= link_to 'Collections', collections_path
             %li= link_to 'Forums', 'http://forums.wallgig.net'
-            - if user_signed_in? && current_user.has_role?(:donator)
+            %li= link_to '#wallgig@irc.rizon.net', irc_url(current_user)
+            - unless user_signed_in? && current_user.has_role?(:donator)
               %li
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">
                 <input type="hidden" name="cmd" value="_s-xclick">
@@ -33,7 +34,6 @@
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
                 </form>
-            %li= link_to '#wallgig@irc.rizon.net', irc_url(current_user)
           %ul.nav.navbar-nav.navbar-right
             - if user_signed_in?
               %li.dropdown
@@ -43,9 +43,9 @@
                 %ul.dropdown-menu
                   %li= link_to 'Dashboard', current_user
                   %li.divider
-                  %li= link_to 'Wallpapers', '#'
-                  %li= link_to 'Collections', '#'
-                  %li= link_to 'Likes', '#'
+                  %li= link_to 'Wallpapers', current_user
+                  %li= link_to 'Collections', current_user
+                  %li= link_to 'Likes', current_user
                   %li.divider
                   %li= link_to 'Settings', edit_user_registration_path
                   %li= link_to 'Sign Out', destroy_user_session_path, method: :delete
@@ -53,17 +53,6 @@
               %li= link_to 'Sign Up', new_user_registration_path
               %li= link_to 'Sign In', new_user_session_path
     #main.container.container-full
-      -# unless user_signed_in? && current_user.has_role?(:donator)
-      - if false
-        .alert.alert-success
-          Your contribution will help pay for hosting and development costs during the initial phases. Any amount will help. Thank you!
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-          <input type="hidden" name="cmd" value="_s-xclick">
-          <input type="hidden" name="hosted_button_id" value="MGHTWLTMG7GRJ">
-          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-          <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-          </form>
-
       = bootstrap_flash
       = yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false

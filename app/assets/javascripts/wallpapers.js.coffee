@@ -49,6 +49,6 @@ $ ->
       name: 'tags'
       prefetch: $tagList.data('prefetch-path')
 
-  $('[data-action=collect], [data-action=report]').click (event) ->
+  $('[data-action=like], [data-action=collect], [data-action=report]').click (event) ->
     event.preventDefault()
-    alert 'Coming soon!'
+    alert 'Coming soon! Please view the wallpaper page to perform that action.'
