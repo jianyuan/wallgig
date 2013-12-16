@@ -124,6 +124,8 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     color (1.4.2)
+    colorscore (0.0.4)
+      color
     connection_pool (1.2.0)
     country_select (1.2.0)
     debug_inspector (0.0.2)
@@ -376,6 +378,7 @@ DEPENDENCIES
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   color
+  colorscore
   country_select
   devise
   doorkeeper (~> 0.7.0)

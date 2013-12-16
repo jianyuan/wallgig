@@ -22,7 +22,7 @@
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user
-  has_many :wallpaper_colors, -> { order(percentage: :desc) }, dependent: :destroy
+  has_many :wallpaper_colors, -> { order('wallpaper_colors.percentage DESC') }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
   belongs_to :primary_color, class_name: 'Kolor'
   has_many :favourites, dependent: :destroy
@@ -143,7 +143,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Callbacks
   after_create :queue_create_thumbnails
-  after_create :queue_extract_dominant_colors
+  after_create :queue_extract_colors
   around_save :check_image_gravity_changed
   after_save :update_processing_status, if: :processing?
   after_commit :update_index, unless: :processing?
@@ -165,11 +165,13 @@ class Wallpaper < ActiveRecord::Base
 
             must { term :width,  params[:width]  } if params[:width].present?
             must { term :height, params[:height] } if params[:height].present?
+
+            must { term :colors, params[:color] } if params[:color].present?
           end
         end
-        sort { by :created_at, 'desc' } if params[:query].blank?
+        sort { by :created_at, 'desc' } if params[:query].blank? || params[:color].blank?
         facet 'tags' do
-          terms :tags, all_terms: true, size: 20
+          terms :tags, size: 20 # all_terms: true
         end
         facet 'purity' do
           terms :purity, all_terms: true
@@ -187,8 +189,8 @@ class Wallpaper < ActiveRecord::Base
     WallpaperResizerWorker.perform_async(id)
   end
 
-  def queue_extract_dominant_colors
-    WallpaperExtractDominantColorsWorker.perform_async(id)
+  def queue_extract_colors
+    WallpaperColorExtractorWorker.perform_async(id)
   end
 
   def update_processing_status
@@ -202,23 +204,35 @@ class Wallpaper < ActiveRecord::Base
     image.present? && thumbnail_image.present?
   end
 
-  def extract_dominant_colors
+  def extract_colors
     return unless image.present?
 
-    dominant_colors = Miro::DominantColors.new(image.path)
-    hexes = dominant_colors.to_hex
-    rgbs = dominant_colors.to_rgb
-    percentages = dominant_colors.by_percentage
+    histogram = Colorscore::Histogram.new(image.path)
 
-    # clear any old colors
-    self.primary_color = nil
+    # self.primary_color = Kolor.find_or_create_by_color(histogram.scores.first[1])
+
+    # dominant_colors = Miro::DominantColors.new(image.path)
+    # hexes = dominant_colors.to_hex
+    # rgbs = dominant_colors.to_rgb
+    # percentages = dominant_colors.by_percentage
+
+    # # clear any old colors
+    # self.primary_color = nil
     wallpaper_colors.clear
 
-    hexes.each_with_index do |hex, i|
-      hex = hex[1..-1]
-      color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
-      self.primary_color = color if i == 0
-      self.wallpaper_colors.create color: color, percentage: percentages[i]
+    # hexes.each_with_index do |hex, i|
+    #   hex = hex[1..-1]
+    #   color = Kolor.find_or_create_by(hex: hex, red: rgbs[i][0], green: rgbs[i][1], blue: rgbs[i][2])
+    #   self.primary_color = color if i == 0
+    #   self.wallpaper_colors.create color: color, percentage: percentages[i]
+    # end
+
+    palette = Colorscore::Palette.default
+    scores = palette.scores(histogram.scores)
+
+    scores.each do |score|
+      color = Kolor.find_or_create_by_color(score[1])
+      self.wallpaper_colors.create(color: color, percentage: score[0])
     end
 
     self.save
@@ -259,7 +273,8 @@ class Wallpaper < ActiveRecord::Base
       height:          image_height,
       created_at:      created_at,
       updated_at:      updated_at,
-      views:           impressions_count
+      views:           impressions_count,
+      colors:          wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten
     }.to_json
   end
 

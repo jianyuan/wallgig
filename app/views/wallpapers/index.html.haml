@@ -1,4 +1,13 @@
 .well
+  %ul.list-inline.list-color
+    - colors = search_params[:colors] || []
+    - Colorscore::Palette::DEFAULT.each do |hex|
+      - if colors.include?(hex)
+        %li.active
+          = link_to '', wallpapers_path(search_params.merge(colors: (colors - [hex]))), style: "background-color: \##{hex}"
+      - else
+        %li
+          = link_to '', wallpapers_path(search_params.merge(colors: (colors + [hex]))), style: "background-color: \##{hex}"
   %h5 Tags
   %ul.list-inline.list-facet
     - @wallpapers.facets['tags']['terms'].each do |facet|

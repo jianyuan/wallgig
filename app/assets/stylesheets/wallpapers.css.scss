@@ -107,3 +107,27 @@
     }
   }
 }
+
+.list-color {
+  @extend .list-inline;
+  @extend .clearfix;
+  li {
+    padding: 0;
+    float: left;
+    width: 30px;
+    height: 30px;
+    border: 2px transparent;
+    a {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 2px transparent solid;
+    }
+  }
+  li:hover a {
+    border-color: $gray;
+  }
+  li.active a {
+    border-color: $gray-darker;
+  }
+}

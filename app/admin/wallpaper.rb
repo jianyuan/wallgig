@@ -39,6 +39,13 @@ ActiveAdmin.register Wallpaper do
         row :primary_color do |wallpaper|
           content_tag :div, nil, style: "width: 50px; height: 50px; background-color: #{wallpaper.primary_color.to_html_hex}" if wallpaper.primary_color.present?
         end
+        row :color do |wallpaper|
+          ul style: 'list-style: none; padding: 0' do
+            wallpaper.wallpaper_colors.map do |wallpaper_color|
+              li wallpaper_color.percentage.round(2), style: "display: inline-block; width: 50px; height: 50px; background-color: #{wallpaper_color.to_html_hex}"
+            end
+          end
+        end
         row :created_at
         row :updated_at
       end

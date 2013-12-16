@@ -108,6 +108,7 @@ gem 'dotenv-rails'
 gem 'pry-rails'
 gem 'miro'
 gem 'color'
+gem 'colorscore'
 gem 'httparty'
 # gem 'phashion'
 
