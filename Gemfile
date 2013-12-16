@@ -47,6 +47,9 @@ group :development do
   gem 'capistrano-rvm'
 end
 
+# Use Foreman to manage the app
+gem 'foreman'
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
