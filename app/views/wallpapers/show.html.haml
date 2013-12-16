@@ -1,13 +1,6 @@
 .container-wallpaper
   .row
     .col-lg-2
-      .hide
-        %ul.color-bar
-          - @wallpaper.wallpaper_colors.each do |color|
-            %li
-              = link_to '', wallpapers_path(colors: [color.hex]), style: "background-color: \##{color.hex}"
-        %hr/
-
       .panel.panel-default
         .panel-body
           .media.media-user
@@ -28,6 +21,13 @@
                 %li
                   = link_to wallpapers_path(tags: [tag]), class: 'btn btn-sm btn-default' do
                     = tag
+
+        .panel-body.text-center
+          %ul.list-inline.list-color
+            - colors = search_params[:colors] || []
+            - @wallpaper.wallpaper_colors.each do |color|
+              %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
+
         .panel-body
           %ul.list-metadata
             %li
