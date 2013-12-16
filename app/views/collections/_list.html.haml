@@ -2,7 +2,7 @@
   %ul.list-collection
     - collections.each do |collection|
       %li{:data => {:collection_id => collection.id}}
-        - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).limit(3)
+        - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).limit(4)
         .media
           = link_to collection, class: 'media-object' do
             = image_tag wallpapers.shift.thumbnail_image.url, width: 250, height: 188

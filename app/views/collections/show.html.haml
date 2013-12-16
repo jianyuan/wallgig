@@ -6,6 +6,8 @@
     = link_to_user @collection.user
   %hr/
   %ul.list-inline
+    - if @collection.user == current_user
+      %li= link_to 'Edit collection', edit_account_collection_path(@collection)
     %li= pluralize @collection.wallpapers.size, 'wallpaper'
     %li= pluralize @collection.impressions_count, 'view'
 
