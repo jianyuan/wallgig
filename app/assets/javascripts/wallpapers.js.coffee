@@ -48,3 +48,6 @@ $ ->
     $tagList.tagsinput('input').typeahead
       name: 'tags'
       prefetch: $tagList.data('prefetch-path')
+
+  $('[data-action=collect], [data-action=report]').click ->
+    alert 'Coming soon!'

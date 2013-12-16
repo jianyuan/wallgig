@@ -266,4 +266,8 @@ class Wallpaper < ActiveRecord::Base
   def to_s
     "Wallpaper \##{id}"
   end
+
+  def to_resolution_text
+    "#{image_width}x#{image_height}"
+  end
 end

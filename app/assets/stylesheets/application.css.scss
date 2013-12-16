@@ -20,6 +20,8 @@
 @import "bootstrap_overrides";
 @import "twitter/bootstrap";
 
+$wallpaper-thumbnail-width: 250px;
+
 html, body {
   min-height: 100%;
   margin: 0;
@@ -30,13 +32,112 @@ body {
   padding-top: 70px;
 }
 
-.container-full {
+.container {
   width: 100%;
   margin: 0 auto;
 }
 
+@mixin responsive-container-width($columns) {
+  $container-width: ($wallpaper-thumbnail-width + $grid-gutter-width) * $columns;
+  $container-padding: 40px;
+  @media (min-width: $container-width + $container-padding) {
+    .container {
+      width: $container-width;
+    }
+  }  
+}
+
+@include responsive-container-width(1);
+@include responsive-container-width(2);
+@include responsive-container-width(3);
+@include responsive-container-width(4);
+@include responsive-container-width(5);
+@include responsive-container-width(6);
+@include responsive-container-width(7);
+@include responsive-container-width(8);
+@include responsive-container-width(9);
+@include responsive-container-width(10);
+@include responsive-container-width(11);
+@include responsive-container-width(12);
+@include responsive-container-width(13);
+@include responsive-container-width(14);
+@include responsive-container-width(15);
+@include responsive-container-width(16);
+
 .open .dropdown-menu > li > a {
   padding: 10px 20px;
+}
+
+.list-wallpaper {
+  @extend .list-unstyled;
+  @extend .clearfix;
+  margin-left: -10px;
+  margin-right: -10px;
+  li {
+    width: 250px;
+    height: 188px;
+    margin: 10px;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    @include transition(all 0.1s ease-in);
+    .overlay {
+      position: absolute;
+      @include transition(all 0.1s ease-in);
+    }
+    .overlay-bottom {
+      $overlay-height: 30px;
+      left: 0;
+      width: 100%;
+      bottom: -$overlay-height;
+      height: $overlay-height;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      text-align: center;
+      line-height: $overlay-height;
+      .btn {
+        color: white;
+        .glyphicon {
+          margin-right: 4px;
+        }
+      }
+    }
+    .overlay-left {
+      top: 5px;
+      left: 5px;
+      opacity: 0;
+    }
+    .overlay-right {
+      top: 0;
+      right: 0;
+      opacity: 0;
+      .btn-report {
+        text-shadow: black 1px 1px 1px;
+      }
+    }
+    .label {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  li:hover {
+    @include box-shadow(#666 0px 0px 5px);
+    .overlay {
+    }
+    .overlay-bottom {
+      bottom: 0;
+    }
+    .overlay-left, .overlay-right {
+      opacity: 1;
+    }
+  }
+  .purity-sfw {
+  }
+  .purity-sketchy {
+    border: 3px solid #fda500;
+  }
+  .purity-nsfw {
+    border: 3px solid #bf0600;
+  }
 }
 
 // @import "users";
