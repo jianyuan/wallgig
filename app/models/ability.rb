@@ -8,7 +8,7 @@ class Ability
 
     alias_action :index, :create, :read, :update, :destroy, :to => :crud
 
-    if user.admin? || user.developer?
+    if user.admin?
       can :manage, :all
     end
 

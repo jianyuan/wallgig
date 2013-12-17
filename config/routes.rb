@@ -56,7 +56,7 @@ Wallgig::Application.routes.draw do
   use_doorkeeper
 
   # Admin routes
-  authenticate :user, ->(u) { u.admin? } do
+  authenticate :user, -> (user) { user.developer? } do
     require 'sidekiq/web'
     mount Sidekiq::Web => '/sidekiq'
   end

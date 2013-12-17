@@ -291,7 +291,6 @@ GEM
       railties (>= 3.2, < 5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    rolify (3.2.0)
     sass (3.2.12)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -405,7 +404,6 @@ DEPENDENCIES
   puma
   rack-cache
   rails (= 4.0.0)
-  rolify
   sass-rails (~> 4.0.0)
   sdoc
   sidekiq!

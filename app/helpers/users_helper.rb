@@ -8,21 +8,21 @@ module UsersHelper
   end
 
   def css_class_for(user)
-    if user.has_role? :developer
+    if user.developer?
       'user-developer'
-    elsif user.has_role? :admin
+    elsif user.admin?
       'user-admin'
-    elsif user.has_role? :moderator
+    elsif user.moderator?
       'user-moderator'
     end
   end
 
   def role_name_for(user)
-    if user.has_role? :developer
+    if user.developer?
       'Developer'
-    elsif user.has_role? :admin
+    elsif user.admin?
       'Admin'
-    elsif user.has_role? :moderator
+    elsif user.moderator?
       'Moderator'
     else
       'Member'
