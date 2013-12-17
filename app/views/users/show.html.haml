@@ -4,20 +4,22 @@
 
 - if @collections.any?
   %h3
-    Uploads
-    %small= @wallpapers.size
-  = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
-  = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
-    More
-    %span.glyphicon.glyphicon-chevron-right
-
-  %h3
     Collections
     %small= @collections.size
-  = render partial: 'collections/list', locals: {collections: @collections }
+  = render partial: 'collections/list', locals: { collections: @collections }
+
+- if @user.wallpapers.any?
+  %h3
+    Recent uploads
+    %small= @user.wallpapers.size
+  = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
+  - if @user.wallpapers.size > @wallpapers.size
+    .text-right
+      = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
+        More
+        %span.glyphicon.glyphicon-chevron-right
 
 - if @favourite_wallpapers.any?
   %h3
     Recent likes
-    %small= @favourite_wallpapers.size
   = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }

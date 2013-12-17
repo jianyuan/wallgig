@@ -17,6 +17,7 @@
 #  updated_at             :datetime
 #  username               :string(255)
 #  discourse_user_id      :integer
+#  wallpapers_count       :integer          default(0)
 #
 
 class User < ActiveRecord::Base

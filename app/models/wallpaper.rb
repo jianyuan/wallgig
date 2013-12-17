@@ -21,7 +21,7 @@
 #
 
 class Wallpaper < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   has_many :wallpaper_colors, -> { order('wallpaper_colors.percentage DESC') }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
   belongs_to :primary_color, class_name: 'Kolor'
