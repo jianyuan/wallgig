@@ -52,4 +52,4 @@
         = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
       = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
     .col-lg-10
-      = image_tag @wallpaper.image.url, class: "img-responsive img-#{@wallpaper.format}"
+      = image_tag @wallpaper.image.url, width: @wallpaper.image_width, height: @wallpaper.image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"

@@ -131,3 +131,17 @@
     border-color: $gray-darker;
   }
 }
+
+.img-wallpaper {
+  @include box-shadow(#666 0px 0px 5px);
+    @include transition(all 0.1s ease-in);
+
+  &.state-1 {
+    cursor: -webkit-zoom-in;  cursor: zoom-in;
+    @extend .img-responsive;
+  }
+
+  &.state-2 {
+    cursor: -webkit-zoom-out;  cursor: zoom-out;
+  }
+}
