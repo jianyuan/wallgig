@@ -4,7 +4,7 @@ class WallpaperResizerWorker
   sidekiq_options queue: :wallpapers
 
   def perform(wallpaper_id)
-    timeout(300) do
+    timeout(60) do
       @wallpaper = Wallpaper.find(wallpaper_id)
       generate_images
       @wallpaper.save!
