@@ -99,6 +99,7 @@ gem 'jquery-turbolinks'
 # services
 gem 'newrelic_rpm'
 gem 'sidekiq', github: 'mperham/sidekiq'
+gem 'sidetiq', github: 'tobiassvn/sidetiq'
 gem 'doorkeeper', '~> 0.7.0'
 gem 'tire'
 

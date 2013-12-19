@@ -292,12 +292,10 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def lock_purity!
-    self.purity_locked = true
-    save!
+    update_attribute :purity_locked, true
   end
 
   def unlock_purity!
-    self.purity_locked = false
-    save!
+    update_attribute :purity_locked, false
   end
 end

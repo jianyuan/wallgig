@@ -52,8 +52,15 @@ class WallpapersController < ApplicationController
   # PATCH/PUT /wallpapers/1.json
   def update
     authorize! :update, @wallpaper
+
+    update_params = if can? :update_purity, @wallpaper
+                      update_wallpaper_params
+                    else
+                      update_wallpaper_params_without_purity
+                    end
+
     respond_to do |format|
-      if @wallpaper.update(wallpaper_params)
+      if @wallpaper.update(update_params)
         format.html { redirect_to @wallpaper, notice: 'Wallpaper was successfully updated.' }
         format.json { head :no_content }
       else
@@ -211,15 +218,21 @@ class WallpapersController < ApplicationController
   # end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_wallpaper
       @wallpaper = Wallpaper.find(params[:id])
       authorize! :read, @wallpaper
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def wallpaper_params
       params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity)
+    end
+
+    def update_wallpaper_params
+      params.require(:wallpaper).permit(:purity, :tag_list, :image_gravity)
+    end
+
+    def update_wallpaper_params_without_purity
+      params.require(:wallpaper).permit(:tag_list, :image_gravity)
     end
 
     def search_params

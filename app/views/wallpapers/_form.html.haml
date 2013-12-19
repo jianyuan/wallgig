@@ -2,7 +2,8 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :purity
+    - unless @wallpaper.purity_locked?
+      = f.input :purity
     = f.input :image, as: :file unless @wallpaper.persisted?
     .form-group
       = f.label :tag_list

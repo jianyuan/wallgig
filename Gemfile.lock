@@ -32,14 +32,23 @@ GIT
 
 GIT
   remote: git://github.com/mperham/sidekiq.git
-  revision: 8eb3ba1b3481718fbc1419136c253db0dbf41490
+  revision: e7043c86513fea135d71912a202113e2a5a6a573
   specs:
     sidekiq (2.17.1)
       celluloid (>= 0.15.2)
       connection_pool (>= 1.0.0)
       json
-      redis (>= 3.0.4)
+      redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
+
+GIT
+  remote: git://github.com/tobiassvn/sidetiq.git
+  revision: a9f2258042d6735662dad481ea8899c6b8e9289e
+  specs:
+    sidetiq (0.5.0)
+      celluloid (>= 0.14.1)
+      ice_cube (~> 0.11.0)
+      sidekiq (>= 2.16.0)
 
 GEM
   remote: https://rubygems.org/
@@ -181,6 +190,7 @@ GEM
     httpauth (0.2.0)
     httpclient (2.3.4.1)
     i18n (0.6.9)
+    ice_cube (0.11.1)
     impressionist (1.4.13)
       httpclient (~> 2.2)
       nokogiri (>= 1.5.0)
@@ -407,6 +417,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.0)
   sdoc
   sidekiq!
+  sidetiq!
   simple_form
   sinatra (>= 1.3.0)
   slim
