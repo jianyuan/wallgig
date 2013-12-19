@@ -59,63 +59,17 @@ class Wallpaper < ActiveRecord::Base
 
   # Search
   include Tire::Model::Search
-  # include Tire::Model::Callbacks
-
-  # tire do
-  #   mapping do
-  #     indexes :id,                  type: 'string', index: 'not_analyzed'
-  #     indexes :user_id,             type: 'integer', index: 'not_analyzed'
-  #     indexes :width,               type: 'integer'
-  #     indexes :height,              type: 'integer'
-  #     indexes :purity,              type: 'string'
-  #     indexes :tags,                type: 'string', analyzer: 'keyword'
-  #     indexes :colors do
-  #       indexes :red,               type: 'integer'
-  #       indexes :green,             type: 'integer'
-  #       indexes :blue,              type: 'integer'
-  #       indexes :count,             type: 'float'
-  #     end
-  #     indexes :primary_color do
-  #       indexes :red,               type: 'integer'
-  #       indexes :green,             type: 'integer'
-  #       indexes :blue,              type: 'integer'
-  #     end
-  #     indexes :thumbnail_image_uid, type: 'string', index: 'not_analyzed'
-  #     indexes :created_at,          type: 'date_time'
-  #     indexes :views,               type: 'integer'
-  #   end
-  # end
-
-  # def to_indexed_json
-  #   {
-  #     id: id,
-  #     user_id: user_id,
-  #     width: image_width,
-  #     height: image_height,
-  #     purity: purity,
-  #     tags: tag_list,
-  #     colors: wallpaper_colors.map do |color|
-  #       {
-  #         red: color.red,
-  #         green: color.green,
-  #         blue: color.blue,
-  #         percentage: color.percentage
-  #       }
-  #     end,
-  #     primary_color: {
-  #       red: primary_color.try(:red),
-  #       green: primary_color.try(:green),
-  #       blue: primary_color.try(:blue)
-  #     },
-  #     thumbnail_image_uid: thumbnail_image_uid,
-  #     created_at: created_at,
-  #     views: impressions_count
-  #   }.to_json
-  # end
-
-  # def remove_index
-  #   self.index.remove self
-  # end
+  tire.mapping do
+      indexes :id,         type: 'integer', index: 'not_analyzed'
+      indexes :user_id,    type: 'integer', index: 'not_analyzed'
+      indexes :user,       type: 'string', index: 'not_analyzed'
+      indexes :purity,     type: 'string', index: 'not_analyzed'
+      indexes :tags,       type: 'string', analyzer: 'keyword'
+      indexes :width,      type: 'integer', index: 'not_analyzed'
+      indexes :height,     type: 'integer', index: 'not_analyzed'
+      indexes :views,      type: 'integer', index: 'not_analyzed'
+      indexes :colors,     type: 'string', analyzer: 'keyword'
+  end
 
   # Validation
   validates :image, presence: true
@@ -147,7 +101,8 @@ class Wallpaper < ActiveRecord::Base
   after_create :queue_extract_colors
   around_save :check_image_gravity_changed
   after_save :update_processing_status, if: :processing?
-  after_commit :update_index, unless: :processing?
+  after_save :update_index, unless: :processing?
+  after_destroy :update_index
 
   class << self
     def search(params)
