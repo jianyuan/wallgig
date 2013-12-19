@@ -27,6 +27,8 @@ class Ability
     if user.persisted?
       can :read, Wallpaper, processing: false
       can :index, Wallpaper, processing: false, id: user.favourite_wallpaper_ids
+      can :update_purity, Wallpaper
+      cannot :update_purity, Wallpaper, purity_locked: true
     end
     # Guests can view SFW wallpapers only
     can [:index, :read], Wallpaper, processing: false, purity: 'sfw'

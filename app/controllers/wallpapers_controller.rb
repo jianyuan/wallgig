@@ -76,7 +76,7 @@ class WallpapersController < ApplicationController
 
   # PATCH /wallpapers/1/update_purity.js
   def update_purity
-    authorize! :update, @wallpaper
+    authorize! :update_purity, @wallpaper
     @wallpaper.purity = params[:purity]
     @wallpaper.save
   end

@@ -1,5 +1,12 @@
 ActiveAdmin.register Wallpaper do
-  permit_params :purity, :tag_list
+  permit_params :purity, :purity_locked, :tag_list
+
+  batch_action :lock_purity do |selection|
+    Wallpaper.find(selection).each do |wallpaper|
+      wallpaper.lock_purity!
+    end
+    redirect_to collection_path, notice: 'Wallpaper purities locked!'
+  end
 
   index do
     selectable_column
@@ -16,6 +23,7 @@ ActiveAdmin.register Wallpaper do
       end
     end
     column :purity, &:purity_text
+    column :purity_locked
     column :tag_list, sortable: false
     column 'Views', :impressions_count
     column 'Favourites', sortable: :favourites_count do |wallpaper|
@@ -35,6 +43,7 @@ ActiveAdmin.register Wallpaper do
       attributes_table_for wallpaper do
         row :user
         row :purity, &:purity_text
+        row :purity_locked
         row :tag_list
         row :primary_color do |wallpaper|
           content_tag :div, nil, style: "width: 50px; height: 50px; background-color: #{wallpaper.primary_color.to_html_hex}" if wallpaper.primary_color.present?
@@ -78,6 +87,7 @@ ActiveAdmin.register Wallpaper do
   form do |f|
     f.inputs do
       f.input :purity
+      f.input :purity_locked
       f.input :tag_list
       f.input :image_gravity
     end

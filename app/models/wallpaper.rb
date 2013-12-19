@@ -18,6 +18,7 @@
 #  cached_tag_list     :text
 #  image_gravity       :string(255)
 #  favourites_count    :integer          default(0)
+#  purity_locked       :boolean          default(TRUE)
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -288,5 +289,15 @@ class Wallpaper < ActiveRecord::Base
 
   def to_resolution_text
     "#{image_width}x#{image_height}"
+  end
+
+  def lock_purity!
+    self.purity_locked = true
+    save!
+  end
+
+  def unlock_purity!
+    self.purity_locked = false
+    save!
   end
 end
