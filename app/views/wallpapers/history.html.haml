@@ -1,7 +1,7 @@
 %table.table
   %thead
     %tr
-      %th Version #
+      %th Revision #
       %th User
       %th Date/Time
       %th Event
@@ -10,10 +10,12 @@
   %tbody
     - @wallpaper.versions.order(created_at: :desc).each do |version|
       - wallpaper = version.reify
-      - user = User.find(version.whodunnit)
+      - user = User.where(id: version.whodunnit).first
       %tr
-        %td #{version.id}.#{version.index}
-        %td= link_to user.username, user
+        %td= version.index
+        %td
+          - if user.present?
+            = link_to user.username, user
         %td= version.created_at
         %td= version.event.humanize
         %td= wallpaper.try(:purity_text)
