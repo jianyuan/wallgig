@@ -14,31 +14,34 @@
           .panel-body
             = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
 
-        - if @wallpaper.tags.any?
+        - cache ['show', @wallpaper, 'tag_list'] do
+          - if @wallpaper.tags.any?
+            .panel-body
+              %ul.list-tags
+                - @wallpaper.tag_list.each do |tag|
+                  %li
+                    = link_to wallpapers_path(tags: [tag]) do
+                      = tag
+
+        - cache ['show', @wallpaper, 'color_and_metadata_list'] do
+          .panel-body.text-center
+            %ul.list-inline.list-color
+              - colors = search_params[:colors] || []
+              - @wallpaper.wallpaper_colors.each do |color|
+                %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
+
           .panel-body
-            %ul.list-tags
-              - @wallpaper.tag_list.each do |tag|
-                %li
-                  = link_to wallpapers_path(tags: [tag]), class: 'btn btn-sm btn-default' do
-                    = tag
+            %ul.list-metadata
+              %li
+                %strong Resolution
+                = @wallpaper.to_resolution_text
+              %li
+                %strong Views
+                = @wallpaper.impressions_count
+              %li
+                %strong Likes
+                = @wallpaper.favourites_count
 
-        .panel-body.text-center
-          %ul.list-inline.list-color
-            - colors = search_params[:colors] || []
-            - @wallpaper.wallpaper_colors.each do |color|
-              %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
-
-        .panel-body
-          %ul.list-metadata
-            %li
-              %strong Resolution
-              = @wallpaper.to_resolution_text
-            %li
-              %strong Views
-              = @wallpaper.impressions_count
-            %li
-              %strong Likes
-              = @wallpaper.favourites_count
         .panel-body
           .btn-group.btn-group-justified.btn-group-purity
             - Wallpaper.purity.options.each_entry do |label, value|
