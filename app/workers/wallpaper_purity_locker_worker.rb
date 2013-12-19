@@ -7,6 +7,6 @@ class WallpaperPurityLockerWorker
   def perform
     Wallpaper.where('updated_at < ?', 1.hour.ago)
              .where(purity: [:sketchy, :nsfw])
-             .update_attribute(:purity_locked, true)
+             .update_all(purity_locked: true)
   end
 end
