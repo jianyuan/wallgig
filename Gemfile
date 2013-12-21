@@ -59,7 +59,7 @@ group :development, :test do
   # specs
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-  gem 'factory_girl'
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'ffaker'
 
   # utilities
