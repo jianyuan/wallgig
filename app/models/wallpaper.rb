@@ -60,7 +60,6 @@ class Wallpaper < ActiveRecord::Base
   # Search
   include Tire::Model::Search
   tire.mapping do
-      indexes :id,         type: 'integer', index: 'not_analyzed'
       indexes :user_id,    type: 'integer', index: 'not_analyzed'
       indexes :user,       type: 'string', index: 'not_analyzed'
       indexes :purity,     type: 'string', index: 'not_analyzed'
@@ -224,17 +223,14 @@ class Wallpaper < ActiveRecord::Base
 
   def to_indexed_json
     {
-      id:              id,
-      user_id:         user_id,
-      user:            user.try(:username),
-      purity:          purity,
-      tags:            tag_list,
-      width:           image_width,
-      height:          image_height,
-      created_at:      created_at,
-      updated_at:      updated_at,
-      views:           impressions_count,
-      colors:          wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten
+      user_id: user_id,
+      user: user.try(:username),
+      purity: purity,
+      tags: tag_list,
+      width: image_width,
+      height: image_height,
+      views: impressions_count,
+      colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten
     }.to_json
   end
 
