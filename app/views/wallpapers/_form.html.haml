@@ -9,7 +9,7 @@
     .form-group
       = f.label :tag_list, label: 'Tags'
       = f.text_field :tag_list, class: 'form-control', data: { prefetch_path: api_v1_tags_path }
-    = f.input :image_gravity, label: 'Crop position', hint: 'Thumbnails will cropped to size. Therefore, please select the best anchor point to perform this operation.'
+    = f.input :image_gravity, label: 'Crop position'
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary btn-lg'

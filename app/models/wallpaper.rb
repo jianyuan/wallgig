@@ -61,15 +61,15 @@ class Wallpaper < ActiveRecord::Base
   # Search
   include Tire::Model::Search
   tire.mapping do
-      indexes :user_id,    type: 'integer', index: 'not_analyzed'
-      indexes :user,       type: 'string',  index: 'not_analyzed'
-      indexes :purity,     type: 'string',  index: 'not_analyzed'
-      indexes :tags,       type: 'string',  analyzer: 'keyword'
-      indexes :width,      type: 'integer', index: 'not_analyzed'
-      indexes :height,     type: 'integer', index: 'not_analyzed'
-      indexes :source,     type: 'string'
-      indexes :views,      type: 'integer', index: 'not_analyzed'
-      indexes :colors,     type: 'string',  analyzer: 'keyword'
+    indexes :user_id,    type: 'integer', index: 'not_analyzed'
+    indexes :user,       type: 'string',  index: 'not_analyzed'
+    indexes :purity,     type: 'string',  index: 'not_analyzed'
+    indexes :tags,       type: 'string',  analyzer: 'keyword'
+    indexes :width,      type: 'integer', index: 'not_analyzed'
+    indexes :height,     type: 'integer', index: 'not_analyzed'
+    indexes :source,     type: 'string'
+    indexes :views,      type: 'integer', index: 'not_analyzed'
+    indexes :colors,     type: 'string',  analyzer: 'keyword'
   end
 
   # Validation
@@ -116,6 +116,12 @@ class Wallpaper < ActiveRecord::Base
             if params[:tags].present?
               params[:tags].each do |tag|
                 must { term :tags, tag.downcase }
+              end
+            end
+
+            if params[:exclude_tags].present?
+              params[:exclude_tags].each do |tag|
+                must_not { term :tags, tag.downcase }
               end
             end
 

@@ -236,6 +236,6 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:q, :page, :width, :height, purity: [], tags: [], colors: [])
+      params.permit(:q, :page, :width, :height, purity: [], tags: [], exclude_tags: [], colors: [])
     end
 end

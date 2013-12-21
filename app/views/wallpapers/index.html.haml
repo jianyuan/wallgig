@@ -1,68 +1,78 @@
 .well
-  %h5 Tags
-  %ul.list-inline.list-facet
-    - @wallpapers.facets['tags']['terms'].each do |facet|
-      - tags = search_params[:tags] || []
-      - term = facet['term']
-      - count = facet['count']
-      %li
-        - if search_params[:tags].is_a?(Array) && search_params[:tags].include?(term)
-          = link_to wallpapers_path(search_params.merge(tags: (tags - [term]))), class: 'btn btn-sm btn-success' do
-            %span.glyphicon.glyphicon-minus
-            = term
-            %small= count
-        - else
-          = link_to wallpapers_path(search_params.merge(tags: (tags + [term]))), class: 'btn btn-sm btn-link' do
-            %span.glyphicon.glyphicon-plus
-            = term
-            %small= count
-
   .row
     .col-lg-2
-      %h5 Purity
-      %ul.list-inline.list-facet
-        - Wallpaper.purity.options.each_entry do |label, value|
-          - purity = search_params[:purity] || ['sfw']
-          - active = (search_params[:purity].blank? && value == 'sfw') || search_params[:purity].try(:include?, value)
-          %li
-            - if active
-              = link_to label, wallpapers_path(search_params.merge(purity: (purity - [value]))),
-                        class: "btn btn-sm btn-#{value} btn-active"
-            - else
-              = link_to label, wallpapers_path(search_params.merge(purity: (purity + [value]))),
-                        class: "btn btn-sm btn-#{value}"
+      %h5 Tags
+      %ul.list-facet.list-facet-tags.row
+        - tags = search_params[:tags] || []
+        - exclude_tags = search_params[:exclude_tags] || []
+        - rendered_terms = []
+        - [tags, exclude_tags, @wallpapers.facets['tags']['terms']].flatten.each do |facet_or_term|
+          - term = facet_or_term.try(:[], 'term') || facet_or_term
+          - next if rendered_terms.include? term
+          - rendered_terms << term
+          %li.col-lg-6
+            .btn-group
+              - if search_params[:tags].try(:include?, term)
+                = link_to wallpapers_path(search_params.merge(tags: (tags - [term]), exclude_tags: (exclude_tags - [term]))), class: 'btn btn-xs btn-success' do
+                  %span.glyphicon.glyphicon-plus
+              - else
+                = link_to wallpapers_path(search_params.merge(tags: (tags + [term]), exclude_tags: (exclude_tags - [term]))), class: 'btn btn-xs btn-default' do
+                  %span.glyphicon.glyphicon-plus
+              - if search_params[:exclude_tags].try(:include?, term)
+                = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags - [term]), tags: (tags - [term]))), class: 'btn btn-xs btn-danger' do
+                  %span.glyphicon.glyphicon-minus
+              - else
+                = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags + [term]), tags: (tags - [term]))), class: 'btn btn-xs btn-default' do
+                  %span.glyphicon.glyphicon-minus
+            = term
 
-    .col-lg-3
-      %h5 Colors
-      %ul.list-inline.list-color
-        - colors = search_params[:colors] || []
-        - Colorscore::Palette::DEFAULT.each do |hex|
-          - if colors.include?(hex)
-            %li.active
-              = link_to '', wallpapers_path(search_params.merge(colors: (colors - [hex]))), style: "background-color: \##{hex}"
-          - else
-            %li
-              = link_to '', wallpapers_path(search_params.merge(colors: (colors + [hex]))), style: "background-color: \##{hex}"
+    .col-lg-10
+      .row
+        .col-lg-1
+          %h5 Purity
+          %ul.list-facet
+            - Wallpaper.purity.options.each_entry do |label, value|
+              - purity = search_params[:purity] || ['sfw']
+              - active = (search_params[:purity].blank? && value == 'sfw') || search_params[:purity].try(:include?, value)
+              %li
+                - if active
+                  = link_to label, wallpapers_path(search_params.merge(purity: (purity - [value]))),
+                            class: "btn btn-sm btn-block btn-#{value} btn-active"
+                - else
+                  = link_to label, wallpapers_path(search_params.merge(purity: (purity + [value]))),
+                            class: "btn btn-sm btn-block btn-#{value}"
 
-    .col-lg-7
-      %h5 Resolution
-      .list-facet
-        - ScreenResolution.all.each do |screen_resolution|
-          - active = [screen_resolution.width.to_s, screen_resolution.height.to_s] == [search_params[:width], search_params[:height]]
-          - css_class = active ? 'success' : 'link'
-          - if active
-            = link_to wallpapers_path(search_params.merge(width: nil, height: nil)), class: "btn btn-sm btn-#{css_class}" do
-              = screen_resolution
-          - else
-            = link_to wallpapers_path(search_params.merge(width: screen_resolution.width, height: screen_resolution.height)), class: "btn btn-sm btn-#{css_class}" do
-              = screen_resolution
+        .col-lg-3
+          %h5 Colors
+          %ul.list-inline.list-color
+            - colors = search_params[:colors] || []
+            - Colorscore::Palette::DEFAULT.each do |hex|
+              - if colors.include?(hex)
+                %li.active
+                  = link_to '', wallpapers_path(search_params.merge(colors: (colors - [hex]))), style: "background-color: \##{hex}"
+              - else
+                %li
+                  = link_to '', wallpapers_path(search_params.merge(colors: (colors + [hex]))), style: "background-color: \##{hex}"
 
-  %h5 Query string
-  = form_tag wallpapers_path(search_params), method: :get do
-    .input-group
-      = text_field_tag :q, search_params[:q], class: 'form-control input-md', placeholder: 'e.g. width:>1920 height:>1080'
-      .input-group-btn
-        = submit_tag 'Search', class: 'btn btn-default btn-md'
+        .col-lg-7
+          %h5 Resolution
+          .list-facet
+            - ScreenResolution.all.each do |screen_resolution|
+              - active = [screen_resolution.width.to_s, screen_resolution.height.to_s] == [search_params[:width], search_params[:height]]
+              - css_class = active ? 'success' : 'link'
+              - if active
+                = link_to wallpapers_path(search_params.merge(width: nil, height: nil)), class: "btn btn-sm btn-#{css_class}" do
+                  = screen_resolution
+              - else
+                = link_to wallpapers_path(search_params.merge(width: screen_resolution.width, height: screen_resolution.height)), class: "btn btn-sm btn-#{css_class}" do
+                  = screen_resolution
+
+      %h5 Query string
+      = form_tag wallpapers_path(search_params), method: :get do
+        .input-group
+          = text_field_tag :q, search_params[:q], class: 'form-control input-md', placeholder: 'e.g. width:>1920 height:>1080'
+          .input-group-btn
+            = submit_tag 'Search', class: 'btn btn-default btn-md'
 
 
 = render 'list', wallpapers: @wallpapers
