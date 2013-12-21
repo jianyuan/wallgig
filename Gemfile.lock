@@ -42,6 +42,13 @@ GIT
       redis-namespace (>= 1.3.1)
 
 GIT
+  remote: git://github.com/seuros/capistrano-puma.git
+  revision: e61a1f2a40d00984a07d23b12e914ede0da9f1a6
+  specs:
+    capistrano-puma (0.1.0)
+      capistrano (~> 3.0.0)
+
+GIT
   remote: git://github.com/tobiassvn/sidetiq.git
   revision: a9f2258042d6735662dad481ea8899c6b8e9289e
   specs:
@@ -383,6 +390,7 @@ DEPENDENCIES
   cancan
   capistrano (~> 3.0.0)
   capistrano-bundler
+  capistrano-puma!
   capistrano-rails
   capistrano-rvm
   coffee-rails (~> 4.0.0)

@@ -45,6 +45,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
   gem 'capistrano-rvm'
+  gem 'capistrano-puma', github: 'seuros/capistrano-puma'
 end
 
 # Use Foreman to manage the app
@@ -60,7 +61,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
 end
-gem 'sinatra', '>= 1.3.0', :require => nil
 
 # auth
 gem 'devise'
@@ -100,6 +100,7 @@ gem 'jquery-turbolinks'
 gem 'newrelic_rpm'
 gem 'sidekiq', github: 'mperham/sidekiq'
 gem 'sidetiq', github: 'tobiassvn/sidetiq'
+gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'doorkeeper', '~> 0.7.0'
 gem 'tire'
 
