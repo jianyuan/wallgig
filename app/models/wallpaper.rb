@@ -62,20 +62,22 @@ class Wallpaper < ActiveRecord::Base
   include Tire::Model::Search
   tire.mapping do
       indexes :user_id,    type: 'integer', index: 'not_analyzed'
-      indexes :user,       type: 'string', index: 'not_analyzed'
-      indexes :purity,     type: 'string', index: 'not_analyzed'
-      indexes :tags,       type: 'string', analyzer: 'keyword'
+      indexes :user,       type: 'string',  index: 'not_analyzed'
+      indexes :purity,     type: 'string',  index: 'not_analyzed'
+      indexes :tags,       type: 'string',  analyzer: 'keyword'
       indexes :width,      type: 'integer', index: 'not_analyzed'
       indexes :height,     type: 'integer', index: 'not_analyzed'
+      indexes :source,     type: 'string'
       indexes :views,      type: 'integer', index: 'not_analyzed'
-      indexes :colors,     type: 'string', analyzer: 'keyword'
+      indexes :colors,     type: 'string',  analyzer: 'keyword'
   end
 
   # Validation
   validates :image, presence: true
+  validates_size_of :image,      maximum: 20.megabytes,                       on: :create
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
   validates_property :width,     of: :image, in: (600..10240),                on: :create
-  validates_property :width,     of: :image, in: (600..10240),                on: :create
+  validates_property :height,    of: :image, in: (600..10240),                on: :create
 
   # Scopes
   scope :processing, -> { where(processing: true ) }
@@ -195,7 +197,7 @@ class Wallpaper < ActiveRecord::Base
       self.wallpaper_colors.create(color: color, percentage: score[0])
     end
 
-    self.save
+    touch
   end
 
   def check_image_gravity_changed
@@ -230,6 +232,7 @@ class Wallpaper < ActiveRecord::Base
       tags: tag_list,
       width: image_width,
       height: image_height,
+      source: source,
       views: impressions_count,
       colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten
     }.to_json
