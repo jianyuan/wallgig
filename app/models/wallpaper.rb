@@ -240,7 +240,9 @@ class Wallpaper < ActiveRecord::Base
       height: image_height,
       source: source,
       views: impressions_count,
-      colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten
+      colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten,
+      created_at: created_at,
+      updated_at: updated_at
     }.to_json
   end
 
