@@ -56,10 +56,22 @@ gem 'foreman'
 
 # development and test
 group :development, :test do
+  # specs
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+  gem 'factory_girl'
+  gem 'ffaker'
+
   # utilities
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'spork-rails'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-sidekiq'
+  gem 'guard-spork'
+  gem 'rb-inotify'
 end
 
 # auth
