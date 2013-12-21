@@ -224,15 +224,15 @@ class WallpapersController < ApplicationController
     end
 
     def wallpaper_params
-      params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity)
+      params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity, :source)
     end
 
     def update_wallpaper_params
-      params.require(:wallpaper).permit(:purity, :tag_list, :image_gravity)
+      params.require(:wallpaper).permit(:purity, :tag_list, :image_gravity, :source)
     end
 
     def update_wallpaper_params_without_purity
-      params.require(:wallpaper).permit(:tag_list, :image_gravity)
+      params.require(:wallpaper).permit(:tag_list, :image_gravity, :source)
     end
 
     def search_params

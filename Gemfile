@@ -88,7 +88,6 @@ gem 'acts_as_list'
 gem 'slim'
 gem 'haml-rails'
 gem 'simple_form'
-gem 'active_link_to'
 gem 'eco'
 
 # assets
@@ -111,6 +110,8 @@ gem 'miro'
 gem 'color'
 gem 'colorscore'
 gem 'httparty'
+gem 'rails_autolink'
+gem 'active_link_to'
 # gem 'phashion'
 
 # rack

@@ -2,13 +2,14 @@
   = f.error_notification
 
   .form-inputs
+    = f.input :image, as: :file unless @wallpaper.persisted?
+    = f.input :source, hint: 'Enter URL or Artist'
     - unless @wallpaper.purity_locked?
       = f.input :purity
-    = f.input :image, as: :file unless @wallpaper.persisted?
     .form-group
-      = f.label :tag_list
+      = f.label :tag_list, label: 'Tags'
       = f.text_field :tag_list, class: 'form-control', data: { prefetch_path: api_v1_tags_path }
-    = f.input :image_gravity, hint: 'Thumbnails will cropped to size. Therefore, please select the best anchor point to perform this operation.'
+    = f.input :image_gravity, label: 'Crop position', hint: 'Thumbnails will cropped to size. Therefore, please select the best anchor point to perform this operation.'
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary btn-lg'

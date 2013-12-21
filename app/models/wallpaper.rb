@@ -18,7 +18,8 @@
 #  cached_tag_list     :text
 #  image_gravity       :string(255)
 #  favourites_count    :integer          default(0)
-#  purity_locked       :boolean          default(TRUE)
+#  purity_locked       :boolean          default(FALSE)
+#  source              :string(255)
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -55,7 +56,7 @@ class Wallpaper < ActiveRecord::Base
   is_impressionable counter_cache: true
 
   # Paper trail
-  has_paper_trail only: [:purity, :cached_tag_list]
+  has_paper_trail only: [:purity, :cached_tag_list, :source]
 
   # Search
   include Tire::Model::Search

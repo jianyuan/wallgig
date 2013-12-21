@@ -18,7 +18,8 @@
 #  cached_tag_list     :text
 #  image_gravity       :string(255)
 #  favourites_count    :integer          default(0)
-#  purity_locked       :boolean          default(TRUE)
+#  purity_locked       :boolean          default(FALSE)
+#  source              :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
