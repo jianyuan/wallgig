@@ -83,6 +83,7 @@ class Wallpaper < ActiveRecord::Base
   scope :processing, -> { where(processing: true ) }
   scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
+  scope :latest, -> { order(created_at: :desc) }
   # scope :near_to_color, ->(color) {
   #   return if color.blank?
   #   color_ids = Kolor.near_to(color).map(&:id)

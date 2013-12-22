@@ -53,14 +53,8 @@ class WallpapersController < ApplicationController
   def update
     authorize! :update, @wallpaper
 
-    update_params = if can? :update_purity, @wallpaper
-                      update_wallpaper_params
-                    else
-                      update_wallpaper_params_without_purity
-                    end
-
     respond_to do |format|
-      if @wallpaper.update(update_params)
+      if @wallpaper.update(update_wallpaper_params)
         format.html { redirect_to @wallpaper, notice: 'Wallpaper was successfully updated.' }
         format.json { head :no_content }
       else
@@ -75,6 +69,7 @@ class WallpapersController < ApplicationController
   def destroy
     authorize! :destroy, @wallpaper
     @wallpaper.destroy
+
     respond_to do |format|
       format.html { redirect_to wallpapers_url }
       format.json { head :no_content }
@@ -227,12 +222,20 @@ class WallpapersController < ApplicationController
       params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity, :source)
     end
 
-    def update_wallpaper_params
+    def update_wallpaper_params_with_purity
       params.require(:wallpaper).permit(:purity, :tag_list, :image_gravity, :source)
     end
 
     def update_wallpaper_params_without_purity
       params.require(:wallpaper).permit(:tag_list, :image_gravity, :source)
+    end
+
+    def update_wallpaper_params
+      if can? :update_purity, @wallpaper
+        update_wallpaper_params_with_purity
+      else
+        update_wallpaper_params_without_purity
+      end
     end
 
     def search_params

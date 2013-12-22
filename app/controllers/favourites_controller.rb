@@ -9,6 +9,7 @@ class FavouritesController < ApplicationController
   # POST /wallpapers/1/favourites.json
   def create
     @favourite = @wallpaper.favourites.find_or_initialize_by(user: current_user)
+    authorize! :create, @favourite
 
     if @favourite.save
       render partial: 'wallpapers/favourite_button', locals: { wallpaper: @wallpaper, favourite: @favourite }
@@ -20,6 +21,7 @@ class FavouritesController < ApplicationController
   # PATCH /wallpapers/1/favourites/1
   # PATCH /wallpapers/1/favourites/1.json
   def update
+    authorize! :update, @favourite
     if favourite_params[:collection_id].present?
       @collection = Collection.find(favourite_params[:collection_id])
       authorize! :crud, @collection
@@ -38,6 +40,7 @@ class FavouritesController < ApplicationController
   # DELETE /wallpapers/1/favourites/1
   # DELETE /wallpapers/1/favourites/1.json
   def destroy
+    authorize! :destroy, @favourite
     @favourite.destroy
 
     render partial: 'wallpapers/favourite_button', locals: { wallpaper: @wallpaper, favourite: nil }
@@ -51,7 +54,7 @@ class FavouritesController < ApplicationController
 
     def set_favourite
       @favourite = @wallpaper.favourites.find(params[:id])
-      authorize! :crud, @favourite
+      authorize! :read, @favourite
     end
 
     def favourite_params

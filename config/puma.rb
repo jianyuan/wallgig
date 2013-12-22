@@ -1,5 +1,5 @@
 environment 'production'
-threads 8, 32
+# threads 8, 32
 workers %x{grep -c processor /proc/cpuinfo}.strip
 preload_app!
 
