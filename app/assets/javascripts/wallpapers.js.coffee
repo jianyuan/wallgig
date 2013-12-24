@@ -12,12 +12,20 @@ $ ->
         $this.addClass('state-1')
 
   if $('body.wallpapers.index, body.collections.show').length == 1
+    placeholderImageSrc = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC'
     applyLazyLoad = ->
-      $('.list-wallpaper .img-wallpaper:not(.lazyloaded)')
-        .lazyload
-          threshold: 200
-          effect: 'fadeIn'
-        .addClass 'lazyloaded'
+      $('.list-wallpaper .img-wallpaper.lazy:not(.lazy-loaded)').each ->
+        $this = $(this)
+        $this.attr('src', placeholderImageSrc)
+        $this.addClass('lazy-loaded')
+        $this.on 'load', ->
+          $this.addClass 'lazy-show'
+        $this.bind 'inview', =>
+          $this.unbind('inview')
+          $this.attr('src', $this.data('original'))
+          if this.complete
+            $this.load()
+
 
     loadNextPage = (event, visible) ->
       return unless visible

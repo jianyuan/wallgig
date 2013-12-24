@@ -143,7 +143,7 @@
 
 .img-wallpaper {
   @include box-shadow(#666 0px 0px 5px);
-    @include transition(all 0.1s ease-in);
+  @include transition(all 0.1s ease-in);
 
   &.state-1 {
     cursor: -webkit-zoom-in;  cursor: zoom-in;
@@ -157,4 +157,12 @@
 
 .form-group.favourite_collection {
   margin-bottom: 0;
+}
+
+.lazy {
+  opacity: 0;
+  @include transition(all 0.2s ease-in);
+  &.lazy-show {
+    opacity: 1;
+  }
 }
