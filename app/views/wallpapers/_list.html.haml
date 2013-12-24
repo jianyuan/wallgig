@@ -1,9 +1,10 @@
 - if wallpapers.any?
   %ul.list-wallpaper
     - wallpapers.each do |wallpaper|
+      - next unless wallpaper.thumbnail_image.present?
       %li{:class => "purity-#{wallpaper.purity}", :data => {:wallpaper_id => wallpaper.id}}
         = link_to wallpaper do
-          = image_tag wallpaper.thumbnail_image.try(:url), width: 250, height: 188
+          = image_tag nil, width: 250, height: 188, class: 'img-wallpaper', data: { original: wallpaper.thumbnail_image.url }
         .overlay.overlay-right
           = link_to '#', class: 'btn btn-sm btn-report', data: { action: 'report' } do
             %span.glyphicon.glyphicon-remove.text-danger

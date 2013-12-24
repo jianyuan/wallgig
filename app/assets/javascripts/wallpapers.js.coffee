@@ -12,6 +12,13 @@ $ ->
         $this.addClass('state-1')
 
   if $('body.wallpapers.index, body.collections.show').length == 1
+    applyLazyLoad = ->
+      $('.list-wallpaper .img-wallpaper:not(.lazyloaded)')
+        .lazyload
+          threshold: 200
+          effect: 'fadeIn'
+        .addClass 'lazyloaded'
+
     loadNextPage = (event, visible) ->
       return unless visible
       $this = $(this)
@@ -22,10 +29,12 @@ $ ->
         $main = $('#main')
         $main.find('.loading').remove()
         $main.append(html)
+        applyLazyLoad()
         $('[rel=next]').bind('inview', loadNextPage)
 
       ga('send', 'pageview', url) if ga
 
+    applyLazyLoad()
     $('[rel=next]').bind('inview', loadNextPage)
 
   if $('.btn-group-purity').length

@@ -21,5 +21,6 @@
 //= require ladda
 //= require typeahead.js/typeahead
 //= require bootstrap-tagsinput/bootstrap-tagsinput
+//= require jquery.lazyload
 //= require_tree .
 //= require_tree ../templates/.
