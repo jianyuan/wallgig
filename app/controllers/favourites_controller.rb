@@ -53,7 +53,7 @@ class FavouritesController < ApplicationController
     end
 
     def set_favourite
-      @favourite = @wallpaper.favourites.find(params[:id])
+      @favourite = current_user.favourites.find_by(wallpaper: @wallpaper)
       authorize! :read, @favourite
     end
 

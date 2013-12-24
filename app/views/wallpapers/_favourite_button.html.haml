@@ -2,12 +2,12 @@
   .row
     .col-sm-4
       - if favourite.present?
-        = link_to wallpaper_favourite_path(wallpaper, favourite), method: :delete, remote: true, class: 'btn btn-info btn-disabled', data: { disable_with: '&hellip;' } do
+        = link_to wallpaper_favourite_path(wallpaper), method: :delete, remote: true, class: 'btn btn-info btn-disabled', data: { disable_with: '&hellip;' } do
           Liked
       - else
-        = link_to wallpaper_favourites_path(wallpaper), method: :post, remote: true, class: 'btn btn-info', data: { disable_with: '&hellip;' } do
+        = link_to wallpaper_favourite_path(wallpaper), method: :post, remote: true, class: 'btn btn-info', data: { disable_with: '&hellip;' } do
           Like
     - if favourite.present?
       .col-sm-8
-        = simple_form_for([@wallpaper, favourite], method: :patch, remote: true, data: { action: 'change-collection' }) do |f|
+        = simple_form_for(favourite, url: wallpaper_favourite_path(wallpaper), method: :patch, remote: true, data: { action: 'change-collection' }) do |f|
           - f.association :collection, label: false, collection: current_user.collections, include_blank: 'No Collection'

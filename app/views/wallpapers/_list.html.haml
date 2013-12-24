@@ -9,7 +9,7 @@
             %span.glyphicon.glyphicon-remove.text-danger
         .overlay.overlay-bottom
           %strong= wallpaper.to_resolution_text
-          = link_to '#', class: 'btn btn-sm btn-like pull-left', data: { action: 'like' } do
+          = link_to toggle_wallpaper_favourite_path(wallpaper), class: 'btn btn-sm btn-like pull-left', method: :post, remote: true, data: { action: 'like' } do
             %span.glyphicon.glyphicon-thumbs-up
             = wallpaper.favourites.size
           = link_to '#', class: 'btn btn-sm btn-collect pull-right', data: { action: 'collect' } do

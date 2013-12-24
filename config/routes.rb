@@ -33,7 +33,11 @@ Wallgig::Application.routes.draw do
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end
 
-    resources :favourites
+    resource :favourite do
+      member do
+        post 'toggle'
+      end
+    end
   end
 
   # API
