@@ -19,8 +19,6 @@
 //= require jquery.inview
 //= require spin
 //= require ladda
-// require typeahead.js/typeahead
-// require bootstrap-tagsinput/bootstrap-tagsinput
 //= require typeahead
 //= require tagmanager
 //= require_tree .
