@@ -1,7 +1,7 @@
 $ ->
   if $('body.wallpapers.show').length == 1
+    # Wallpaper resizer
     $imgWallpaper = $('.img-wallpaper')
-
     $imgWallpaper.click ->
       $this = $(this)
       if $this.is('.state-1')
@@ -10,6 +10,19 @@ $ ->
       else
         $this.removeClass('state-2')
         $this.addClass('state-1')
+
+    # Comments
+    $commentForm = $('form.comment')
+    $commentInput = $commentForm.find('#comment_comment')
+    $commentList = $('.list-comment')
+    $commentPanelBody = $commentList.closest('.panel-body')
+    $commentForm.on 'ajax:success', (event, data, status, xhr) ->
+      $commentInput.val('')
+      $commentList.prepend data
+      $commentPanelBody.removeClass('hide')
+    $('[data-action=load-comments]').on 'ajax:success', (event, data, status, xhr) ->
+      $commentList.html data
+      $(this).remove()
 
   if $('body.wallpapers.index, body.collections.show, body.users.show').length == 1
     applyLazyLoad = ->

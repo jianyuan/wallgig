@@ -66,17 +66,17 @@ class FavouritesController < ApplicationController
   end
 
   private
-  def set_wallpaper
-    @wallpaper = Wallpaper.find(params[:wallpaper_id])
-    authorize! :read, @wallpaper
-  end
+    def set_wallpaper
+      @wallpaper = Wallpaper.find(params[:wallpaper_id])
+      authorize! :read, @wallpaper
+    end
 
-  def set_favourite
-    @favourite = current_user.favourites.find_by(wallpaper: @wallpaper)
-    authorize! :read, @favourite
-  end
+    def set_favourite
+      @favourite = current_user.favourites.find_by(wallpaper: @wallpaper)
+      authorize! :read, @favourite
+    end
 
-  def favourite_params
-    params.require(:favourite).permit(:collection_id)
-  end
+    def favourite_params
+      params.require(:favourite).permit(:collection_id)
+    end
 end
