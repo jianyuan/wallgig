@@ -15,3 +15,18 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.status_tag {
+  &.yes {
+    @extend .status_tag.ok;
+  }
+  &.no {
+    @extend .status_tag.error;
+  }
+  &.sketchy {
+    background-color: #fda500;
+  }
+  &.nsfw {
+    background-color: #bf0600;
+  }
+}

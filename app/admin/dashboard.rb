@@ -14,6 +14,13 @@ ActiveAdmin.register_page "Dashboard" do
         end
       end
       column do
+        panel 'Recent Sign Ins' do
+          ul do
+            User.where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(10).map do |user|
+              li link_to("#{user.username} #{time_ago_in_words(user.last_sign_in_at)} ago", admin_user_path(user))
+            end
+          end
+        end
         panel 'Recent Sign Ups' do
           ul do
             User.order(created_at: :desc).limit(10).map do |user|

@@ -8,6 +8,7 @@ ActiveAdmin.register Wallpaper do
     redirect_to collection_path, notice: 'Wallpaper purities locked!'
   end
 
+  %i(user tags purity purity_locked processing image_width image_height source created_at updated_at).each {|f| filter f }
   index do
     selectable_column
     column 'Id', sortable: :id do |wallpaper|
@@ -22,9 +23,11 @@ ActiveAdmin.register Wallpaper do
         end
       end
     end
-    column :purity, &:purity_text
+    column 'Purity', sortable: :purity do |wallpaper|
+      status_tag wallpaper.purity_text
+    end
     column :purity_locked
-    column :tag_list, sortable: false
+    column 'Tags', :cached_tag_list, sortable: false
     column 'Views', :impressions_count
     column 'Favourites', sortable: :favourites_count do |wallpaper|
       link_to wallpaper.favourites_count, admin_favourites_path(q: { wallpaper_id_eq: wallpaper })
@@ -100,4 +103,9 @@ ActiveAdmin.register Wallpaper do
     redirect_to action: :show, notice: 'Thumbnail recreation request queued.'
   end
 
+  controller do
+    def scoped_collection
+      Wallpaper.includes(:user)
+    end
+  end
 end
