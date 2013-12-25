@@ -6,10 +6,12 @@ class UsersController < ApplicationController
   def show
     @wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :index)
+                       .latest
                        .limit(6)
 
     @favourite_wallpapers = @user.favourite_wallpapers
                                  .accessible_by(current_ability, :index)
+                                 .latest
                                  .limit(6)
 
     @collections = @user.collections

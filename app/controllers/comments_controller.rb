@@ -24,11 +24,14 @@ class CommentsController < ApplicationController
       if params[:wallpaper_id].present?
         @wallpaper = Wallpaper.find(params[:wallpaper_id])
         authorize! :read, @wallpaper
+      elsif params[:user_id].present?
+        @user = User.find_by(username: params[:user_id])
+        authorize! :read, @user
       end
     end
 
     def parent
-      @wallpaper
+      @wallpaper || @user
     end
 
     def comment_params
