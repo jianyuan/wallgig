@@ -12,7 +12,7 @@
   %h3
     Recent uploads
     %small= @user.wallpapers.size
-  = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
+  = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers, current_user_favourites: @current_user_favourites }
   - if @user.wallpapers.size > @wallpapers.size
     .text-right
       = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
@@ -22,4 +22,4 @@
 - if @favourite_wallpapers.any?
   %h3
     Recent likes
-  = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }
+  = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers, current_user_favourites: @current_user_favourites }

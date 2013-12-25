@@ -11,4 +11,4 @@
     %li= pluralize @collection.wallpapers.size, 'wallpaper'
     %li= pluralize @collection.impressions_count, 'view'
 
-= render 'wallpapers/list', wallpapers: @wallpapers
+= render 'wallpapers/list', wallpapers: @wallpapers, current_user_favourites: @current_user_favourites

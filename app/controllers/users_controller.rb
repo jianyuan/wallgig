@@ -18,6 +18,13 @@ class UsersController < ApplicationController
                         .where({ wallpapers: { purity: 'sfw' }})
                         .where.not({ wallpapers: { id: nil } })
                         .ordered
+
+    # OPTIMIZE
+    if user_signed_in?
+      @current_user_favourites = current_user.favourites.where(wallpaper_id: @wallpapers.map(&:id) + @favourite_wallpapers.map(&:id)).group(:wallpaper_id).size
+    else
+      @current_user_favourites = {}
+    end
   end
 
   private

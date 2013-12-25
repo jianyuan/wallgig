@@ -16,16 +16,11 @@ $ ->
     applyLazyLoad = ->
       $('.list-wallpaper .img-wallpaper.lazy:not(.lazy-loaded)').each ->
         $this = $(this)
-        $this.attr('src', placeholderImageSrc)
         $this.addClass('lazy-loaded')
         $this.on 'load', ->
           $this.addClass 'lazy-show'
-        $this.bind 'inview', =>
-          $this.unbind('inview')
-          $this.attr('src', $this.data('original'))
-          if this.complete
-            $this.load()
-
+        $this.one 'inview', =>
+          $this.attr('src', $this.data('src'))
 
     loadNextPage = (event, visible) ->
       return unless visible
@@ -45,11 +40,15 @@ $ ->
     applyLazyLoad()
     $('[rel=next]').bind('inview', loadNextPage)
 
-
+    # Favourite action
     $('body').on 'click', '[data-action=like]', (event) ->
       $this = $(this)
       $this.on 'ajax:success', (event, data, status, xhr) ->
         $this.find('span.count').text data.count
+        if data.favourite
+          $this.addClass 'btn-success'
+        else
+          $this.removeClass 'btn-success'
       $this.on 'ajax:error', (event, xhr, status, error) ->
         # alert error
         Wallgig.Utilities.alert 'Error!', error

@@ -161,7 +161,7 @@
 
 .lazy {
   opacity: 0;
-  @include transition(all 0.2s ease-in);
+  @include transition(opacity 0.2s ease-in);
   &.lazy-show {
     opacity: 1;
   }
