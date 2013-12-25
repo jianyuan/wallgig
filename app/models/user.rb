@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable
 
+  acts_as_commentable
+
   validates :username,
             presence: true,
             uniqueness: { case_sensitive: false },

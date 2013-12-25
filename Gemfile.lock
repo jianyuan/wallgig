@@ -88,6 +88,7 @@ GEM
       tzinfo (~> 0.3.37)
     acts-as-taggable-on (2.4.1)
       rails (>= 3, < 5)
+    acts_as_commentable (4.0.1)
     acts_as_list (0.3.0)
       activerecord (>= 3.0)
     ancestry (2.0.0)
@@ -442,6 +443,7 @@ DEPENDENCIES
   active_link_to
   activeadmin!
   acts-as-taggable-on
+  acts_as_commentable
   acts_as_list
   ancestry
   anjlab-bootstrap-rails!

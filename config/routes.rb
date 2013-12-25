@@ -1,4 +1,8 @@
 Wallgig::Application.routes.draw do
+  concern :commentable do
+    resources :comments, only: [:index, :create]
+  end
+
   root 'wallpapers#index'
 
   # Account
@@ -18,11 +22,13 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Users
+  resources :users, only: [:show] do
+    concerns :commentable
+  end
+
   devise_for :users, controllers: {
     sessions: 'sessions'
   }
-
-  resources :users
 
   # Wallpapers
   resources :wallpapers do
@@ -30,6 +36,8 @@ Wallgig::Application.routes.draw do
       get 'history'
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end
+
+    concerns :commentable
 
     resource :favourite do
       member do

@@ -1,7 +1,7 @@
 $ ->
   if $('body.wallpapers.show').length == 1
+    # Wallpaper resizer
     $imgWallpaper = $('.img-wallpaper')
-
     $imgWallpaper.click ->
       $this = $(this)
       if $this.is('.state-1')

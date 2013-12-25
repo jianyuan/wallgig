@@ -61,6 +61,18 @@
                         method: :patch, remote: true,
                         data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
 
+      .panel.panel-default
+        .panel-heading Comments
+        .panel-body
+          = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
+            = f.input :comment, as: :text, label: false
+            = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
+        - comments = @wallpaper.comments.includes(:user).recent
+        .panel-body.container-comments{:class => ('hide' if comments.empty?)}
+          %ul.list-unstyled.list-comment= render comments.limit(4)
+          - if comments.size > 4
+            = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
+
       - if can? :update, @wallpaper
         = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
         = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'

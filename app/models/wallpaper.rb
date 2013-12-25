@@ -46,6 +46,9 @@ class Wallpaper < ActiveRecord::Base
     end
   end
 
+  # Comments
+  acts_as_commentable
+
   # Tags
   acts_as_taggable
 
