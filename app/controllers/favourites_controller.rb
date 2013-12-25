@@ -5,8 +5,8 @@ class FavouritesController < ApplicationController
 
   layout false
 
-  # POST /wallpapers/1/favourites
-  # POST /wallpapers/1/favourites.json
+  # POST /wallpapers/1/favourite
+  # POST /wallpapers/1/favourite.json
   def create
     @favourite = @wallpaper.favourites.find_or_initialize_by(user: current_user)
     authorize! :create, @favourite
@@ -18,8 +18,8 @@ class FavouritesController < ApplicationController
     end
   end
 
-  # PATCH /wallpapers/1/favourites/1
-  # PATCH /wallpapers/1/favourites/1.json
+  # PATCH /wallpapers/1/favourite
+  # PATCH /wallpapers/1/favourite.json
   def update
     authorize! :update, @favourite
     if favourite_params[:collection_id].present?
@@ -37,8 +37,27 @@ class FavouritesController < ApplicationController
     end
   end
 
-  # DELETE /wallpapers/1/favourites/1
-  # DELETE /wallpapers/1/favourites/1.json
+  # POST /wallpapers/1/favourite
+  # POST /wallpapers/1/favourite.json
+  def toggle
+    @favourite = @wallpaper.favourites.find_or_initialize_by(user: current_user)
+    if @favourite.persisted?
+      authorize! :destroy, @favourite
+      status = @favourite.destroy
+    else
+      authorize! :create, @favourite
+      status = @favourite.save
+    end
+
+    if status
+      render action: 'show'
+    else
+      render action: 'show', status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /wallpapers/1/favourite
+  # DELETE /wallpapers/1/favourite.json
   def destroy
     authorize! :destroy, @favourite
     @favourite.destroy

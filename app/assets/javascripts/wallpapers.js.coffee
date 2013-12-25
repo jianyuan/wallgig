@@ -11,7 +11,7 @@ $ ->
         $this.removeClass('state-2')
         $this.addClass('state-1')
 
-  if $('body.wallpapers.index, body.collections.show').length == 1
+  if $('body.wallpapers.index, body.collections.show, body.users.show').length == 1
     placeholderImageSrc = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC'
     applyLazyLoad = ->
       $('.list-wallpaper .img-wallpaper.lazy:not(.lazy-loaded)').each ->
@@ -45,6 +45,17 @@ $ ->
     applyLazyLoad()
     $('[rel=next]').bind('inview', loadNextPage)
 
+
+    $('body').on 'click', '[data-action=like]', (event) ->
+      $this = $(this)
+      $this.on 'ajax:success', (event, data, status, xhr) ->
+        $this.find('span.count').text data.count
+      $this.on 'ajax:error', (event, xhr, status, error) ->
+        # alert error
+        Wallgig.Utilities.alert 'Error!', error
+      $this.on 'ajax:complete', (event, xhr, status) ->
+        Ladda.stopAll()
+
   if $('.btn-group-purity').length
     Ladda.bind '.btn-group-purity .btn'
     $this = $(this)
@@ -65,9 +76,3 @@ $ ->
     $tagList.tagsinput('input').typeahead
       name: 'tags'
       prefetch: $tagList.data('prefetch-path')
-
-  $('body').on 'click', '[data-action=like]', (event) ->
-    null
-  # $('[data-action=like], [data-action=collect], [data-action=report]').click (event) ->
-  #   event.preventDefault()
-  #   alert 'Coming soon! Please view the wallpaper page to perform that action.'

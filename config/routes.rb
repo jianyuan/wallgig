@@ -1,6 +1,4 @@
 Wallgig::Application.routes.draw do
-  resources :favourites
-
   root 'wallpapers#index'
 
   # Account

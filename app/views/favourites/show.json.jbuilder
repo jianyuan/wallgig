@@ -1,0 +1,1 @@
+json.count @wallpaper.favourites.count

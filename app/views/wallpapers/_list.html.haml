@@ -10,12 +10,15 @@
             %span.glyphicon.glyphicon-remove.text-danger
         .overlay.overlay-bottom
           %strong= wallpaper.to_resolution_text
-          = link_to toggle_wallpaper_favourite_path(wallpaper), class: 'btn btn-sm btn-like pull-left', method: :post, remote: true, data: { action: 'like' } do
+          = link_to toggle_wallpaper_favourite_path(wallpaper, format: :json), class: 'btn btn-sm btn-like pull-left', method: :post, remote: true, data: { action: 'like' } do
             %span.glyphicon.glyphicon-thumbs-up
-            = wallpaper.favourites.size
-          = link_to '#', class: 'btn btn-sm btn-collect pull-right', data: { action: 'collect' } do
-            %span.glyphicon.glyphicon-folder-open
-            = wallpaper.favourites.size
+            %span.count= wallpaper.favourites_count
+          .btn.btn-sm.pull-right
+            %span.glyphicon.glyphicon-eye-open
+            = wallpaper.impressions_count
+          -# = link_to '#', class: 'btn btn-sm btn-collect pull-right', data: { action: 'collect' } do
+          -#   %span.glyphicon.glyphicon-folder-open
+          -#   = wallpaper.favourites.size
 
   - if wallpapers.respond_to? :total_pages
     = link_to_next_page wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params
