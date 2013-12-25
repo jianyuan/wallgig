@@ -9,11 +9,6 @@ module Account
       @collections = current_user.collections.ordered
     end
 
-    # GET /account/collections/1
-    # GET /account/collections/1.json
-    def show
-    end
-
     # GET /account/collections/new
     def new
       @collection = current_user.collections.new

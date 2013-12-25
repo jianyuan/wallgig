@@ -234,7 +234,7 @@ class WallpapersController < ApplicationController
     end
 
     def update_wallpaper_params_with_purity
-      update_wallpaper_params_without_purity.permit(:purity)
+      params.require(:wallpaper).permit(:tag_list, :image_gravity, :source, :purity)
     end
 
     def update_wallpaper_params

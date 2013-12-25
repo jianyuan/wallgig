@@ -4,6 +4,7 @@ class CollectionsController < ApplicationController
 
   # GET /collections
   def index
+    # OPTIMIZE
     @collections = Collection.includes(:user, :wallpapers)
                              .accessible_by(current_ability, :index)
                              .where({ wallpapers: { purity: 'sfw' }})

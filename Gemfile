@@ -124,6 +124,7 @@ gem 'colorscore'
 gem 'httparty'
 gem 'rails_autolink'
 gem 'active_link_to'
+gem 'meta-tags', :require => 'meta_tags'
 # gem 'phashion'
 
 # rack
