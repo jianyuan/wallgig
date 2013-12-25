@@ -12,7 +12,6 @@ $ ->
         $this.addClass('state-1')
 
   if $('body.wallpapers.index, body.collections.show, body.users.show').length == 1
-    placeholderImageSrc = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC'
     applyLazyLoad = ->
       $('.list-wallpaper .img-wallpaper.lazy:not(.lazy-loaded)').each ->
         $this = $(this)
@@ -34,8 +33,7 @@ $ ->
         $main.append(html)
         applyLazyLoad()
         $('[rel=next]').bind('inview', loadNextPage)
-
-      ga('send', 'pageview', url) if ga
+      window.analytics.page(null, null, { path: url })
 
     applyLazyLoad()
     $('[rel=next]').bind('inview', loadNextPage)
@@ -47,8 +45,10 @@ $ ->
         $this.find('span.count').text data.count
         if data.favourite
           $this.addClass 'btn-success'
+          window.analytics.track('Favourited a wallpaper')
         else
           $this.removeClass 'btn-success'
+          window.analytics.track('Unfavourited a wallpaper')
       $this.on 'ajax:error', (event, xhr, status, error) ->
         # alert error
         Wallgig.Utilities.alert 'Error!', error
@@ -63,6 +63,7 @@ $ ->
         .removeClass 'btn-active'
       $("[data-action=change-purity][data-wallpaper-id=#{ data.id }][data-purity=#{ data.purity }]")
         .addClass 'btn-active'
+      window.analytics.track('Changed wallpaper purity')
     $this.on 'ajax:error', (event, xhr, status, error) ->
       # alert error
       Wallgig.Utilities.alert 'Error!', xhr.responseText || error
