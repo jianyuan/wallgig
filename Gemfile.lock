@@ -297,6 +297,7 @@ GEM
       activerecord (>= 3.0, < 5.0)
       activesupport (>= 3.0, < 5.0)
     pg (0.17.0)
+    phashion (1.0.6)
     polyamorous (0.6.4)
       activerecord (>= 3.0)
     polyglot (0.3.3)
@@ -489,6 +490,7 @@ DEPENDENCIES
   omniauth-facebook
   paper_trail (~> 3.0.0)
   pg
+  phashion
   pry-rails
   puma
   rack-cache

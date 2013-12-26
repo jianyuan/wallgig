@@ -20,6 +20,7 @@
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
+#  phash               :integer
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -87,6 +88,7 @@ class Wallpaper < ActiveRecord::Base
   scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
   scope :latest, -> { order(created_at: :desc) }
+  scope :similar_to, -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 16", w.phash]) }
   # scope :near_to_color, ->(color) {
   #   return if color.blank?
   #   color_ids = Kolor.near_to(color).map(&:id)
@@ -105,6 +107,7 @@ class Wallpaper < ActiveRecord::Base
   # Callbacks
   after_create :queue_create_thumbnails
   after_create :queue_extract_colors
+  after_create :queue_update_phash
   around_save :check_image_gravity_changed
   after_save :update_processing_status, if: :processing?
   after_save :update_index, unless: :processing?
@@ -155,14 +158,6 @@ class Wallpaper < ActiveRecord::Base
   def image_storage_path(i)
     name = File.basename(image_uid, (image.ext || '.jpg'))
     [File.dirname(image_uid), "#{name}_#{i.width}x#{i.height}.#{i.format}"].join('/')
-  end
-
-  def queue_create_thumbnails
-    WallpaperResizerWorker.perform_async(id)
-  end
-
-  def queue_extract_colors
-    WallpaperColorExtractorWorker.perform_async(id)
   end
 
   def update_processing_status
@@ -264,5 +259,29 @@ class Wallpaper < ActiveRecord::Base
 
   def unlock_purity!
     update_attribute :purity_locked, false
+  end
+
+  def update_phash
+    return unless image.present?
+
+    fingerprint = Phashion::Image.new(image.path).fingerprint
+    self.phash = (fingerprint & ~(1 << 63)) - (fingerprint & (1 << 63)) # convert 64 bit unsigned to signed
+    self.save
+  end
+
+  def similar_wallpapers
+    Wallpaper.similar_to(self)
+  end
+
+  def queue_create_thumbnails
+    WallpaperResizerWorker.perform_async(id)
+  end
+
+  def queue_extract_colors
+    WallpaperAttributeUpdateWorker.perform_async(id, 'extract_colors')
+  end
+
+  def queue_update_phash
+    WallpaperAttributeUpdateWorker.perform_async(id, 'update_phash')
   end
 end
