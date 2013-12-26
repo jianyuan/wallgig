@@ -74,7 +74,13 @@ ActiveAdmin.register Wallpaper do
           status_tag wallpaper.processing? ? 'Yes' : 'No'
         end
         row :image do
-          image_tag wallpaper.image.url
+          link_to wallpaper.image.url do
+            if wallpaper.thumbnail_image.present?
+              image_tag wallpaper.thumbnail_image.url
+            else
+              'View original image'
+            end
+          end
         end
         row :image_uid
         row :image_name
@@ -82,6 +88,21 @@ ActiveAdmin.register Wallpaper do
         row :image_height
         row :thumbnail_image_uid
         row :image_gravity, &:image_gravity_text
+      end
+    end
+    if wallpaper.similar_wallpapers.any?
+      panel 'Similar Images' do
+        table_for wallpaper.similar_wallpapers do
+          column :thumbnail do |similar_wallpaper|
+            link_to admin_wallpaper_path(similar_wallpaper) do
+              if similar_wallpaper.thumbnail_image.present?
+                image_tag similar_wallpaper.thumbnail_image.url
+              else
+                "Wallpaper \##{similar_wallpaper.id}"
+              end
+            end
+          end
+        end        
       end
     end
     active_admin_comments
