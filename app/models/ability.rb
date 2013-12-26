@@ -20,6 +20,9 @@ class Ability
     can [:index, :read], Collection, public: true
     can :crud, Collection, user_id: user.id
 
+    # Comment
+    can :crud, Comment, user_id: user.id
+
     # Favourite
     can :crud, Favourite, user_id: user.id
 

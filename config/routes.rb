@@ -22,13 +22,13 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Users
-  resources :users, only: [:show] do
-    concerns :commentable
-  end
-
   devise_for :users, controllers: {
     sessions: 'sessions'
   }
+
+  resources :users, only: [:show] do
+    concerns :commentable
+  end
 
   # Wallpapers
   resources :wallpapers do
