@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131225191331) do
+ActiveRecord::Schema.define(version: 20131226201749) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 20131225191331) do
   create_table "wallpapers", force: true do |t|
     t.integer  "user_id"
     t.string   "purity"
-    t.boolean  "processing",          default: true
+    t.boolean  "processing",                    default: true
     t.string   "image_uid"
     t.string   "image_name"
     t.integer  "image_width"
@@ -251,14 +251,16 @@ ActiveRecord::Schema.define(version: 20131225191331) do
     t.datetime "updated_at"
     t.string   "thumbnail_image_uid"
     t.integer  "primary_color_id"
-    t.integer  "impressions_count",   default: 0
+    t.integer  "impressions_count",             default: 0
     t.text     "cached_tag_list"
     t.string   "image_gravity"
-    t.integer  "favourites_count",    default: 0
-    t.boolean  "purity_locked",       default: false
+    t.integer  "favourites_count",              default: 0
+    t.boolean  "purity_locked",                 default: false
     t.string   "source"
+    t.integer  "phash",               limit: 8
   end
 
+  add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree
   add_index "wallpapers", ["user_id"], name: "index_wallpapers_on_user_id", using: :btree
 

@@ -20,6 +20,7 @@
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
+#  phash               :integer
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -87,6 +88,7 @@ class Wallpaper < ActiveRecord::Base
   scope :processed,  -> { where(processing: false) }
   scope :visible, -> { processed }
   scope :latest, -> { order(created_at: :desc) }
+  scope :similar_to, -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 16", w.phash]) }
   # scope :near_to_color, ->(color) {
   #   return if color.blank?
   #   color_ids = Kolor.near_to(color).map(&:id)
@@ -264,5 +266,17 @@ class Wallpaper < ActiveRecord::Base
 
   def unlock_purity!
     update_attribute :purity_locked, false
+  end
+
+  def update_phash
+    return unless image.present?
+
+    fingerprint = Phashion::Image.new(image.path).fingerprint
+    self.phash = (fingerprint & ~(1 << 63)) - (fingerprint & (1 << 63))
+    self.save
+  end
+
+  def similar_wallpapers
+    Wallpaper.similar_to(self)
   end
 end

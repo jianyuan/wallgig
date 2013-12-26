@@ -20,6 +20,7 @@
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
+#  phash               :integer
 #
 
 require 'spec_helper'
