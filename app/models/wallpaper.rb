@@ -75,7 +75,10 @@ class Wallpaper < ActiveRecord::Base
     indexes :height,     type: 'integer', index: 'not_analyzed'
     indexes :source,     type: 'string'
     indexes :views,      type: 'integer', index: 'not_analyzed'
-    indexes :colors,     type: 'string',  analyzer: 'keyword'
+    indexes :colors do
+      indexes :hex,        type: 'string',  analyzer: 'keyword'
+      indexes :percentage, type: 'integer', index: 'not_analyzed'
+    end
   end
 
   # Validation
@@ -116,43 +119,118 @@ class Wallpaper < ActiveRecord::Base
 
   class << self
     def search(params)
-      tire.search load: true, page: params[:page], per_page: (params[:per_page] || default_per_page) do
-        query do
-          boolean do
-            must { string params[:q], default_operator: 'AND', lenient: true } if params[:q].present?
+      payload = {
+        :query => {
+          :bool => {
+            :must => [],
+            :must_not => []
+          }
+        },
+        :sort => [],
+        :facets => {}
+      }
 
-            if params[:tags].present?
-              params[:tags].each do |tag|
-                must { term :tags, tag.downcase }
-              end
-            end
+      # Handle query string
+      if params[:q].present?
+        payload[:query][:bool][:must] << {
+          :query_string => {
+            :query => params[:q],
+            :default_operator => 'AND',
+            :lenient => true
+          }
+        }
+      end
 
-            if params[:exclude_tags].present?
-              params[:exclude_tags].each do |tag|
-                must_not { term :tags, tag.downcase }
-              end
-            end
-
-            must { terms :purity, params[:purity] || ['sfw'] }
-
-            must { term :width,  params[:width]  } if params[:width].present?
-            must { term :height, params[:height] } if params[:height].present?
-
-            if params[:colors].present?
-              params[:colors].each do |color|
-                must { term :colors, color.downcase }
-              end
-            end
-          end
-        end
-        sort { by :created_at, 'desc' } if params[:query].blank? || params[:colors].blank?
-        facet 'tags' do
-          terms :tags, size: 20 # all_terms: true
-        end
-        facet 'purity' do
-          terms :purity, all_terms: true
+      # Handle tags
+      if params[:tags].present?
+        params[:tags].each do |tag|
+          payload[:query][:bool][:must] << {
+            :term => {
+              :'tags' => {
+                :value => tag.downcase
+              }
+            }
+          }
         end
       end
+
+      # Handle tag exclusions
+      if params[:exclude_tags].present?
+        params[:exclude_tags].each do |tag|
+          payload[:query][:bool][:must_not] << {
+            :term => {
+              :'tags' => {
+                :value => tag.downcase
+              }
+            }
+          }
+        end
+      end
+
+      # Handle purity
+      payload[:query][:bool][:must] << {
+        :terms => {
+          :'purity' => params[:purity] || ['sfw']
+        }
+      }
+
+      # Handle width and height
+      [:width, :height].each do |a|
+        if params[a].present?
+          payload[:query][:bool][:must] << {
+            :term => {
+              a => {
+                :value => params[a]
+              }
+            }
+          }
+        end
+      end
+
+      # Handle colors
+      if params[:colors].present?
+        params[:colors].each do |color|
+          payload[:query][:bool][:must] << {
+            :term => {
+              :'colors.hex' => {
+                :value => color
+              }
+            }
+          }
+
+          payload[:sort] << {
+            :'colors.percentage' => {
+              :order => 'desc',
+              :nested_filter => {
+                :term => {
+                  :'colors.hex' => color
+                }
+              }
+            }
+          }
+        end
+      end
+
+      if payload[:sort].empty? && params[:q].blank?
+        payload[:sort] << {
+          :'created_at' => 'desc'
+        }
+      end
+
+      payload[:facets] = {
+        :tags => {
+          :terms => {
+            :field => 'tags',
+            :size => 20
+          }
+        }
+      }
+
+      tire.search nil,
+                  load: true,
+                  payload: payload,
+                  page: params[:page],
+                  per_page: (params[:per_page] || default_per_page)
     end
   end
 
@@ -240,7 +318,8 @@ class Wallpaper < ActiveRecord::Base
       height: image_height,
       source: source,
       views: impressions_count,
-      colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten,
+      # colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten,
+      colors: wallpaper_colors.map { |color| { hex: color.hex, percentage: (color.percentage * 10).ceil } },
       created_at: created_at,
       updated_at: updated_at
     }.to_json
