@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @favourite_wallpapers = @user.favourite_wallpapers
                                  .accessible_by(current_ability, :index)
                                  .latest
-                                 .limit(6)
+                                 .limit(10)
 
     @collections = @user.collections
                         .accessible_by(current_ability, :index)

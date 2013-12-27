@@ -4,31 +4,44 @@
   .col-lg-10
     - if @collections.any?
       %h3
+        %span.glyphicon.glyphicon-folder-open
         Collections
         %small= @collections.size
       = render partial: 'collections/list', locals: { collections: @collections }
 
     - if @user.wallpapers.any?
-      %h3
-        Recent uploads
-        %small= @user.wallpapers.size
-      = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
       - if @user.wallpapers.size > @wallpapers.size
-        .text-right
-          = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
+        %h3
+          = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-link pull-right' do
             More
             %span.glyphicon.glyphicon-chevron-right
+      %h3
+        %span.glyphicon.glyphicon-cloud-upload
+        Uploads
+        %small= @user.wallpapers.size
+      = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers, extra_css_class: 'row-1' }
 
     - if @favourite_wallpapers.any?
+      - if @user.favourite_wallpapers.size > @favourite_wallpapers.size
+        %h3
+          = link_to user_favourites_path(@user), class: 'btn btn-link pull-right' do
+            More
+            %span.glyphicon.glyphicon-chevron-right
       %h3
-        Recent likes
-      = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }
+        %span.glyphicon.glyphicon-star
+        Favourites
+        %small= @user.favourite_wallpapers.size
+      = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers, extra_css_class: 'row-2' }
 
   .col-lg-2
-    %h3 Comments
+    %h3
+      %span.glyphicon.glyphicon-comment
+      Comments
+      %small= @user.comments.size
     = simple_form_for :comment, url: user_comments_path(@user), remote: true, data: { provide: 'comments' } do |f|
       = f.input :comment, as: :text, label: false
-      = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
+      = f.submit 'Post', class: 'btn btn-block', data: { disable_with: 'Posting' }
+    %hr/
     - comments = @user.comments.includes(:user).recent
     %div.container-comments{:class => ('hide' if comments.empty?)}
       %ul.list-unstyled.list-comment= render comments.limit(4)

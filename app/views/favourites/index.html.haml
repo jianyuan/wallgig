@@ -1,3 +1,8 @@
 - title [@user.username, 'Favourites']
 
+%h3
+  %span.glyphicon.glyphicon-star
+  Favourites
+  %small= @user.favourite_wallpapers.size
+
 = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }

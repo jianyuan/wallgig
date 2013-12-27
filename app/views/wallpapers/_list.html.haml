@@ -1,5 +1,5 @@
 - if wallpapers.any?
-  %ul.list-wallpaper
+  %ul.list-wallpaper{:class => local_assigns[:extra_css_class]}
     - wallpapers.each do |wallpaper|
       - next unless wallpaper.thumbnail_image.present?
       %li{:class => "purity-#{wallpaper.purity}", :data => {:wallpaper_id => wallpaper.id}}

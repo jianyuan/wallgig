@@ -1,8 +1,11 @@
 - content_for :content do
   .media.media-user
-    = image_tag gravatar_url(@user, 70), alt: @user.username, class: 'media-object pull-left'
+    = image_tag gravatar_url(@user, 112), alt: @user.username, class: 'media-object pull-left', width: 112, height: 112
     .media-body
       %h2.media-heading= username_tag @user
       %h4= role_name_for @user
+      %ul.nav.nav-pills
+        = active_link_to 'Overview', @user, active: [['users'], ['show']], wrap_tag: :li
+        = active_link_to 'Favourites', user_favourites_path(@user), wrap_tag: :li
   = yield
 = render template: 'layouts/application'
