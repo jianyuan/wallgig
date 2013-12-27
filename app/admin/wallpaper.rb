@@ -3,12 +3,22 @@ ActiveAdmin.register Wallpaper do
 
   batch_action :purity_lock do |selection|
     Wallpaper.find(selection).each &:lock_purity!
-    redirect_to collection_path, notice: 'Wallpaper purities locked!'
+    redirect_to :back, notice: 'Wallpaper purities locked!'
   end
 
   batch_action :update_index do |selection|
     Wallpaper.find(selection).each &:update_index
-    redirect_to collection_path, notice: 'Wallpaper indices updated!'
+    redirect_to :back, notice: 'Wallpaper indices updated!'
+  end
+
+  batch_action :queue_process do |selection|
+    Wallpaper.find(selection).each &:queue_process_image
+    redirect_to :back, notice: 'Wallpaper queued for processing!'
+  end
+
+  batch_action :queue_create_thumbnails do |selection|
+    Wallpaper.find(selection).each &:queue_create_thumbnails
+    redirect_to :back, notice: 'Wallpaper queued for thumbnail creation!'
   end
 
   %i(user tags purity purity_locked processing image_width image_height source created_at updated_at).each {|f| filter f }
