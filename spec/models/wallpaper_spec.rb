@@ -21,6 +21,8 @@
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
 #  phash               :integer
+#  scrape_source       :string(255)
+#  scrape_id           :string(255)
 #
 
 require 'spec_helper'

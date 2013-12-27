@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226201749) do
+ActiveRecord::Schema.define(version: 20131227001048) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -258,10 +258,13 @@ ActiveRecord::Schema.define(version: 20131226201749) do
     t.boolean  "purity_locked",                 default: false
     t.string   "source"
     t.integer  "phash",               limit: 8
+    t.string   "scrape_source"
+    t.string   "scrape_id"
   end
 
   add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree
+  add_index "wallpapers", ["scrape_source", "scrape_id"], name: "index_wallpapers_on_scrape_source_and_scrape_id", unique: true, using: :btree
   add_index "wallpapers", ["user_id"], name: "index_wallpapers_on_user_id", using: :btree
 
 end
