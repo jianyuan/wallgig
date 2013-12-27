@@ -10,15 +10,8 @@ class WallpapersController < ApplicationController
   def index
     @wallpapers = Wallpaper.search(search_params)
 
-    # OPTIMIZE
-    if user_signed_in?
-      @current_user_favourites = current_user.favourites.where(wallpaper_id: @wallpapers.map(&:id)).group(:wallpaper_id).size
-    else
-      @current_user_favourites = {}
-    end
-
     if request.xhr?
-      render partial: 'list', layout: false, locals: { wallpapers: @wallpapers, current_user_favourites: @current_user_favourites }
+      render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }
     end
   end
 

@@ -1,23 +1,6 @@
 - title @user.username
-.media.media-user
-  = image_tag gravatar_url(@user, 70), alt: @user.username, class: 'media-object pull-left'
-  .media-body
-    %h2.media-heading= username_tag @user
-    %h4= role_name_for @user
-
 
 .row
-  .col-lg-2
-    %h3 Comments
-    = simple_form_for :comment, url: user_comments_path(@user), remote: true, data: { provide: 'comments' } do |f|
-      = f.input :comment, as: :text, label: false
-      = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
-    - comments = @user.comments.includes(:user).recent
-    %div.container-comments{:class => ('hide' if comments.empty?)}
-      %ul.list-unstyled.list-comment= render comments.limit(4)
-      - if comments.size > 4
-        = link_to 'Load all comments', user_comments_path(@user), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
-
   .col-lg-10
     - if @collections.any?
       %h3
@@ -29,7 +12,7 @@
       %h3
         Recent uploads
         %small= @user.wallpapers.size
-      = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers, current_user_favourites: @current_user_favourites }
+      = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
       - if @user.wallpapers.size > @wallpapers.size
         .text-right
           = link_to wallpapers_path(q: "user:#{@user.username}"), class: 'btn btn-default btn-md' do
@@ -39,4 +22,15 @@
     - if @favourite_wallpapers.any?
       %h3
         Recent likes
-      = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers, current_user_favourites: @current_user_favourites }
+      = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers }
+
+  .col-lg-2
+    %h3 Comments
+    = simple_form_for :comment, url: user_comments_path(@user), remote: true, data: { provide: 'comments' } do |f|
+      = f.input :comment, as: :text, label: false
+      = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
+    - comments = @user.comments.includes(:user).recent
+    %div.container-comments{:class => ('hide' if comments.empty?)}
+      %ul.list-unstyled.list-comment= render comments.limit(4)
+      - if comments.size > 4
+        = link_to 'Load all comments', user_comments_path(@user), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }

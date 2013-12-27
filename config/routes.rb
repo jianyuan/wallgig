@@ -28,6 +28,8 @@ Wallgig::Application.routes.draw do
 
   resources :users, only: [:show] do
     concerns :commentable
+
+    resources :favourites, only: [:index]
   end
 
   # Wallpapers

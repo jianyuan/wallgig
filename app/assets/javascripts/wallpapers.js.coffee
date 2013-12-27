@@ -11,7 +11,7 @@ $ ->
         $this.removeClass('state-2')
         $this.addClass('state-1')
 
-  if $('body.wallpapers.index, body.collections.show, body.users.show').length == 1
+  if $('body.wallpapers.index, body.collections.show, body.users.show, body.favourites.index').length == 1
     applyLazyLoad = ->
       $('.list-wallpaper .img-wallpaper.lazy:not(.lazy-loaded)').each ->
         $this = $(this)

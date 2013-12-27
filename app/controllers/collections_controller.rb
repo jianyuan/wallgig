@@ -22,13 +22,6 @@ class CollectionsController < ApplicationController
     @wallpapers = @collection.wallpapers.accessible_by(current_ability, :index)
                                         .page(params[:page])
 
-    # OPTIMIZE
-    if user_signed_in?
-      @current_user_favourites = current_user.favourites.where(wallpaper_id: @wallpapers.map(&:id)).group(:wallpaper_id).size
-    else
-      @current_user_favourites = {}
-    end
-
     if request.xhr?
       render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers, current_user_favourites: @current_user_favourites }
     end

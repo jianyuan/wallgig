@@ -19,7 +19,6 @@
             %span.icon-bar
           = link_to root_path, class: 'navbar-brand' do
             wallgig
-            %small.text-danger &beta;
         .collapse.navbar-collapse#navbar-collapse
           %ul.nav.navbar-nav
             %li= link_to 'Upload', new_wallpaper_path
@@ -44,7 +43,7 @@
                   %li.divider
                   -# %li= link_to 'Wallpapers', current_user
                   %li= link_to 'Manage collections', account_collections_path
-                  -# %li= link_to 'Likes', current_user
+                  %li= link_to 'Favourites', user_favourites_path(current_user)
                   %li.divider
                   %li= link_to 'Settings', edit_user_registration_path
                   %li= link_to 'Sign Out', destroy_user_session_path, method: :delete
@@ -53,6 +52,6 @@
               %li= link_to 'Sign In', new_user_session_path
     #main.container.container-full
       = bootstrap_flash
-      = yield
+      = content_for?(:content) ? yield(:content) : yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
     = render partial: 'shared/segment_io'

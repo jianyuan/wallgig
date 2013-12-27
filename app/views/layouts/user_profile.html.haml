@@ -1,0 +1,8 @@
+- content_for :content do
+  .media.media-user
+    = image_tag gravatar_url(@user, 70), alt: @user.username, class: 'media-object pull-left'
+    .media-body
+      %h2.media-heading= username_tag @user
+      %h4= role_name_for @user
+  = yield
+= render template: 'layouts/application'

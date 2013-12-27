@@ -1,9 +1,23 @@
 class FavouritesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_wallpaper
+  before_action :set_parent
   before_action :set_favourite, only: [:update, :destroy]
 
-  layout false
+  layout false, except: [:index]
+
+  # GET /users/1/favourites
+  def index
+    @wallpapers = @user.favourite_wallpapers
+                       .accessible_by(current_ability, :index)
+                       .latest
+                       .page(params[:page])
+
+    if request.xhr?
+      render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }
+    else
+      render layout: 'user_profile'
+    end
+  end
 
   # POST /wallpapers/1/favourite
   # POST /wallpapers/1/favourite.json
@@ -66,9 +80,18 @@ class FavouritesController < ApplicationController
   end
 
   private
-    def set_wallpaper
-      @wallpaper = Wallpaper.find(params[:wallpaper_id])
-      authorize! :read, @wallpaper
+    def set_parent
+      if params[:wallpaper_id].present?
+        @wallpaper = Wallpaper.find(params[:wallpaper_id])
+        authorize! :read, @wallpaper
+      elsif params[:user_id].present?
+        @user = User.find_by(username: params[:user_id])
+        authorize! :read, @user
+      end
+    end
+
+    def parent
+      @wallpaper || @user
     end
 
     def set_favourite
