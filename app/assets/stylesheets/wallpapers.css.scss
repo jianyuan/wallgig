@@ -81,8 +81,13 @@
   @extend .list-unstyled;
 }
 .list-facet-tags {
+  @extend .clearfix;
   .btn-group {
     margin-right: 4px;
+  }
+  li {
+    float: left;
+    width: 200px;
   }
 }
 
