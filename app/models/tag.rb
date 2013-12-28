@@ -7,4 +7,5 @@
 #
 
 class Tag < ActsAsTaggableOn::Tag
+  scope :alphabetically, -> { order 'LOWER(name) ASC' }
 end

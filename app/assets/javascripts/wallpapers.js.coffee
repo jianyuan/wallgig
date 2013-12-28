@@ -72,12 +72,13 @@ $ ->
 
   if $('[data-provide=tag_editor]').length
     $tagEditor = $('[data-provide=tag_editor]')
-    tagApi = $tagEditor.tagsManager(
-      output: $tagEditor.data('target')
-      tagsContainer: '.tags-container'
-    )
-    $tagEditor.typeahead(
-      prefetch: $tagEditor.data 'prefetch'
-    ).on('typeahead:selected', (e, d) ->
-      tagApi.tagsManager 'pushTag', d.value
-    )
+    tags = $tagEditor.data('tags').map (tag) ->
+      { tag: tag }
+    $tagEditor.selectize
+      delimiter: ', '
+      persist: false
+      create: true
+      options: tags
+      valueField: 'tag'
+      labelField: 'tag'
+      searchField: 'tag'

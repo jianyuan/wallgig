@@ -19,7 +19,6 @@
 //= require jquery.inview
 //= require spin
 //= require ladda
-//= require typeahead
-//= require tagmanager
+//= require selectize
 //= require_tree .
 //= require_tree ../templates/.

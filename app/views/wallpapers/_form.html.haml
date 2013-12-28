@@ -8,10 +8,8 @@
       = f.input :purity
     .form-group
       = f.label :tag_list, label: 'Tags'
-      = f.hidden_field :tag_list
-      %div
-        %span.tags-container
-        = text_field_tag :tag, nil, class: 'form-control', autocomplete: 'off', data: { provide: 'tag_editor', target: '#wallpaper_tag_list', prefetch: api_v1_tags_path }
+      - # OPTIMIZE
+      = f.text_field :tag_list, class: 'form-control', autocomplete: 'off', data: { provide: 'tag_editor', tags: Tag.alphabetically.pluck(:name) }
     = f.input :image_gravity, label: 'Crop position'
 
   .form-actions
