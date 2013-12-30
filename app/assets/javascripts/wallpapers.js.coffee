@@ -26,10 +26,10 @@ $ ->
       $this = $(this)
       url = $this.attr 'href'
       $this.unbind 'inview'
-      $this.replaceWith('<hr /><div class="loading" />')
+      $this.replaceWith('<hr /><div class="loading-spinner" />')
       $.get url, (html) ->
         $main = $('#main')
-        $main.find('.loading').remove()
+        $main.find('.loading-spinner').remove()
         $main.append(html)
         applyLazyLoad()
         $('[rel=next]').bind('inview', loadNextPage)
@@ -72,13 +72,22 @@ $ ->
 
   if $('[data-provide=tag_editor]').length
     $tagEditor = $('[data-provide=tag_editor]')
-    tags = $tagEditor.data('tags').map (tag) ->
-      { tag: tag }
+    searchPath = $tagEditor.data 'search-path'
+    currentRequest = null
     $tagEditor.selectize
       delimiter: ', '
       persist: false
       create: true
-      options: tags
       valueField: 'tag'
       labelField: 'tag'
       searchField: 'tag'
+      load: (query, callback) ->
+        return callback() unless query.length
+        currentRequest.abort() if currentRequest
+        currentRequest = $.ajax
+          url: searchPath
+          data: { query: query }
+          error: ->
+            callback()
+          success: (data) ->
+            callback(data.map (tag) -> { tag: tag})
