@@ -251,7 +251,7 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def extract_colors
-    return unless image.present? && image.format == 'jpg'
+    return unless image.present? && image.format == 'jpeg'
 
     histogram = Colorscore::Histogram.new(image.path)
 

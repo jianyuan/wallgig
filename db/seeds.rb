@@ -29,3 +29,6 @@ screen_resolutions = [
 screen_resolutions.each do |screen_resolution|
   ScreenResolution.find_or_create_by(screen_resolution)
 end
+
+user = User.create!({username: 'admin', email: 'admin@example.com', password: 'password', admin: true})
+user.confirm!

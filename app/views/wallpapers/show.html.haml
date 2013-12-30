@@ -21,37 +21,38 @@
             = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
 
         - cache ['show', @wallpaper, 'tag_list'] do
-          - if @wallpaper.tags.any?
+          - if @wallpaper.tag_counts.any?
             .panel-body
-              %ul.list-tags
-                - @wallpaper.tag_list.each do |tag|
+              %ul.list-tag
+                - @wallpaper.tag_counts.each do |tag|
                   %li
                     = link_to wallpapers_path(tags: [tag]) do
                       = tag
+                      %small= tag.count
 
-        - cache ['show', @wallpaper, 'color_and_metadata_list'] do
-          .panel-body.text-center
-            %ul.list-inline.list-color
-              - colors = search_params[:colors] || []
-              - @wallpaper.wallpaper_colors.each do |color|
-                %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
+        - cache ['show', @wallpaper, 'color_list'] do
+          - if @wallpaper.wallpaper_colors.any?
+            .panel-body.text-center
+              %ul.list-color
+                - @wallpaper.wallpaper_colors.includes(:color).each do |color|
+                  %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
 
-          .panel-body
-            %ul.list-metadata
-              - if @wallpaper.source.present?
-                %li
-                  %strong Source
-                  = auto_link @wallpaper.source  do |text|
-                    - truncate(text, length: 20)
+        .panel-body
+          %ul.list-metadata
+            - if @wallpaper.source.present?
               %li
-                %strong Resolution
-                = @wallpaper.to_resolution_text
-              %li
-                %strong Views
-                = @wallpaper.impressions_count
-              %li
-                %strong Likes
-                = @wallpaper.favourites_count
+                %strong Source
+                = auto_link @wallpaper.source  do |text|
+                  - truncate(text, length: 20)
+            %li
+              %strong Resolution
+              = @wallpaper.to_resolution_text
+            %li
+              %strong Views
+              = @wallpaper.impressions_count
+            %li
+              %strong Likes
+              = @wallpaper.favourites_count
 
         .panel-body
           .btn-group.btn-group-justified.btn-group-purity
