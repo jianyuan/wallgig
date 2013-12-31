@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
+  impressionist actions: [:show]
 
   layout 'user_profile'
 

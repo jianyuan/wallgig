@@ -1,7 +1,7 @@
 class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
-  impressionist actions: [:show] # Increase view count
+  impressionist actions: [:show]
 
   helper_method :search_params
 

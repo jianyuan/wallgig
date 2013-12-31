@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
 
   acts_as_commentable
 
+  is_impressionable
+
   validates :username,
             presence: true,
             uniqueness: { case_sensitive: false },
