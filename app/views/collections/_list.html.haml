@@ -1,9 +1,11 @@
 - if collections.any?
   %ul.list-collection{:class => local_assigns[:extra_css_class]}
     - collections.each do |collection|
+      - next unless can?(:read, collection)
+      - # OPTIMIZE
+      - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).where.not(thumbnail_image_uid: nil).limit(4)
+      - next if wallpapers.empty?
       %li{:data => {:collection_id => collection.id}}
-        - # OPTIMIZE
-        - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).limit(4)
         .media
           = link_to collection, class: 'media-object' do
             = image_tag wallpapers.shift.thumbnail_image.url, width: 250, height: 188
