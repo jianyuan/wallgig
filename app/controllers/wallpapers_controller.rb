@@ -9,7 +9,7 @@ class WallpapersController < ApplicationController
   # GET /wallpapers.json
   def index
     @wallpapers = Wallpaper.search(search_params)
- 
+
     if request.xhr?
       render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }
     end
@@ -239,6 +239,10 @@ class WallpapersController < ApplicationController
     end
 
     def search_params
-      params.permit(:q, :page, :width, :height, purity: [], tags: [], exclude_tags: [], colors: [])
+      params.permit(:q, :page, :width, :height, :order, purity: [], tags: [], exclude_tags: [], colors: []).tap do |p|
+        # Default values
+        p[:order] ||= 'latest'
+        p[:purity] ||= ['sfw']
+      end
     end
 end

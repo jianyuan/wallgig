@@ -1,7 +1,7 @@
 - if wallpapers.any?
   %ul.list-wallpaper{:class => local_assigns[:extra_css_class]}
     - wallpapers.each do |wallpaper|
-      - next unless wallpaper.thumbnail_image.present?
+      - next unless can?(:read, wallpaper) && wallpaper.thumbnail_image.present?
       %li{:class => "purity-#{wallpaper.purity}", :data => {:wallpaper_id => wallpaper.id}}
         = link_to wallpaper, title: wallpaper.cached_tag_list do
           = image_tag nil, width: 250, height: 188, class: 'img-wallpaper lazy', data: { src: wallpaper.thumbnail_image.url }

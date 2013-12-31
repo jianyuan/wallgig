@@ -75,6 +75,7 @@ class Wallpaper < ActiveRecord::Base
     indexes :height,     type: 'integer', index: 'not_analyzed'
     indexes :source,     type: 'string'
     indexes :views,      type: 'integer', index: 'not_analyzed'
+    indexes :favourites, type: 'integer', index: 'not_analyzed'
     indexes :colors do
       indexes :hex,        type: 'string',  analyzer: 'keyword'
       indexes :percentage, type: 'integer', index: 'not_analyzed'
@@ -211,6 +212,35 @@ class Wallpaper < ActiveRecord::Base
         end
       end
 
+      case params[:order]
+      when 'random'
+        payload[:query][:bool][:must] << {
+          :function_score => {
+            :functions => [
+              {
+                :script_score => {
+                  :script => '_score * random()'
+                }
+              }
+            ]
+          }
+        }
+        payload[:sort] << '_score'
+      when 'popular'
+        payload[:query][:bool][:must] << {
+          :function_score => {
+            :functions => [
+              {
+                :script_score => {
+                  :script => "doc['views'].value * 0.5 + doc['favourites'].value * 1.5"
+                }
+              }
+            ]
+          }
+        }
+        payload[:sort] << '_score'
+      end
+
       if payload[:sort].empty? && params[:q].blank?
         payload[:sort] << {
           :'created_at' => 'desc'
@@ -318,6 +348,7 @@ class Wallpaper < ActiveRecord::Base
       height: image_height,
       source: source,
       views: impressions_count,
+      favourites: favourites_count,
       # colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten,
       colors: wallpaper_colors.map { |color| { hex: color.hex, percentage: (color.percentage * 10).ceil } },
       created_at: created_at,

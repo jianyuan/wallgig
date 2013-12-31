@@ -21,14 +21,13 @@
             = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
 
         - cache ['show', @wallpaper, 'tag_list'] do
-          - if @wallpaper.tag_counts.any?
+          - if @wallpaper.tag_list.any?
             .panel-body
               %ul.list-tag
-                - @wallpaper.tag_counts.each do |tag|
+                - @wallpaper.tag_list.each do |tag|
                   %li
                     = link_to wallpapers_path(tags: [tag]) do
                       = tag
-                      %small= tag.count
 
         - cache ['show', @wallpaper, 'color_list'] do
           - if @wallpaper.wallpaper_colors.any?
