@@ -7,9 +7,9 @@ $ ->
       $this.unbind 'inview'
       $this.replaceWith('<hr /><div class="loading" />')
       $.get url, (html) ->
-        $main = $('#main')
-        $main.find('.loading').remove()
-        $main.append(html)
+        $mainContainer = $('#main > .container')
+        $mainContainer.find('.loading').remove()
+        $mainContainer.append(html)
         $('[rel=next]').bind('inview', loadNextPage)
 
       ga('send', 'pageview', url) if ga

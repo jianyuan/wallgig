@@ -28,9 +28,9 @@ $ ->
       $this.unbind 'inview'
       $this.replaceWith('<hr /><div class="loading-spinner" />')
       $.get url, (html) ->
-        $main = $('#main')
-        $main.find('.loading-spinner').remove()
-        $main.append(html)
+        $mainContainer = $('#main > .container')
+        $mainContainer.find('.loading-spinner').remove()
+        $mainContainer.append(html)
         applyLazyLoad()
         $('[rel=next]').bind('inview', loadNextPage)
       window.analytics.page(null, null, { path: url })

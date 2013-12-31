@@ -3,6 +3,10 @@
   @extend .clearfix;
   margin-left: -10px;
   margin-right: -10px;
+  overflow: hidden;
+  &.row-1 {
+    height: 374px;
+  }
   li {
     width: 250px;
     height: 354px;
