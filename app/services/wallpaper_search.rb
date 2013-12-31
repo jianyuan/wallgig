@@ -1,4 +1,7 @@
 class WallpaperSearch
+  # Formula to calculate wallpaper's popularity
+  POPULARITY_SCRIPT = "doc['views'].value * 0.5 + doc['favourites'].value * 1.5"
+
   def initialize(options)
     @options = options
   end
@@ -125,7 +128,7 @@ class WallpaperSearch
             :functions => [
               {
                 :script_score => {
-                  :script => "doc['views'].value * 0.5 + doc['favourites'].value * 1.5"
+                  :script => POPULARITY_SCRIPT
                 }
               }
             ]
