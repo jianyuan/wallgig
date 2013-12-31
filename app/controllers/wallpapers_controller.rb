@@ -17,7 +17,7 @@ class WallpapersController < ApplicationController
       session[:random_seed] = search_options[:random_seed]
     end
 
-    @wallpapers = Wallpaper.search(search_options)
+    @wallpapers = WallpaperSearch.new(search_options).wallpapers
 
     if request.xhr?
       render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }
