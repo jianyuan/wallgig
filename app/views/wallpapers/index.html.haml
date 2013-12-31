@@ -57,7 +57,7 @@
                 %li
                   = link_to '', wallpapers_path(search_params.merge(colors: (colors + [hex])).reject(&blank_value)), style: "background-color: \##{hex}"
 
-        .col-lg-7
+        .col-lg-8
           %h5 Resolution
           .list-facet
             - ScreenResolution.all.each do |screen_resolution|
@@ -83,7 +83,7 @@
                 %li
                   = link_to wallpapers_path(search_params.merge(order: value).reject(&blank_value)), class: "btn btn-sm" do
                     = label
-        .col-lg-7
+        .col-lg-8
           %h5 Query string
           = form_tag wallpapers_path(search_params.reject(&blank_value)), method: :get do
             .input-group

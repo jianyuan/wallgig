@@ -8,7 +8,16 @@ class WallpapersController < ApplicationController
   # GET /wallpapers
   # GET /wallpapers.json
   def index
-    @wallpapers = Wallpaper.search(search_params)
+    search_options = search_params
+
+    if search_options[:order] == 'random'
+      search_options[:random_seed] = session[:random_seed]
+      search_options[:random_seed] = nil if search_options[:page].to_i <= 1
+      search_options[:random_seed] ||= Time.now.to_i
+      session[:random_seed] = search_options[:random_seed]
+    end
+
+    @wallpapers = Wallpaper.search(search_options)
 
     if request.xhr?
       render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }

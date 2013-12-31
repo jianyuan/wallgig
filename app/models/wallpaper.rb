@@ -119,7 +119,7 @@ class Wallpaper < ActiveRecord::Base
   after_destroy :update_index
 
   class << self
-    def search(params)
+    def search(options)
       payload = {
         :query => {
           :bool => {
@@ -132,10 +132,10 @@ class Wallpaper < ActiveRecord::Base
       }
 
       # Handle query string
-      if params[:q].present?
+      if options[:q].present?
         payload[:query][:bool][:must] << {
           :query_string => {
-            :query => params[:q],
+            :query => options[:q],
             :default_operator => 'AND',
             :lenient => true
           }
@@ -143,8 +143,8 @@ class Wallpaper < ActiveRecord::Base
       end
 
       # Handle tags
-      if params[:tags].present?
-        params[:tags].each do |tag|
+      if options[:tags].present?
+        options[:tags].each do |tag|
           payload[:query][:bool][:must] << {
             :term => {
               :'tags' => {
@@ -156,8 +156,8 @@ class Wallpaper < ActiveRecord::Base
       end
 
       # Handle tag exclusions
-      if params[:exclude_tags].present?
-        params[:exclude_tags].each do |tag|
+      if options[:exclude_tags].present?
+        options[:exclude_tags].each do |tag|
           payload[:query][:bool][:must_not] << {
             :term => {
               :'tags' => {
@@ -171,17 +171,17 @@ class Wallpaper < ActiveRecord::Base
       # Handle purity
       payload[:query][:bool][:must] << {
         :terms => {
-          :'purity' => params[:purity] || ['sfw']
+          :'purity' => options[:purity] || ['sfw']
         }
       }
 
       # Handle width and height
       [:width, :height].each do |a|
-        if params[a].present?
+        if options[a].present?
           payload[:query][:bool][:must] << {
             :term => {
               a => {
-                :value => params[a]
+                :value => options[a]
               }
             }
           }
@@ -189,8 +189,8 @@ class Wallpaper < ActiveRecord::Base
       end
 
       # Handle colors
-      if params[:colors].present?
-        params[:colors].each do |color|
+      if options[:colors].present?
+        options[:colors].each do |color|
           payload[:query][:bool][:must] << {
             :term => {
               :'colors.hex' => {
@@ -212,14 +212,14 @@ class Wallpaper < ActiveRecord::Base
         end
       end
 
-      case params[:order]
+      case options[:order]
       when 'random'
         payload[:query][:bool][:must] << {
           :function_score => {
             :functions => [
               {
-                :script_score => {
-                  :script => '_score * random()'
+                :random_score => {
+                  :seed => options[:random_seed] || Time.now.to_i
                 }
               }
             ]
@@ -241,7 +241,7 @@ class Wallpaper < ActiveRecord::Base
         payload[:sort] << '_score'
       end
 
-      if payload[:sort].empty? && params[:q].blank?
+      if payload[:sort].empty? && options[:q].blank?
         payload[:sort] << {
           :'created_at' => 'desc'
         }
@@ -259,8 +259,8 @@ class Wallpaper < ActiveRecord::Base
       tire.search nil,
                   load: true,
                   payload: payload,
-                  page: params[:page],
-                  per_page: (params[:per_page] || default_per_page)
+                  page: options[:page],
+                  per_page: (options[:per_page] || default_per_page)
     end
   end
 
