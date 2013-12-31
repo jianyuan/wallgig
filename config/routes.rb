@@ -29,6 +29,8 @@ Wallgig::Application.routes.draw do
   resources :users, only: [:show] do
     concerns :commentable
 
+    resources :collections, only: [:index]
+
     resources :favourites, only: [:index]
   end
 

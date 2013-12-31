@@ -1,11 +1,16 @@
-- content_for :content do
-  .media.media-user
-    = image_tag gravatar_url(@user, 112), alt: @user.username, class: 'media-object pull-left', width: 112, height: 112
-    .media-body
-      %h2.media-heading= username_tag @user
-      %h4= role_name_for @user
-      %ul.nav.nav-pills
-        = active_link_to 'Overview', @user, active: [['users'], ['show']], wrap_tag: :li
-        = active_link_to 'Favourites', user_favourites_path(@user), wrap_tag: :li
-  = yield
+- content_for :pre_container do
+  .header-content
+    .container
+      .media.media-user
+        = image_tag gravatar_url(@user, 120), alt: @user.username, class: 'media-object pull-left', width: 120, height: 120
+        .media-body
+          %h2.media-heading
+            = username_tag @user
+            %small= role_name_for @user
+          %ul.nav.nav-pills
+            = active_link_to 'Overview', @user, active: [['users'], ['show']], wrap_tag: :li
+            = active_link_to 'Wallpapers', wallpapers_path(q: "user:#{@user.username}"), wrap_tag: :li
+            = active_link_to 'Collections', user_collections_path(@user), wrap_tag: :li
+            = active_link_to 'Favourites', user_favourites_path(@user), wrap_tag: :li
+
 = render template: 'layouts/application'

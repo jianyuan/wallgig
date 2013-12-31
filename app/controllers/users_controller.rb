@@ -17,12 +17,14 @@ class UsersController < ApplicationController
                                  .latest
                                  .limit(10)
 
+    # OPTIMIZE
     @collections = @user.collections
+                        .includes(:wallpapers)
                         .accessible_by(current_ability, :index)
-                        .includes(:user, :wallpapers)
                         .where({ wallpapers: { purity: 'sfw' }})
                         .where.not({ wallpapers: { id: nil } })
-                        .ordered
+                        .order('collections.updated_at DESC') # FIXME
+                        .limit(6)
   end
 
   private

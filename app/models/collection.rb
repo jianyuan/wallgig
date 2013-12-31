@@ -26,7 +26,8 @@ class Collection < ActiveRecord::Base
 
   paginates_per 20
 
-  scope :ordered, -> { order position: :asc }
+  scope :ordered, -> { order(position: :asc) }
+  scope :latest, -> { order(updated_at: :desc) }
 
   def to_param
     "#{id}-#{name.parameterize}"

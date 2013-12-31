@@ -1,7 +1,8 @@
 - if collections.any?
-  %ul.list-collection
+  %ul.list-collection{:class => local_assigns[:extra_css_class]}
     - collections.each do |collection|
       %li{:data => {:collection_id => collection.id}}
+        - # OPTIMIZE
         - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).limit(4)
         .media
           = link_to collection, class: 'media-object' do
@@ -9,6 +10,8 @@
             .row-collection
               - wallpapers.each do |wallpaper|
                 = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
+              - (3 - wallpapers.size).times do
+                .placeholder
           .media-body
             %h5.media-heading= collection.name
             .pull-right.text-muted

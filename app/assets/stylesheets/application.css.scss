@@ -28,10 +28,10 @@ html, body {
 }
 
 body {
-  padding-top: 70px;
+  padding-top: 50px;
 }
 
-.container {
+.container-full {
   width: 100%;
   margin: 0 auto;
 }
@@ -67,11 +67,22 @@ body {
   padding: 10px 20px;
 }
 
+
 .panel-body {
   border-bottom: 1px solid $panel-default-border;
 }
 .panel-body:last-child {
   border-bottom: 0;
+}
+
+
+.header-content {
+  background-color: lighten($body-bg, 10%);
+  padding: 40px 0;
+}
+
+#main {
+  padding: 40px 0;
 }
 
 

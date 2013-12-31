@@ -1,16 +1,24 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show]
+  before_action :set_user, if: -> { params[:user_id].present? }
+  layout :resolve_layout
   impressionist actions: [:show]
 
   # GET /collections
   def index
-    # OPTIMIZE
-    @collections = Collection.includes(:user, :wallpapers)
-                             .accessible_by(current_ability, :index)
-                             .where({ wallpapers: { purity: 'sfw' }})
-                             .where.not({ wallpapers: { id: nil } })
-                             .order('collections.updated_at desc')
-                             .page(params[:page])
+    if @user.present?
+      # Viewing user's collections. They are ordered.
+      relation = @user.collections.ordered
+    else
+      relation = Collection.where({ wallpapers: { purity: 'sfw' }})
+                           .where.not({ wallpapers: { id: nil } })
+    end
+
+
+    @collections = relation.includes(:user, :wallpapers)
+                           .accessible_by(current_ability, :index)
+                           .order('collections.updated_at desc')
+                           .page(params[:page])
 
     if request.xhr?
       render partial: 'list', layout: false, locals: { collections: @collections }
@@ -28,6 +36,11 @@ class CollectionsController < ApplicationController
   end
 
   private
+    def set_user
+      @user = User.find_by(username: params[:user_id])
+      authorize! :read, @user
+    end
+
     def set_collection
       @collection = Collection.find(params[:id])
       authorize! :read, @collection
@@ -36,5 +49,13 @@ class CollectionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def collection_params
       params.require(:collection).permit(:name, :public)
+    end
+
+    def resolve_layout
+      if @user.present?
+        'user_profile'
+      else
+        'application'
+      end
     end
 end

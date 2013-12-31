@@ -16,9 +16,14 @@
       margin-top: 5px;
       margin-left: -5px;
       @extend .clearfix;
-      img {
+      img, .placeholder {
         float: left;
         margin-left: 5px;
+        width: 80px;
+        height: 80px;
+      }
+      .placeholder {
+        background-color: darken($body-bg, 5%);
       }
     }
     .media-object {

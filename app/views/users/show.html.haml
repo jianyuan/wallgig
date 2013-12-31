@@ -3,11 +3,16 @@
 .row
   .col-lg-10
     - if @collections.any?
+      - if @user.collections.size > @collections.size
+        %h3
+          = link_to user_collections_path(@user), class: 'btn btn-link pull-right' do
+            More
+            %span.glyphicon.glyphicon-chevron-right
       %h3
         %span.glyphicon.glyphicon-folder-open
         Collections
         %small= @collections.size
-      = render partial: 'collections/list', locals: { collections: @collections }
+      = render partial: 'collections/list', locals: { collections: @collections, extra_css_class: 'row-1' }
 
     - if @user.wallpapers.any?
       - if @user.wallpapers.size > @wallpapers.size

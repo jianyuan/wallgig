@@ -1,4 +1,10 @@
 .page-header
-  %h2= title 'Recent collections'
+  - if @user.present?
+    %h3
+      %span.glyphicon.glyphicon-folder-open
+      = title [@user.username, 'Collections'], 'Collections'
+      %small= @collections.size
+  - else
+    %h2= title 'Recent collections'
 
 = render partial: 'list', locals: { collections: @collections }
