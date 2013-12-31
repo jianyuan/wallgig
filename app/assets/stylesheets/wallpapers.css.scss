@@ -1,3 +1,10 @@
+.wallpapers.show {
+  #main > .container {
+    @extend .container-full;
+  }
+}
+
+
 .list-wallpaper {
   @extend .list-unstyled;
   @extend .clearfix;

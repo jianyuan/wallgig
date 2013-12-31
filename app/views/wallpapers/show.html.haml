@@ -1,78 +1,78 @@
 - title ["\##{@wallpaper.id}", @wallpaper.cached_tag_list].reject &:blank?
 - description @wallpaper.cached_tag_list
 - keywords @wallpaper.cached_tag_list
-.container-wallpaper
-  .row
-    .col-lg-2
-      .panel.panel-default
-        .panel-body
-          - if @wallpaper.user.present?
-            .media.media-user
-              = link_to @wallpaper.user, class: 'pull-left' do
-                = image_tag gravatar_url(@wallpaper.user, 50), alt: @wallpaper.user.username, class: 'media-object'
-              .media-body
-                %h4.media-heading= link_to_user @wallpaper.user
-                %small #{time_ago_in_words @wallpaper.created_at} ago
-          - else
-            %small Uploaded #{time_ago_in_words @wallpaper.created_at} ago
+.row
+  .col-lg-2
+    .panel.panel-default
+      .panel-body
+        - if @wallpaper.user.present?
+          .media.media-user
+            = link_to @wallpaper.user, class: 'pull-left' do
+              = image_tag gravatar_url(@wallpaper.user, 50), alt: @wallpaper.user.username, class: 'media-object'
+            .media-body
+              %h4.media-heading= link_to_user @wallpaper.user
+              %small #{time_ago_in_words @wallpaper.created_at} ago
+        - else
+          %small Uploaded #{time_ago_in_words @wallpaper.created_at} ago
 
-        - if user_signed_in?
+      - if user_signed_in?
+        .panel-body
+          = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
+
+      - cache ['show', @wallpaper, 'tag_list'] do
+        - if @wallpaper.tag_list.any?
           .panel-body
-            = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
+            %ul.list-tag
+              - @wallpaper.tag_list.each do |tag|
+                %li
+                  = link_to wallpapers_path(tags: [tag]) do
+                    = tag
 
-        - cache ['show', @wallpaper, 'tag_list'] do
-          - if @wallpaper.tag_list.any?
-            .panel-body
-              %ul.list-tag
-                - @wallpaper.tag_list.each do |tag|
-                  %li
-                    = link_to wallpapers_path(tags: [tag]) do
-                      = tag
+      - cache ['show', @wallpaper, 'color_list'] do
+        - if @wallpaper.wallpaper_colors.any?
+          .panel-body.text-center
+            %ul.list-color
+              - @wallpaper.wallpaper_colors.includes(:color).each do |color|
+                %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
 
-        - cache ['show', @wallpaper, 'color_list'] do
-          - if @wallpaper.wallpaper_colors.any?
-            .panel-body.text-center
-              %ul.list-color
-                - @wallpaper.wallpaper_colors.includes(:color).each do |color|
-                  %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
-
-        .panel-body
-          %ul.list-metadata
-            - if @wallpaper.source.present?
-              %li
-                %strong Source
-                = auto_link @wallpaper.source  do |text|
-                  - truncate(text, length: 20)
+      .panel-body
+        %ul.list-metadata
+          - if @wallpaper.source.present?
             %li
-              %strong Resolution
-              = @wallpaper.to_resolution_text
-            %li
-              %strong Views
-              = @wallpaper.impressions_count
-            %li
-              %strong Likes
-              = @wallpaper.favourites_count
+              %strong Source
+              = auto_link @wallpaper.source  do |text|
+                - truncate(text, length: 20)
+          %li
+            %strong Resolution
+            = @wallpaper.to_resolution_text
+          %li
+            %strong Views
+            = @wallpaper.impressions_count
+          %li
+            %strong Likes
+            = @wallpaper.favourites_count
 
-        .panel-body
-          .btn-group.btn-group-justified.btn-group-purity
-            - Wallpaper.purity.options.each_entry do |label, value|
-              = link_to label, update_purity_wallpaper_path(@wallpaper, value),
-                        class: "btn btn-sm ladda-button btn-#{value} #{'btn-active' if @wallpaper.purity == value} #{'disabled' if @wallpaper.purity_locked?}",
-                        method: :patch, remote: true,
-                        data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
+      .panel-body
+        .btn-group.btn-group-justified.btn-group-purity
+          - Wallpaper.purity.options.each_entry do |label, value|
+            = link_to label, update_purity_wallpaper_path(@wallpaper, value),
+                      class: "btn btn-sm ladda-button btn-#{value} #{'btn-active' if @wallpaper.purity == value} #{'disabled' if @wallpaper.purity_locked?}",
+                      method: :patch, remote: true,
+                      data: { :style => 'zoom-in', :'action' => 'change-purity', :'wallpaper-id' => @wallpaper.id, :purity => value }
 
-      .panel.panel-default
-        .panel-heading Comments
-        .panel-body
-          = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
-            = f.input :comment, as: :text, label: false
-            = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
-        - comments = @wallpaper.comments.includes(:user).recent
-        .panel-body.container-comments{:class => ('hide' if comments.empty?)}
-          %ul.list-unstyled.list-comment= render comments.limit(4)
-          - if comments.size > 4
-            = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
+    .panel.panel-default
+      .panel-heading Comments
+      .panel-body
+        = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
+          = f.input :comment, as: :text, label: false
+          = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
+      - comments = @wallpaper.comments.includes(:user).recent
+      .panel-body.container-comments{:class => ('hide' if comments.empty?)}
+        %ul.list-unstyled.list-comment= render comments.limit(4)
+        - if comments.size > 4
+          = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
 
+    %p
       .btn-group
         - if can? :update, @wallpaper
           = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
@@ -80,5 +80,5 @@
         - if user_signed_in? && current_user.admin?
           = link_to 'Administer', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
         = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
-    .col-lg-10
-      = image_tag @wallpaper.image.url, width: @wallpaper.image_width, height: @wallpaper.image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
+  .col-lg-10
+    = image_tag @wallpaper.image.url, width: @wallpaper.image_width, height: @wallpaper.image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
