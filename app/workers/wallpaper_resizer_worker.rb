@@ -3,13 +3,9 @@ class WallpaperResizerWorker
   sidekiq_options queue: :wallpapers
 
   def perform(wallpaper_id)
-    Thread.new do
-      ActiveRecord::Base.connection_pool.with_connection do |conn|
-        @wallpaper = Wallpaper.find(wallpaper_id)
-        generate_images
-        @wallpaper.save!
-      end
-    end
+    @wallpaper = Wallpaper.find(wallpaper_id)
+    generate_images
+    @wallpaper.save!
   end
 
   def generate_images
