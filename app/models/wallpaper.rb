@@ -94,11 +94,12 @@ class Wallpaper < ActiveRecord::Base
   validates_property :height,    of: :image, in: (600..10240),                on: :create
 
   # Scopes
-  scope :processing, -> { where(processing: true ) }
-  scope :processed,  -> { where(processing: false) }
-  scope :visible,    -> { processed }
-  scope :latest,     -> { order(created_at: :desc) }
-  scope :similar_to, -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 15", w.phash]) }
+  scope :processing,    -> { where(processing: true ) }
+  scope :processed,     -> { where(processing: false) }
+  scope :visible,       -> { processed }
+  scope :latest,        -> { order(created_at: :desc) }
+  scope :with_purities, -> (*purities) { where(purity: purities) }
+  scope :similar_to,    -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 15", w.phash]) }
 
   # Callbacks
   after_create :queue_create_thumbnails
@@ -187,7 +188,7 @@ class Wallpaper < ActiveRecord::Base
       user_id:              user_id,
       user:                 user.try(:username),
       purity:               purity,
-      tags:                 cached_tag_list,
+      tags:                 tag_list,
       width:                image_width,
       height:               image_height,
       source:               source,
