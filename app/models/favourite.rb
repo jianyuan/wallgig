@@ -13,7 +13,7 @@
 class Favourite < ActiveRecord::Base
   belongs_to :user
   belongs_to :wallpaper, counter_cache: true
-  belongs_to :collection
+  belongs_to :collection, touch: true
 
   scope :latest, -> { order(created_at: :desc) }
 end
