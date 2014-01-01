@@ -16,7 +16,7 @@ class CollectionsController < ApplicationController
 
 
     @collections = relation.includes(:user, :wallpapers)
-                           .accessible_by(current_ability, :index)
+                           .accessible_by(current_ability, :read)
                            .order('collections.updated_at desc')
                            .page(params[:page])
 
@@ -27,7 +27,7 @@ class CollectionsController < ApplicationController
 
   # GET /collections/1
   def show
-    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :index)
+    @wallpapers = @collection.wallpapers.accessible_by(current_ability, :read)
                                         .page(params[:page])
 
     if request.xhr?

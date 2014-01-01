@@ -8,19 +8,20 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @wallpapers = @user.wallpapers
-                       .accessible_by(current_ability, :index)
+                       .accessible_by(current_ability, :read)
                        .latest
                        .limit(6)
 
-    @favourite_wallpapers = @user.favourite_wallpapers
-                                 .accessible_by(current_ability, :index)
-                                 .latest
-                                 .limit(10)
+    @favourites = @user.favourites
+                       .includes(:wallpaper)
+                       .accessible_by(current_ability, :read)
+                       .latest
+                       .limit(10)
 
     # OPTIMIZE
     @collections = @user.collections
                         .includes(:wallpapers)
-                        .accessible_by(current_ability, :index)
+                        .accessible_by(current_ability, :read)
                         .where({ wallpapers: { purity: 'sfw' }})
                         .where.not({ wallpapers: { id: nil } })
                         .order('collections.updated_at DESC') # FIXME

@@ -8,7 +8,7 @@ class FavouritesController < ApplicationController
   # GET /users/1/favourites
   def index
     @wallpapers = @user.favourite_wallpapers
-                       .accessible_by(current_ability, :index)
+                       .accessible_by(current_ability, :read)
                        .latest
                        .page(params[:page])
 
