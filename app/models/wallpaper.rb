@@ -67,19 +67,23 @@ class Wallpaper < ActiveRecord::Base
   # Search
   include Tire::Model::Search
   tire.mapping do
-    indexes :user_id,    type: 'integer', index: 'not_analyzed'
-    indexes :user,       type: 'string',  index: 'not_analyzed'
-    indexes :purity,     type: 'string',  index: 'not_analyzed'
-    indexes :tags,       type: 'string',  analyzer: 'keyword'
-    indexes :width,      type: 'integer', index: 'not_analyzed'
-    indexes :height,     type: 'integer', index: 'not_analyzed'
-    indexes :source,     type: 'string'
-    indexes :views,      type: 'integer', index: 'not_analyzed'
-    indexes :favourites, type: 'integer', index: 'not_analyzed'
+    indexes :user_id, type: 'integer', index: 'not_analyzed'
+    indexes :user,    type: 'string',  index: 'not_analyzed'
+    indexes :purity,  type: 'string',  index: 'not_analyzed'
+    indexes :tags,    type: 'string',  analyzer: 'keyword'
+    indexes :width,   type: 'integer', index: 'not_analyzed'
+    indexes :height,  type: 'integer', index: 'not_analyzed'
+    indexes :source,  type: 'string'
     indexes :colors do
       indexes :hex,        type: 'string',  analyzer: 'keyword'
       indexes :percentage, type: 'integer', index: 'not_analyzed'
     end
+    indexes :views,                type: 'integer', index: 'not_analyzed'
+    indexes :views_today,          type: 'integer', index: 'not_analyzed'
+    indexes :views_this_week,      type: 'integer', index: 'not_analyzed'
+    indexes :favourites,           type: 'integer', index: 'not_analyzed'
+    indexes :favourites_today,     type: 'integer', index: 'not_analyzed'
+    indexes :favourites_this_week, type: 'integer', index: 'not_analyzed'
   end
 
   # Validation
@@ -92,23 +96,9 @@ class Wallpaper < ActiveRecord::Base
   # Scopes
   scope :processing, -> { where(processing: true ) }
   scope :processed,  -> { where(processing: false) }
-  scope :visible, -> { processed }
-  scope :latest, -> { order(created_at: :desc) }
+  scope :visible,    -> { processed }
+  scope :latest,     -> { order(created_at: :desc) }
   scope :similar_to, -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 15", w.phash]) }
-  # scope :near_to_color, ->(color) {
-  #   return if color.blank?
-  #   color_ids = Kolor.near_to(color).map(&:id)
-  #   # where(primary_color_id: color_ids) # @todo improve color search algorithm
-  #   joins(:wallpaper_colors)
-  #     .where(wallpaper_colors: { color_id: color_ids })
-  #     .except(:order)
-  #     .order('wallpaper_colors.percentage DESC')
-  #     .references(:wallpaper_colors)
-  #     # .select('wallpapers.*')
-  #     # .where(wallpaper_colors: { color_id: color_ids })
-  #     # .group('wallpapers.id')
-  #     # .order('wallpaper_colors.percentage DESC')
-  # }
 
   # Callbacks
   after_create :queue_create_thumbnails
@@ -194,19 +184,22 @@ class Wallpaper < ActiveRecord::Base
 
   def to_indexed_json
     {
-      user_id: user_id,
-      user: user.try(:username),
-      purity: purity,
-      tags: tag_list,
-      width: image_width,
-      height: image_height,
-      source: source,
-      views: impressions_count,
-      favourites: favourites_count,
-      # colors: wallpaper_colors.map { |color| [color.hex] * (color.percentage * 10).ceil }.flatten,
-      colors: wallpaper_colors.map { |color| { hex: color.hex, percentage: (color.percentage * 10).ceil } },
-      created_at: created_at,
-      updated_at: updated_at
+      user_id:              user_id,
+      user:                 user.try(:username),
+      purity:               purity,
+      tags:                 cached_tag_list,
+      width:                image_width,
+      height:               image_height,
+      source:               source,
+      views:                impressions_count,
+      views_today:          impressionist_count(start_date: Time.now.beginning_of_day),
+      views_this_week:      impressionist_count(start_date: Time.now.beginning_of_week),
+      favourites:           favourites_count,
+      favourites_today:     favourites.where('created_at >= ?', Time.now.beginning_of_day).size,
+      favourites_this_week: favourites.where('created_at >= ?', Time.now.beginning_of_week).size,
+      colors:               wallpaper_colors.includes(:color).map { |color| { hex: color.hex, percentage: (color.percentage * 10).ceil } },
+      created_at:           created_at,
+      updated_at:           updated_at
     }.to_json
   end
 
