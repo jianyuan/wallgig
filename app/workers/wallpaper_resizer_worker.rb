@@ -1,16 +1,13 @@
 class WallpaperResizerWorker
   include Sidekiq::Worker
-  include Timeout
   sidekiq_options queue: :wallpapers
 
   def perform(wallpaper_id)
-    timeout(60) do
-      Thread.new do
-        ActiveRecord::Base.connection_pool.with_connection do |conn|
-          @wallpaper = Wallpaper.find(wallpaper_id)
-          generate_images
-          @wallpaper.save!
-        end
+    Thread.new do
+      ActiveRecord::Base.connection_pool.with_connection do |conn|
+        @wallpaper = Wallpaper.find(wallpaper_id)
+        generate_images
+        @wallpaper.save!
       end
     end
   end
