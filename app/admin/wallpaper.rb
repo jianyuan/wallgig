@@ -21,7 +21,10 @@ ActiveAdmin.register Wallpaper do
     redirect_to :back, notice: 'Wallpaper queued for thumbnail creation!'
   end
 
-  %i(user tags purity purity_locked processing image_width image_height source created_at updated_at).each {|f| filter f }
+  %i(user tags purity purity_locked processing image_width image_height source created_at updated_at).each do |a|
+    filter a
+  end
+
   index do
     selectable_column
     column 'Id', sortable: :id do |wallpaper|
