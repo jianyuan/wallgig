@@ -134,10 +134,20 @@ ActiveAdmin.register Wallpaper do
     f.actions
   end
 
-  member_action :recreate_thumbnails, method: :get do
-    wallpaper = Wallpaper.find(params[:id])
-    wallpaper.queue_create_thumbnails
-    redirect_to action: :show, notice: 'Thumbnail recreation request queued.'
+  member_action :merge_wallpaper do
+    @wallpaper = Wallpaper.find(params[:id])
+  end
+
+  member_action :perform_wallpaper_merge, method: :post do
+    @from_wallpaper = Wallpaper.find(params[:id])
+    @to_wallpaper = Wallpaper.find(params[:target_id])
+    new_wallpaper = WallpaperMerger.new(@from_wallpaper, @to_wallpaper).execute
+
+    redirect_to admin_wallpaper_path(new_wallpaper), notice: 'Wallpapers merged!'
+  end
+
+  action_item only: :show do
+    link_to 'Merge Wallpaper', merge_wallpaper_admin_wallpaper_path(wallpaper)
   end
 
   controller do

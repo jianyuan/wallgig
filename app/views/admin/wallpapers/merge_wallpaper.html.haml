@@ -1,0 +1,9 @@
+= form_tag perform_wallpaper_merge_admin_wallpaper_path(@wallpaper) do
+  %fieldset.inputs
+    %ol
+      %li.string.input
+        = label_tag 'target_id', 'Merge to Wallpaper ID'
+        = text_field_tag 'target_id'
+  %fieldset.actions
+    %ol
+      %li.action= submit_tag 'Merge'
