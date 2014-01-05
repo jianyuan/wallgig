@@ -1,16 +1,22 @@
 class WallpapersDecorator < Draper::CollectionDecorator
   delegate :facets
 
-  # kaminari's pagination
+  # pagination
   delegate :current_page, :total_pages, :limit_value, :last_page?
 
-  def decorate_item(item)
-    context_with_favourited = context.tap do |c|
-      c[:favourited] = user_favourited_wallpaper_ids.include?(item.id)
-    end
-
-    item_decorator.call(item, context: context_with_favourited)
+  def link_to_next_page
+    return unless has_pagination?
+    h.link_to_next_page object, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: context[:search_options]
   end
+
+  protected
+    def decorate_item(item)
+      context_with_favourited = context.tap do |c|
+        c[:favourited] = user_favourited_wallpaper_ids.include?(item.id)
+      end
+
+      item_decorator.call(item, context: context_with_favourited)
+    end
 
   private
     def ids
@@ -20,5 +26,9 @@ class WallpapersDecorator < Draper::CollectionDecorator
     def user_favourited_wallpaper_ids
       return [] if context[:user].blank?
       @user_favourited_wallpaper_ids ||= context[:user].favourites.where(wallpaper_id: ids).pluck(:wallpaper_id)
+    end
+
+    def has_pagination?
+      object.kind_of?(Kaminari::PageScopeMethods) || object.kind_of?(Tire::Results::Pagination)
     end
 end

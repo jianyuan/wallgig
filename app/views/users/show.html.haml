@@ -36,7 +36,7 @@
         %span.glyphicon.glyphicon-star
         Favourites
         %small= @user.favourites.size
-      = render partial: 'wallpapers/list', locals: { wallpapers: @favourites.map(&:wallpaper), extra_css_class: 'row-2' }
+      = render partial: 'wallpapers/list', locals: { wallpapers: @favourited_wallpapers, extra_css_class: 'row-2' }
 
   .col-lg-2
     %h3

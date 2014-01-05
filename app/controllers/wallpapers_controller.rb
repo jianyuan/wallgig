@@ -18,7 +18,10 @@ class WallpapersController < ApplicationController
     end
 
     @wallpapers = WallpaperSearch.new(search_options).wallpapers
-    @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
+    @wallpapers = WallpapersDecorator.new(@wallpapers, context: {
+      user: current_user,
+      search_options: search_options
+    })
 
     if request.xhr?
       render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }

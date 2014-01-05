@@ -11,6 +11,7 @@ class FavouritesController < ApplicationController
                        .accessible_by(current_ability, :read)
                        .latest
                        .page(params[:page])
+    @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
 
     if request.xhr?
       render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }

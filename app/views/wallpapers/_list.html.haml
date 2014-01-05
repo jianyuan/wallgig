@@ -10,9 +10,7 @@
             %span.glyphicon.glyphicon-remove.text-danger
         .overlay.overlay-bottom
           %strong= wallpaper.resolution
-          = link_to toggle_wallpaper_favourite_path(wallpaper, format: :json), class: "btn btn-sm btn-like pull-left #{'btn-success' if wallpaper.context[:favourited]}", method: :post, remote: true, data: { action: 'like' } do
-            %span.glyphicon.glyphicon-thumbs-up
-            %span.count= wallpaper.favourites_count
+          = wallpaper.favourite_button
           .btn.btn-sm.pull-right
             %span.glyphicon.glyphicon-eye-open
             = wallpaper.impressions_count
@@ -20,8 +18,7 @@
           -#   %span.glyphicon.glyphicon-folder-open
           -#   = wallpaper.favourites.size
 
-  - if wallpapers.respond_to? :total_pages
-    = link_to_next_page wallpapers, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params
+  = wallpapers.link_to_next_page
 
 - else
   %br/
