@@ -23,6 +23,6 @@ class ScreenResolution < ActiveRecord::Base
   end
 
   def wallpapers
-    Wallpaper.where(image_width: width, image_height: height)
+    @wallpapers ||= Wallpaper.where(image_width: width, image_height: height)
   end
 end

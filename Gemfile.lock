@@ -162,6 +162,7 @@ GEM
       color
     connection_pool (1.2.0)
     country_select (1.2.0)
+    database_cleaner (1.2.0)
     debug_inspector (0.0.2)
     devise (3.2.2)
       bcrypt-ruby (~> 3.0)
@@ -478,6 +479,7 @@ DEPENDENCIES
   color
   colorscore
   country_select
+  database_cleaner
   devise
   doorkeeper (~> 0.7.0)
   dotenv-rails

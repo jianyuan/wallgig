@@ -33,7 +33,7 @@ class WallpapersController < ApplicationController
   def show
     if resize_params.present?
       requested_resolution = ScreenResolution.find_by(width: resize_params[:width], height: resize_params[:height])
-      @wallpaper.resize_image_to(requested_resolution)
+      redirect_to short_wallpaper_path(@wallpaper) unless @wallpaper.resize_image_to(requested_resolution)
     end
 
     @wallpaper = @wallpaper.decorate
@@ -95,11 +95,17 @@ class WallpapersController < ApplicationController
     end
   end
 
+  # PATCH /wallpapers/1/update_purity
   # PATCH /wallpapers/1/update_purity.js
   def update_purity
     authorize! :update_purity, @wallpaper
     @wallpaper.purity = params[:purity]
-    @wallpaper.save
+    @wallpaper.save!
+
+    respond_to do |format|
+      format.html { redirect_to @wallpaper, notice: 'Wallpaper purity was successfully updated.' }
+      format.json { head :no_content }
+    end
   end
 
   # GET /wallpapers/1/history

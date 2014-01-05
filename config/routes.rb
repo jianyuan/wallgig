@@ -35,6 +35,7 @@ Wallgig::Application.routes.draw do
   end
 
   # Wallpapers
+  get 'w/:id' => 'wallpapers#show', id: /\d+/, as: :short_wallpaper
   resources :wallpapers do
 
     collection do

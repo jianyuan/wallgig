@@ -1,20 +1,29 @@
 class WallpaperMerger
-  def initialize(from_wallpaper, to_wallpaper)
+  def self.from(from_wallpaper)
+    new(from_wallpaper)
+  end
+
+  def initialize(from_wallpaper)
     @from_wallpaper = from_wallpaper
+  end
+
+  def to(to_wallpaper)
     @to_wallpaper = to_wallpaper
+    self
   end
 
   def execute
-    @to_wallpaper.tag_list += @from_wallpaper.tag_list
-    @to_wallpaper.source ||= @from_wallpaper.source
+    Wallpaper.transaction do
+      @to_wallpaper.tag_list += @from_wallpaper.tag_list
+      @to_wallpaper.source ||= @from_wallpaper.source
 
-    transfer_favourites
-    transfer_impressions
+      transfer_favourites
+      transfer_impressions
 
-    @from_wallpaper.destroy
+      @from_wallpaper.destroy
 
-    @to_wallpaper.save
-    @to_wallpaper
+      @to_wallpaper.save
+    end
   end
 
   private

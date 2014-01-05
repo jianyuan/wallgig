@@ -66,12 +66,13 @@ group :development, :test do
   gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'spork-rails'
+  gem 'database_cleaner'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-sidekiq'
   gem 'guard-spork'
   gem 'rb-inotify'
+  gem 'spork-rails'
 end
 
 # auth

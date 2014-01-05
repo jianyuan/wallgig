@@ -257,8 +257,9 @@ class Wallpaper < ActiveRecord::Base
   attr_reader :resized_image_resolution
 
   def resize_image_to(resolution)
-    return unless resolutions.include?(resolution)
+    return false unless resolutions.include?(resolution)
     @resized_image = image.thumb("#{resolution.to_geometry_s}\##{image_gravity}")
     @resized_image_resolution = resolution
+    true
   end
 end
