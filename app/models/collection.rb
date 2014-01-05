@@ -16,7 +16,7 @@
 class Collection < ActiveRecord::Base
   belongs_to :user
   has_many :favourites, dependent: :nullify
-  has_many :wallpapers, through: :favourites
+  has_many :wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites
 
   acts_as_list scope: :user
 

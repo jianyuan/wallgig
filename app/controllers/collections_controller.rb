@@ -27,14 +27,11 @@ class CollectionsController < ApplicationController
 
   # GET /collections/1
   def show
-    @favourites = @collection.favourites
-                             .includes(:wallpaper)
-                             .accessible_by(current_ability, :read)
-                             .latest
-                             .page(params[:page])
-
-    @wallpapers = @favourites.map(&:wallpaper)
-    @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
+    wallpapers = @collection.wallpapers
+                            .accessible_by(current_ability, :read)
+                            .latest
+                            .page(params[:page])
+    @wallpapers = WallpapersDecorator.new(wallpapers, context: { user: current_user })
 
     if request.xhr?
       render partial: 'wallpapers/list', layout: false, locals: { wallpapers: @wallpapers }
