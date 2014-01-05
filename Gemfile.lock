@@ -31,6 +31,16 @@ GIT
       sass-rails
 
 GIT
+  remote: git://github.com/jianyuan/draper.git
+  revision: f74d9d279a6be312fd15ecaaeb92216c1f393bf3
+  specs:
+    draper (1.3.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0.3)
+
+GIT
   remote: git://github.com/mindvision/cancan.git
   revision: 7a2a130d2f0e287bdc69967cabe66cdc48b92a4f
   specs:
@@ -352,6 +362,7 @@ GEM
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
     ref (1.0.5)
+    request_store (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
     rest-client (1.6.7)
@@ -471,6 +482,7 @@ DEPENDENCIES
   doorkeeper (~> 0.7.0)
   dotenv-rails
   dragonfly (~> 1.0.0)
+  draper!
   eco
   enumerize
   factory_girl_rails (~> 4.0)

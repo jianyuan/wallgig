@@ -18,6 +18,7 @@ class WallpapersController < ApplicationController
     end
 
     @wallpapers = WallpaperSearch.new(search_options).wallpapers
+    @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
 
     if request.xhr?
       render partial: 'list', layout: false, locals: { wallpapers: @wallpapers }
@@ -27,6 +28,7 @@ class WallpapersController < ApplicationController
   # GET /wallpapers/1
   # GET /wallpapers/1.json
   def show
+    @wallpaper = @wallpaper.decorate
   end
 
   # GET /wallpapers/new

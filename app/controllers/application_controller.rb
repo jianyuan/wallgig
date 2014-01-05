@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
 
   helper UsersHelper
   helper_method :last_deploy_time
-  helper_method :current_user_favourites
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -24,13 +23,5 @@ class ApplicationController < ActionController::Base
 
     def last_deploy_time
       @last_deploy_time ||= File.new(Rails.root.join('last_deploy')).atime rescue nil
-    end
-
-    def current_user_favourites
-      @current_user_favourites ||= if user_signed_in?
-                                     current_user.favourite_wallpaper_ids
-                                   else
-                                     []
-                                   end
     end
 end

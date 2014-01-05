@@ -17,7 +17,7 @@
 
       - if user_signed_in?
         .panel-body
-          = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper).first
+          = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper.object).first
 
       - cache ['show', @wallpaper, 'tag_list'] do
         - if @wallpaper.tag_list.any?
@@ -44,7 +44,7 @@
                 - truncate(text, length: 20)
           %li
             %strong Resolution
-            = @wallpaper.to_resolution_text
+            = @wallpaper.resolution
           %li
             %strong Views
             = @wallpaper.impressions_count

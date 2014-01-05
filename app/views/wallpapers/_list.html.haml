@@ -9,8 +9,8 @@
           = link_to '#', class: 'btn btn-sm btn-report', data: { action: 'report' } do
             %span.glyphicon.glyphicon-remove.text-danger
         .overlay.overlay-bottom
-          %strong= wallpaper.to_resolution_text
-          = link_to toggle_wallpaper_favourite_path(wallpaper, format: :json), class: "btn btn-sm btn-like pull-left #{'btn-success' if current_user_favourites.include?(wallpaper.id)}", method: :post, remote: true, data: { action: 'like' } do
+          %strong= wallpaper.resolution
+          = link_to toggle_wallpaper_favourite_path(wallpaper, format: :json), class: "btn btn-sm btn-like pull-left #{'btn-success' if wallpaper.context[:favourited]}", method: :post, remote: true, data: { action: 'like' } do
             %span.glyphicon.glyphicon-thumbs-up
             %span.count= wallpaper.favourites_count
           .btn.btn-sm.pull-right

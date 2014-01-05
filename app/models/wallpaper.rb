@@ -208,10 +208,6 @@ class Wallpaper < ActiveRecord::Base
     "Wallpaper \##{id}"
   end
 
-  def to_resolution_text
-    "#{image_width}x#{image_height}"
-  end
-
   def lock_purity!
     update_attribute :purity_locked, true
   end

@@ -127,6 +127,7 @@ gem 'rails_autolink'
 gem 'active_link_to'
 gem 'meta-tags', :require => 'meta_tags'
 gem 'phashion'
+gem 'draper', github: 'jianyuan/draper'
 
 # rack
 gem 'rack-cache', require:  'rack/cache', group: :production
