@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.0.0
+  - 2.1.0
+before_script:
+  - cp config/database.yml.example config/database.yml
+  - psql -c 'create database wallgig_development;' -U postgres
+  - rake db:migrate
+bundler_args: --without development
+script: 'bundle exec rspec'
+services:
+  - redis-server
