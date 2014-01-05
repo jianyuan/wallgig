@@ -1,6 +1,24 @@
 class WallpaperDecorator < Draper::Decorator
   delegate_all
 
+  def image_url
+    return if image.blank?
+    if Rails.env.production?
+      "#{ENV['CDN_HOST']}#{image.remote_url}"
+    else
+      image.url
+    end
+  end
+
+  def thumbnail_image_url
+    return if thumbnail_image.blank?
+    if Rails.env.production?
+      "#{ENV['CDN_HOST']}#{thumbnail_image.remote_url}"
+    else
+      thumbnail_image.url
+    end
+  end
+
   def resolution
     "#{image_width}&times;#{image_height}".html_safe
   end

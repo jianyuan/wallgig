@@ -10,8 +10,8 @@ Dragonfly.app.configure do
   url_format "/media/:job/:name"
 
   datastore :file,
-    root_path: Rails.root.join('public/system/dragonfly', Rails.env),
-    server_root: Rails.root.join('public')
+    root_path: Rails.root.join('public', 'system', 'dragonfly', Rails.env),
+    server_root: Rails.root.join('public', 'system', 'dragonfly', Rails.env)
 end
 
 # Logger
