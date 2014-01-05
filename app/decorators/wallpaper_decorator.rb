@@ -2,7 +2,7 @@ class WallpaperDecorator < Draper::Decorator
   delegate_all
 
   def resolution
-    "#{image_width}x#{image_height}"
+    "#{image_width}&times;#{image_height}".html_safe
   end
 
   def favourite_button
@@ -16,8 +16,6 @@ class WallpaperDecorator < Draper::Decorator
       }
     }
     options[:class] << ' btn-success' if context[:favourited]
-
-    puts context
 
     h.link_to url, options do
       "<span class='glyphicon glyphicon-thumbs-up'></span>" \

@@ -17,8 +17,8 @@ class WallpapersController < ApplicationController
       session[:random_seed] = search_options[:random_seed]
     end
 
-    @wallpapers = WallpaperSearch.new(search_options).wallpapers
-    @wallpapers = WallpapersDecorator.new(@wallpapers, context: {
+    wallpapers = WallpaperSearch.new(search_options).wallpapers
+    @wallpapers = WallpapersDecorator.new(wallpapers, context: {
       user: current_user,
       search_options: search_options
     })

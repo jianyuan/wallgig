@@ -15,7 +15,7 @@ class ScreenResolution < ActiveRecord::Base
   default_scope -> { order("case when category = 'widescreen' then 1 else 2 end ASC, width DESC, height DESC") }
 
   def to_s
-    "#{width}x#{height}"
+    "#{width}&times;#{height}".html_safe
   end
 
   def wallpapers

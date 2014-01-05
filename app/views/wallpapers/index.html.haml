@@ -94,5 +94,4 @@
               .input-group-btn
                 = submit_tag 'Search', class: 'btn btn-default btn-md'
 
-
-= render 'list', wallpapers: @wallpapers
+= render partial: 'list', locals: { wallpapers: @wallpapers }

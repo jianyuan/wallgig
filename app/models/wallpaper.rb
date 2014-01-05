@@ -109,6 +109,14 @@ class Wallpaper < ActiveRecord::Base
   after_save :update_index, unless: :processing?
   after_destroy :update_index
 
+  def self.ensure_consistency!
+    connection.execute('
+      UPDATE wallpapers SET favourites_count = (
+        SELECT COUNT(*) FROM favourites WHERE favourites.wallpaper_id = wallpapers.id
+      )
+    ')
+  end
+
   def image_storage_path(i)
     name = File.basename(image_uid, (image.ext || '.jpg'))
     [File.dirname(image_uid), "#{name}_#{i.width}x#{i.height}.#{i.format}"].join('/')
