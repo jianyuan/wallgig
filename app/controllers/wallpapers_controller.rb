@@ -31,6 +31,11 @@ class WallpapersController < ApplicationController
   # GET /wallpapers/1
   # GET /wallpapers/1.json
   def show
+    if resize_params.present?
+      requested_resolution = ScreenResolution.find_by(width: resize_params[:width], height: resize_params[:height])
+      @wallpaper.resize_image_to(requested_resolution)
+    end
+
     @wallpaper = @wallpaper.decorate
   end
 
@@ -142,9 +147,13 @@ class WallpapersController < ApplicationController
       params.permit(:q, :page, :width, :height, :order, purity: [], tags: [], exclude_tags: [], colors: []).tap do |p|
         p.reverse_merge! session[:search_params] if load_session && p.blank? && session[:search_params].present?
 
-        # Default values
-        p[:order] ||= 'latest'
+        # default values
+        p[:order]  ||= 'latest'
         p[:purity] ||= ['sfw']
       end
+    end
+
+    def resize_params
+      params.permit(:width, :height)
     end
 end

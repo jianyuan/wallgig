@@ -36,6 +36,7 @@ Wallgig::Application.routes.draw do
 
   # Wallpapers
   resources :wallpapers do
+
     collection do
       post :save_search_params
     end
@@ -43,6 +44,7 @@ Wallgig::Application.routes.draw do
     member do
       get :history
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
+      get ':width/:height' => 'wallpapers#show', width: /\d+/, height: /\d+/, as: :resized
     end
 
     concerns :commentable

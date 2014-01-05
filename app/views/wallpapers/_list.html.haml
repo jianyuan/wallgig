@@ -3,7 +3,7 @@
     - wallpapers.each do |wallpaper|
       - next unless can?(:read, wallpaper) && wallpaper.thumbnail_image.present?
       %li{:class => "purity-#{wallpaper.purity}", :data => {:wallpaper_id => wallpaper.id}}
-        = link_to wallpaper, title: wallpaper.cached_tag_list, target: '_blank' do
+        = link_to wallpaper.path_with_resolution, title: wallpaper.cached_tag_list, target: '_blank' do
           = image_tag nil, width: 250, height: 188, class: 'img-wallpaper lazy', data: { src: wallpaper.thumbnail_image_url }
         .overlay.overlay-right
           = link_to '#', class: 'btn btn-sm btn-report', data: { action: 'report' } do

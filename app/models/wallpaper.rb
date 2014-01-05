@@ -252,4 +252,13 @@ class Wallpaper < ActiveRecord::Base
   def resolutions
     @resolutions ||= WallpaperResolutions.new(self)
   end
+
+  attr_reader :resized_image
+  attr_reader :resized_image_resolution
+
+  def resize_image_to(resolution)
+    return unless resolutions.include?(resolution)
+    @resized_image = image.thumb("#{resolution.to_geometry_s}\##{image_gravity}")
+    @resized_image_resolution = resolution
+  end
 end

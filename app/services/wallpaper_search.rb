@@ -1,5 +1,5 @@
 class WallpaperSearch
-  # Formula to calculate wallpaper's popularity
+  # formula to calculate wallpaper's popularity
   POPULARITY_SCRIPT = "doc['views'].value * 0.5 + doc['favourites'].value * 1.5"
 
   def initialize(options)
@@ -75,9 +75,10 @@ class WallpaperSearch
       [:width, :height].each do |a|
         if @options[a].present?
           payload[:query][:bool][:must] << {
-            :term => {
+            :range => {
               a => {
-                :value => @options[a]
+                :gte => @options[a],
+                :boost => 2.0
               }
             }
           }

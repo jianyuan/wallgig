@@ -18,8 +18,11 @@ class ScreenResolution < ActiveRecord::Base
     "#{width}&times;#{height}".html_safe
   end
 
+  def to_geometry_s
+    "#{width}x#{height}"
+  end
+
   def wallpapers
     Wallpaper.where(image_width: width, image_height: height)
   end
-
 end

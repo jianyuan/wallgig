@@ -96,3 +96,16 @@ $ ->
     $('[data-action=save_settings]').on 'ajax:success', ->
       window.analytics.track 'Saved search settings',
         params: $(this).data('params')
+
+  if $('[data-action=resize]').length
+    $('[data-action=resize]').change ->
+      $select = $(this)
+      $option = $(this).find(':selected')
+      url = $select.data('url')
+      width = $option.data('width')
+      height = $option.data('height')
+
+      if width && height
+        url += '/' + $option.data('width') + '/' + $option.data('height')
+      else
+      window.location.href = url
