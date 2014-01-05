@@ -101,130 +101,16 @@ class WallpapersController < ApplicationController
   def history
   end
 
-  # def elasticsearch
-  #   query = Hash.new({})
+  # POST /wallpapers/save_search_params
+  # POST /wallpapers/save_search_params.json
+  def save_search_params
+    session[:search_params] = search_params(false).to_hash
 
-  #   if params[:color].present? && (color = Color::RGB.from_html(params[:color]) rescue false)
-  #     threshold = params[:threshold].to_i || 1
-  #     # query[:function_score] = {
-  #     #   boost_mode: 'replace',
-  #     #   filter: {
-  #     #     range: {
-  #     #       # :'colors.percentage' => {
-  #     #       #   gte: 0.5
-  #     #       # }
-  #     #       # :'colors.red' => {
-  #     #       #   gte: color.red - threshold,
-  #     #       #   lte: color.red + threshold
-  #     #       # },
-  #     #       # :'colors.green' => {
-  #     #       #   gte: color.green - threshold,
-  #     #       #   lte: color.green + threshold
-  #     #       # },
-  #     #       # :'colors.blue' => {
-  #     #       #   gte: color.blue - threshold,
-  #     #       #   lte: color.blue + threshold
-  #     #       # }
-  #     #       :'primary_color.red' => {
-  #     #         gte: color.red - threshold,
-  #     #         lte: color.red + threshold
-  #     #       },
-  #     #       :'primary_color.green' => {
-  #     #         gte: color.green - threshold,
-  #     #         lte: color.green + threshold
-  #     #       },
-  #     #       :'primary_color.blue' => {
-  #     #         gte: color.blue - threshold,
-  #     #         lte: color.blue + threshold
-  #     #       }
-  #     #     }
-  #     #   },
-  #     #   script_score: {
-  #     #     params: {
-  #     #       red: color.red,
-  #     #       green: color.green,
-  #     #       blue: color.blue
-  #     #     },
-  #     #     script: "-1 * (abs(doc['primary_color.red'].value - red) + abs(doc['primary_color.green'].value - green) + abs(doc['primary_color.blue'].value - blue))"
-  #     #     # script: "-((abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue))) * (1 - doc['colors.percentage'].value)"
-  #     #   }
-  #     # }
-
-  #     query[:function_score] = {
-  #       query: {
-  #         bool: {
-  #           must: [
-  #             {
-  #               fuzzy: {
-  #                 :'colors.red' => {
-  #                   value: color.red.to_i,
-  #                   min_similarity: threshold
-  #                 }
-  #               },
-  #               fuzzy: {
-  #                 :'colors.green' => {
-  #                   value: color.green.to_i,
-  #                   min_similarity: threshold
-  #                 }
-  #               },
-  #               fuzzy: {
-  #                 :'colors.blue' => {
-  #                   value: color.blue.to_i,
-  #                   min_similarity: threshold
-  #                 }
-  #               }
-  #             }
-  #           ]
-  #         }
-  #       },
-  #       # boost_mode: 'replace',
-  #       # filter: {
-  #       #   and: {
-  #       #     filters: [
-  #       #       {
-  #       #         range: {
-  #       #           :'colors.red' => {
-  #       #             gte: color.red - threshold,
-  #       #             lte: color.red + threshold
-  #       #           }
-  #       #         }
-  #       #       },
-  #       #       {
-  #       #         range: {
-  #       #           :'colors.green' => {
-  #       #             gte: color.green - threshold,
-  #       #             lte: color.green + threshold
-  #       #           }
-  #       #         }
-  #       #       },
-  #       #       {
-  #       #         range: {
-  #       #           :'colors.blue' => {
-  #       #             gte: color.blue - threshold,
-  #       #             lte: color.blue + threshold
-  #       #           }
-  #       #         }
-  #       #       }
-  #       #     ]
-  #       #   }
-  #       # },
-  #       script_score: {
-  #         params: {
-  #           red: color.red,
-  #           green: color.green,
-  #           blue: color.blue
-  #         },
-  #         script: "-1 * (abs(doc['colors.red'].value - red) + abs(doc['colors.green'].value - green) + abs(doc['colors.blue'].value - blue)) * (1 - doc['colors.percentage'].value)"
-  #       }
-  #     }
-  #   else
-  #     query[:match_all] = {}
-  #   end
-  #   # @wallpapers = Wallpaper.tire.search nil, query: query
-  #   # @query = Tire.search(Wallpaper.tire.index.name, payload: { size: 200, query: query }, load: Rails.env.production?)
-  #   # @results = @query.results
-  #   @wallpapers = Wallpaper.search(params)
-  # end
+    respond_to do |format|
+      format.html { redirect_to :back, notice: 'Search settings successfully saved.' }
+      format.json { head :no_content }
+    end
+  end
 
   private
     def set_wallpaper
@@ -252,8 +138,10 @@ class WallpapersController < ApplicationController
       end
     end
 
-    def search_params
+    def search_params(load_session = true)
       params.permit(:q, :page, :width, :height, :order, purity: [], tags: [], exclude_tags: [], colors: []).tap do |p|
+        p.reverse_merge! session[:search_params] if load_session && p.blank? && session[:search_params].present?
+
         # Default values
         p[:order] ||= 'latest'
         p[:purity] ||= ['sfw']

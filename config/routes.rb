@@ -36,8 +36,12 @@ Wallgig::Application.routes.draw do
 
   # Wallpapers
   resources :wallpapers do
+    collection do
+      post :save_search_params
+    end
+
     member do
-      get 'history'
+      get :history
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
     end
 
@@ -45,7 +49,7 @@ Wallgig::Application.routes.draw do
 
     resource :favourite do
       member do
-        post 'toggle'
+        post :toggle
       end
     end
   end
