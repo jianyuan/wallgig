@@ -7,9 +7,8 @@ class FavouritesController < ApplicationController
 
   # GET /users/1/favourites
   def index
-    @wallpapers = @user.favourite_wallpapers
+    @wallpapers = @user.favourited_wallpapers
                        .accessible_by(current_ability, :read)
-                       .latest
                        .page(params[:page])
     @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
 

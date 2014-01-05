@@ -3,6 +3,6 @@
 %h3
   %span.glyphicon.glyphicon-star
   Favourites
-  %small= @user.favourite_wallpapers.size
+  %small= @user.favourited_wallpapers.size
 
 = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers }
