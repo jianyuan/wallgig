@@ -31,6 +31,8 @@
 #
 
 class User < ActiveRecord::Base
+  attr_accessor :login
+
   has_many :collections, dependent: :destroy
   has_many :wallpapers
   has_many :favourites
@@ -51,6 +53,15 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false },
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
             length: { maximum: 50 }
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions).where(["lower(username) = :value OR lower(email) = lower(:value)", { :value => login }]).first
+    else
+      where(conditions).first
+    end
+  end
 
   def to_param
     username
