@@ -91,3 +91,8 @@ $ ->
             callback()
           success: (data) ->
             callback(data.map (tag) -> { tag: tag})
+
+  if $('[data-action=save_settings]').length
+    $('[data-action=save_settings]').on 'ajax:success', ->
+      window.analytics.track 'Saved search settings',
+        params: $(this).data('params')

@@ -95,11 +95,11 @@
     .col-lg-4
       %h5 Settings
       .btn-group
-        = link_to 'Save settings', save_search_params_wallpapers_path, class: 'btn btn-md btn-info', data: { method: :post, remote: true, type: :json, params: search_params, disable_with: 'Saving&hellip;' }
+        = link_to 'Save settings', save_search_params_wallpapers_path, class: 'btn btn-md btn-info', data: { action: 'save_settings', method: :post, remote: true, type: :json, params: search_params, disable_with: 'Saving&hellip;' }
         %button{:type => 'button', :class => 'btn btn-md btn-info dropdown-toggle', :data => {:toggle => 'dropdown'}}
           %span.caret
         %ul.dropdown-menu
-          %li= link_to 'Clear settings', save_search_params_wallpapers_path, data: { method: :post, remote: true, type: :json, disable_with: 'Clearing&hellip;' }
+          %li= link_to 'Clear settings', save_search_params_wallpapers_path, data: { action: 'save_settings', method: :post, remote: true, type: :json, disable_with: 'Clearing&hellip;' }
 
 .well
   .row
