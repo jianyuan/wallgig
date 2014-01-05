@@ -7,18 +7,18 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @wallpapers = @user.wallpapers
+    wallpapers = @user.wallpapers
                        .accessible_by(current_ability, :read)
                        .latest
                        .limit(6)
-    @wallpapers = WallpapersDecorator.new(@wallpapers, context: { user: current_user })
+    @wallpapers = WallpapersDecorator.new(wallpapers, context: { user: current_user })
 
-    @favourites = @user.favourites
+    favourites = @user.favourites
                        .includes(:wallpaper)
                        .accessible_by(current_ability, :read)
                        .latest
                        .limit(10)
-    @favourited_wallpapers = WallpapersDecorator.new(@favourites.map(&:wallpaper), context: { user: current_user })
+    @favourited_wallpapers = WallpapersDecorator.new(favourites.map(&:wallpaper), context: { user: current_user })
 
     # OPTIMIZE
     @collections = @user.collections

@@ -58,16 +58,19 @@
                   = link_to '', wallpapers_path(search_params.merge(colors: (colors + [hex])).reject(&blank_value)), style: "background-color: \##{hex}"
 
         .col-lg-8
-          %h5 Resolution
           .list-facet
+            - last_screen_resolution_category = nil
             - ScreenResolution.all.each do |screen_resolution|
+              - if last_screen_resolution_category != screen_resolution.category
+                - last_screen_resolution_category = screen_resolution.category
+                %h5= screen_resolution.category_text
               - active = [screen_resolution.width.to_s, screen_resolution.height.to_s] == [search_params[:width], search_params[:height]]
               - css_class = active ? 'success' : 'link'
               - if active
-                = link_to wallpapers_path(search_params.merge(width: nil, height: nil).reject(&blank_value)), class: "btn btn-sm btn-#{css_class}" do
+                = link_to wallpapers_path(search_params.merge(width: nil, height: nil).reject(&blank_value)), class: "btn btn-xs btn-#{css_class}" do
                   = screen_resolution
               - else
-                = link_to wallpapers_path(search_params.merge(width: screen_resolution.width, height: screen_resolution.height).reject(&blank_value)), class: "btn btn-sm btn-#{css_class}" do
+                = link_to wallpapers_path(search_params.merge(width: screen_resolution.width, height: screen_resolution.height).reject(&blank_value)), class: "btn btn-xs btn-#{css_class}" do
                   = screen_resolution
 
       .row

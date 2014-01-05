@@ -17,10 +17,11 @@ class WallpaperDecorator < Draper::Decorator
     }
     options[:class] << ' btn-success' if context[:favourited]
 
+    puts context
+
     h.link_to url, options do
-      out = '<span class="glyphicon glyphicon-thumbs-up"></span>'
-      out << "<span class='count'>#{object.favourites_count}</span>"
-      out.html_safe
+      "<span class='glyphicon glyphicon-thumbs-up'></span>" \
+      "<span class='count'>#{favourites_count}</span>".html_safe
     end
   end
 end

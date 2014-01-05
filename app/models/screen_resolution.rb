@@ -12,6 +12,8 @@ class ScreenResolution < ActiveRecord::Base
   extend Enumerize
   enumerize :category, in: [:standard, :widescreen]
 
+  default_scope -> { order("case when category = 'widescreen' then 1 else 2 end ASC, width DESC, height DESC") }
+
   def to_s
     "#{width}x#{height}"
   end

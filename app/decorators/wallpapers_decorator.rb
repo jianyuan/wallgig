@@ -11,9 +11,8 @@ class WallpapersDecorator < Draper::CollectionDecorator
 
   protected
     def decorate_item(item)
-      context_with_favourited = context.tap do |c|
-        c[:favourited] = user_favourited_wallpaper_ids.include?(item.id)
-      end
+      context_with_favourited = context
+      context_with_favourited[:favourited] = user_favourited_wallpaper_ids.include?(item.id)
 
       item_decorator.call(item, context: context_with_favourited)
     end

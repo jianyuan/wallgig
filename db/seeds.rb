@@ -7,28 +7,32 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 screen_resolutions = [
-  { width: 800, height: 600, category: :standard },
-  { width: 1024, height: 768, category: :standard },
-  { width: 1280, height: 960, category: :standard },
-  { width: 1280, height: 1024, category: :standard },
-  { width: 1400, height: 1050, category: :standard },
-  { width: 1600, height: 1200, category: :standard },
-  { width: 2560, height: 2048, category: :standard },
-  { width: 1024, height: 600, category: :widescreen },
-  { width: 1280, height: 800, category: :widescreen },
-  { width: 1366, height: 768, category: :widescreen },
-  { width: 1440, height: 900, category: :widescreen },
-  { width: 1600, height: 900, category: :widescreen },
-  { width: 1680, height: 1050, category: :widescreen },
-  { width: 1920, height: 1080, category: :widescreen },
-  { width: 1920, height: 1200, category: :widescreen },
-  { width: 2560, height: 1440, category: :widescreen },
-  { width: 2560, height: 1600, category: :widescreen },
+  { category: :standard, width: 1600, height: 1200 },
+  { category: :standard, width: 1400, height: 1050 },
+  { category: :standard, width: 1280, height: 1024 },
+  { category: :standard, width: 1280, height: 960 },
+  { category: :standard, width: 1152, height: 864 },
+  { category: :standard, width: 1024, height: 768 },
+  { category: :standard, width: 800, height: 600 },
+
+  { category: :widescreen, width: 3840, height: 2400 },
+  { category: :widescreen, width: 3840, height: 2160 },
+  { category: :widescreen, width: 3840, height: 1200 },
+  { category: :widescreen, width: 2560, height: 1600 },
+  { category: :widescreen, width: 2560, height: 1440 },
+  { category: :widescreen, width: 2560, height: 1080 },
+  { category: :widescreen, width: 2560, height: 1024 },
+  { category: :widescreen, width: 2048, height: 1152 },
+  { category: :widescreen, width: 1920, height: 1200 },
+  { category: :widescreen, width: 1920, height: 1080 },
+  { category: :widescreen, width: 1680, height: 1050 },
+  { category: :widescreen, width: 1600, height: 900 },
+  { category: :widescreen, width: 1440, height: 900 },
+  { category: :widescreen, width: 1280, height: 800 },
+  { category: :widescreen, width: 1280, height: 720 }
+
 ]
 
 screen_resolutions.each do |screen_resolution|
   ScreenResolution.find_or_create_by(screen_resolution)
 end
-
-user = User.create!({username: 'admin', email: 'admin@example.com', password: 'password', admin: true})
-user.confirm!

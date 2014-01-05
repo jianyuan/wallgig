@@ -26,8 +26,8 @@
         %small= @user.wallpapers.size
       = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers, extra_css_class: 'row-1' }
 
-    - if @favourites.any?
-      - if @user.favourites.size > @favourites.size
+    - if @favourited_wallpapers.any?
+      - if @user.favourites.size > @favourited_wallpapers.size
         %h3
           = link_to user_favourites_path(@user), class: 'btn btn-link pull-right' do
             More
