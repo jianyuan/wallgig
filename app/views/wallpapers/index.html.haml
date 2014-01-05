@@ -87,7 +87,9 @@
   .row
     .col-lg-8
       %h5 Query string
-      = form_tag wallpapers_path(search_params.reject(&blank_value)), method: :get do
+      = form_tag wallpapers_path, method: :get do
+        - search_params.reject(&blank_value).each do |k, v|
+          = hidden_field_tag k, v
         .input-group
           = text_field_tag :q, search_params[:q], class: 'form-control input-md', placeholder: 'e.g. width:>1920 height:>1080'
           .input-group-btn
