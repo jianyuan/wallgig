@@ -104,7 +104,7 @@ class WallpapersController < ApplicationController
   # POST /wallpapers/save_search_params
   # POST /wallpapers/save_search_params.json
   def save_search_params
-    session[:search_params] = search_params(false).to_hash
+    session[:search_params] = search_params(false).except(:page).to_hash
 
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Search settings successfully saved.' }
@@ -127,7 +127,7 @@ class WallpapersController < ApplicationController
     end
 
     def update_wallpaper_params_without_purity
-      update_wallpaper_params_with_purity.tap { |p| p.delete(:purity) }
+      update_wallpaper_params_with_purity.except(:purity)
     end
 
     def update_wallpaper_params

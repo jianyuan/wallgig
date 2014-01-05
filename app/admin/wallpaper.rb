@@ -64,6 +64,7 @@ ActiveAdmin.register Wallpaper do
         row :purity, &:purity_text
         row :purity_locked
         row :tag_list
+        row :source
         row :primary_color do |wallpaper|
           content_tag :div, nil, style: "width: 50px; height: 50px; background-color: #{wallpaper.primary_color.to_html_hex}" if wallpaper.primary_color.present?
         end
@@ -76,12 +77,6 @@ ActiveAdmin.register Wallpaper do
         end
         row :created_at
         row :updated_at
-      end
-    end
-    panel 'Stats' do
-      attributes_table_for wallpaper do
-        row :impressions_count
-        row :favourites_count
       end
     end
     panel 'Image' do
@@ -104,6 +99,17 @@ ActiveAdmin.register Wallpaper do
         row :image_height
         row :thumbnail_image_uid
         row :image_gravity, &:image_gravity_text
+        row :phash do |wallpaper|
+          content_tag :code, wallpaper.phash
+        end
+        row :scrape_source
+        row :scrape_id
+      end
+    end
+    panel 'Stats' do
+      attributes_table_for wallpaper do
+        row :impressions_count
+        row :favourites_count
       end
     end
     if wallpaper.similar_wallpapers.any?

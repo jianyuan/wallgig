@@ -248,4 +248,8 @@ class Wallpaper < ActiveRecord::Base
     extract_colors
     update_phash
   end
+
+  def resolutions
+    @resolutions ||= WallpaperResolutions.new(self)
+  end
 end
