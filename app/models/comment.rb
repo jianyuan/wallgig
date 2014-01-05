@@ -18,6 +18,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :commentable, polymorphic: true
 
+  scope :latest, -> { reorder('created_at DESC') }
   default_scope -> { order('created_at ASC') }
 
   # NOTE: install the acts_as_votable plugin if you

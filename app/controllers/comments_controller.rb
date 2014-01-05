@@ -2,10 +2,19 @@ class CommentsController < ApplicationController
   before_action :set_parent
   before_action :authenticate_user!, only: :create
 
+  # GET /comments
+  # GET /parent/1/comments
+  # GET /parent/1/comments.json
   def index
-    render partial: 'comments/comment', collection: parent.comments.recent
+    if parent.present?
+      render partial: 'comment', collection: parent.comments.recent
+    else
+      @comments = Comment.includes(:commentable).latest.page(params[:page])
+    end
   end
 
+  # POST /parent/1/comments
+  # POST /parent/1/comments.json
   def create
     @comment = parent.comments.new(comment_params)
     @comment.user = current_user
@@ -13,7 +22,7 @@ class CommentsController < ApplicationController
     authorize! :create, @comment
 
     if @comment.save
-      render partial: 'comments/comment', locals: { comment: @comment }
+      render partial: 'comment', locals: { comment: @comment }
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
