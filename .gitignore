@@ -15,6 +15,11 @@
 /log/*.log
 /tmp
 
+# Vagrant
+/.vagrant
+/cookbooks
+Berksfile.lock
+
 /public/system/*
 /public/uploads/*
 dump.rdb
