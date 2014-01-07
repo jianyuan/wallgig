@@ -30,5 +30,9 @@ FactoryGirl.define do
     user
     image File.new(Rails.root.join('spec', 'wallpapers', 'test.jpg'))
     processing false
+
+    factory(:sfw_wallpaper) { purity :sfw }
+    factory(:sketchy_wallpaper) { purity :sketchy }
+    factory(:nsfw_wallpaper) { purity :nsfw }
   end
 end

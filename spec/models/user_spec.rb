@@ -37,7 +37,7 @@ describe User do
     it { should have_many(:collections).dependent(:destroy) }
     it { should have_many(:wallpapers).dependent(:nullify) }
     it { should have_many(:favourites).dependent(:destroy) }
-    it { should have_many(:favourite_wallpapers).through(:favourites).source(:wallpapers).order('favourites.created_at DESC') }
+    it { should have_many(:favourite_wallpapers).through(:favourites) }
   end
 
   describe 'validations' do
