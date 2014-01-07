@@ -87,6 +87,7 @@ class Wallpaper < ActiveRecord::Base
   end
 
   # Validation
+  validates :purity, presence: true
   validates :image, presence: true
   validates_size_of :image,      maximum: 20.megabytes,                       on: :create
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create

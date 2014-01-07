@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   has_many :collections, dependent: :destroy
   has_many :wallpapers, dependent: :nullify
   has_many :favourites, dependent: :destroy
-  has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpapers
+  has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
 
   # Include default devise modules. Others available are:
   # :timeoutable and :omniauthable

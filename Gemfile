@@ -58,7 +58,7 @@ gem 'foreman'
 group :development, :test do
   # specs
   gem 'rspec-rails'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'ffaker'
 

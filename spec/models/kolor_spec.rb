@@ -23,4 +23,15 @@ describe Kolor do
     it { should validate_presence_of :blue }
     it { should validate_presence_of :hex }
   end
+
+  describe '::normalize_html_hex' do
+    it 'returns correct normalized html hex' do
+      expect(Kolor.normalize_html_hex('#000000')).to eq('000000')
+      expect(Kolor.normalize_html_hex('000000')).to eq('000000')
+      expect(Kolor.normalize_html_hex('AAAAAA')).to eq('aaaaaa')
+      expect(Kolor.normalize_html_hex('ZZZZZZ')).to be_nil
+      expect(Kolor.normalize_html_hex(123456)).to be_nil
+      expect(Kolor.normalize_html_hex(nil)).to be_nil
+    end
+  end
 end

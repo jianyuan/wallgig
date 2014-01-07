@@ -29,15 +29,16 @@ require 'spec_helper'
 
 describe Wallpaper do
   describe 'associations' do
-    it { should belong_to(:user) }
-    it { should have_many(:wallpaper_colors) }
-    it { should have_many(:colors) }
-    it { should belong_to(:primary_color) }
-    it { should have_many(:favourites) }
-    it { should have_many(:favourited_users) }
+    it { should belong_to(:user).counter_cache(true) }
+    it { should have_many(:wallpaper_colors).dependent(:destroy) }
+    it { should have_many(:colors).through(:wallpaper_colors).class_name('Kolor') }
+    it { should belong_to(:primary_color).class_name('Kolor') }
+    it { should have_many(:favourites).dependent(:destroy) }
+    it { should have_many(:favourited_users).through(:favourites).source(:wallpaper) }
   end
 
   describe 'validations' do
+    it { should validate_presence_of(:purity) }
     it { should validate_presence_of(:image) }
   end
 end

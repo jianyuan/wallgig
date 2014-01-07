@@ -65,6 +65,13 @@ GIT
       capistrano (~> 3.0.0)
 
 GIT
+  remote: git://github.com/thoughtbot/shoulda-matchers.git
+  revision: 1878e89a13cd6a32e9d6afbe549f099861da0d4d
+  specs:
+    shoulda-matchers (2.4.0)
+      activesupport (>= 3.0.0)
+
+GIT
   remote: git://github.com/tobiassvn/sidetiq.git
   revision: a9f2258042d6735662dad481ea8899c6b8e9289e
   specs:
@@ -394,8 +401,6 @@ GEM
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
-    shoulda-matchers (2.4.0)
-      activesupport (>= 3.0.0)
     simple_form (3.0.1)
       actionpack (>= 4.0.0, < 4.1)
       activemodel (>= 4.0.0, < 4.1)
@@ -523,7 +528,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 4.0.0)
   sdoc
-  shoulda-matchers
+  shoulda-matchers!
   sidekiq!
   sidetiq!
   simple_form

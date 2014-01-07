@@ -21,7 +21,16 @@ class Kolor < ActiveRecord::Base
   validates_presence_of :hex
 
   def self.find_or_create_by_color(color)
-    find_or_create_by(hex: color.html[1..-1], red: color.red, green: color.green, blue: color.blue)
+    find_or_create_by(
+      hex: normalize_html_hex(color.html),
+      red: color.red,
+      green: color.green,
+      blue: color.blue
+    )
+  end
+
+  def self.normalize_html_hex(value)
+    value.downcase[/(\h{6})/] if value.is_a?(String)
   end
 
   def to_html_hex
