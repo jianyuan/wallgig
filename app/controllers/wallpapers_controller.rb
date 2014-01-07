@@ -104,7 +104,7 @@ class WallpapersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to @wallpaper, notice: 'Wallpaper purity was successfully updated.' }
-      format.json { head :no_content }
+      format.json
     end
   end
 
