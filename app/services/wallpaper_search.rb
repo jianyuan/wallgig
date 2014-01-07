@@ -13,7 +13,8 @@ class WallpaperSearch
               page: @options[:page],
               per_page: (@options[:per_page] || Wallpaper.default_per_page)
   rescue Tire::Search::SearchRequestFailed => e
-    Rails.logger.error e
+    Rails.logger.error e.message
+    e.backtrace.each { |line| Rails.logger.error line }
     Wallpaper.none
   end
 
