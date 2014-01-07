@@ -30,40 +30,12 @@
 #  locked_at              :datetime
 #
 
-class User < ActiveRecord::Base
-  attr_accessor :login
+FactoryGirl.define do
+  factory :user do
+    sequence(:username) { |n| "user#{n}" }
+    sequence(:email) { |n| "user#{n}@example.com" }
+    password '12345678'
 
-  has_many :collections, dependent: :destroy
-  has_many :wallpapers, dependent: :nullify
-  has_many :favourites, dependent: :destroy
-  has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpapers
-
-  # Include default devise modules. Others available are:
-  # :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable
-
-  acts_as_commentable
-
-  is_impressionable
-
-  validates :username,
-            presence: true,
-            uniqueness: { case_sensitive: false },
-            format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
-            length: { minimum: 3, maximum: 20 }
-
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = lower(:value)", { :value => login }]).first
-    else
-      where(conditions).first
-    end
-  end
-
-  def to_param
-    username
+    after(:create) { |user| user.confirm! }
   end
 end

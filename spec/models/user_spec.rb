@@ -30,40 +30,20 @@
 #  locked_at              :datetime
 #
 
-class User < ActiveRecord::Base
-  attr_accessor :login
+require 'spec_helper'
 
-  has_many :collections, dependent: :destroy
-  has_many :wallpapers, dependent: :nullify
-  has_many :favourites, dependent: :destroy
-  has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpapers
-
-  # Include default devise modules. Others available are:
-  # :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable
-
-  acts_as_commentable
-
-  is_impressionable
-
-  validates :username,
-            presence: true,
-            uniqueness: { case_sensitive: false },
-            format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
-            length: { minimum: 3, maximum: 20 }
-
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = lower(:value)", { :value => login }]).first
-    else
-      where(conditions).first
-    end
+describe User do
+  describe 'associations' do
+    it { should have_many(:collections).dependent(:destroy) }
+    it { should have_many(:wallpapers).dependent(:nullify) }
+    it { should have_many(:favourites).dependent(:destroy) }
+    it { should have_many(:favourite_wallpapers).through(:favourites).source(:wallpapers).order('favourites.created_at DESC') }
   end
 
-  def to_param
-    username
+  describe 'validations' do
+    it { should validate_presence_of :username }
+    it { should validate_uniqueness_of(:username).case_insensitive }
+    it { should ensure_length_of(:username).is_at_least(3).is_at_most(20) }
+    it { should validate_presence_of :email }
   end
 end
