@@ -2,32 +2,33 @@
 
 - content_for :tags do
   %h5 Tags
-  %ul.list-facet.list-facet-tags
-    - # OPTIMIZE
-    - terms_to_count = Hash[@wallpapers.facets['tags']['terms'].map { |t| [t['term'], t['count']] }]
-    - tags = search_params[:tags] || []
-    - exclude_tags = search_params[:exclude_tags] || []
-    - rendered_terms = []
-    - [tags, exclude_tags, @wallpapers.facets['tags']['terms']].flatten.each do |facet_or_term|
-      - term = facet_or_term.try(:[], 'term') || facet_or_term
-      - next if rendered_terms.include? term
-      - rendered_terms << term
-      %li
-        .btn-group
-          - if search_params[:exclude_tags].try(:include?, term)
-            = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags - [term]), tags: (tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-danger' do
-              %span.glyphicon.glyphicon-minus
-          - else
-            = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags + [term]), tags: (tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-default' do
-              %span.glyphicon.glyphicon-minus
-          - if search_params[:tags].try(:include?, term)
-            = link_to wallpapers_path(search_params.merge(tags: (tags - [term]), exclude_tags: (exclude_tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-success' do
-              = term
-              %small= terms_to_count[term]
-          - else
-            = link_to wallpapers_path(search_params.merge(tags: (tags + [term]), exclude_tags: (exclude_tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-link' do
-              = term
-              %small= terms_to_count[term]
+  - if @wallpapers.facets.any?
+    %ul.list-facet.list-facet-tags
+      - # OPTIMIZE
+      - terms_to_count = Hash[@wallpapers.facets['tags']['terms'].map { |t| [t['term'], t['count']] }]
+      - tags = search_params[:tags] || []
+      - exclude_tags = search_params[:exclude_tags] || []
+      - rendered_terms = []
+      - [tags, exclude_tags, @wallpapers.facets['tags']['terms']].flatten.each do |facet_or_term|
+        - term = facet_or_term.try(:[], 'term') || facet_or_term
+        - next if rendered_terms.include? term
+        - rendered_terms << term
+        %li
+          .btn-group
+            - if search_params[:exclude_tags].try(:include?, term)
+              = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags - [term]), tags: (tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-danger' do
+                %span.glyphicon.glyphicon-minus
+            - else
+              = link_to wallpapers_path(search_params.merge(exclude_tags: (exclude_tags + [term]), tags: (tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-default' do
+                %span.glyphicon.glyphicon-minus
+            - if search_params[:tags].try(:include?, term)
+              = link_to wallpapers_path(search_params.merge(tags: (tags - [term]), exclude_tags: (exclude_tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-success' do
+                = term
+                %small= terms_to_count[term]
+            - else
+              = link_to wallpapers_path(search_params.merge(tags: (tags + [term]), exclude_tags: (exclude_tags - [term])).reject(&blank_value)), class: 'btn btn-sm btn-link' do
+                = term
+                %small= terms_to_count[term]
 
 - content_for :purity do
   %h5 Purity
