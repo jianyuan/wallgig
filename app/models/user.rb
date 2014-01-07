@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
             presence: true,
             uniqueness: { case_sensitive: false },
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
-            length: { maximum: 50 }
+            length: { minimum: 3, maximum: 50 }
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup

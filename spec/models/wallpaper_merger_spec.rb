@@ -1,22 +1,58 @@
 require 'spec_helper'
 
 describe WallpaperMerger do
-  context 'when have two wallpapers to merge' do
-    let!(:from_wallpaper) { create(:wallpaper, tag_list: 'three, two, one', source: 'New source') }
-    let!(:to_wallpaper)   { create(:wallpaper, tag_list: 'three, four, five, six', source: nil) }
-    let!(:wallpaper_merger) { WallpaperMerger.from(from_wallpaper).to(to_wallpaper) }
+  context 'merge two wallpapers' do
+    let(:old_wallpaper) { create(:wallpaper, tag_list: 'a, b, c', source: 'New source') }
+    let(:new_wallpaper)   { create(:wallpaper, tag_list: 'c, d, e, f', source: nil) }
+    let!(:wallpaper_merger) { WallpaperMerger.from(old_wallpaper).to(new_wallpaper) }
 
-    context 'after execution' do
+    context 'basic merge' do
+      let!(:old_comment) { create(:comment, commentable: old_wallpaper) }
+      let!(:old_favourite) { create(:favourite, wallpaper: old_wallpaper) }
       let!(:merge_result) { wallpaper_merger.execute }
 
-      it { puts to_wallpaper; expect(merge_result).to be_true }
-      it { expect(to_wallpaper.tag_list.sort).to eql(['one', 'two', 'three', 'four', 'five', 'six'].sort) }
-      it { expect(to_wallpaper.source).to eql('New source') }
+      it 'succeeds' do
+        expect(merge_result).to be_true
+      end
+
+      it 'destroys old wallpaper' do
+        expect { old_wallpaper.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'merges and removes duplicate tags' do
+        expect(new_wallpaper.tag_list.sort).to eq(%w(a b c d e f))
+      end
+
+      it 'updates source attribute from old wallpaper' do
+        expect(new_wallpaper.source).to eq('New source')
+      end
+
+      it 'moves favourites' do
+        old_favourite.reload
+        expect(old_favourite.wallpaper).to eq(new_wallpaper)
+      end
+
+      it 'moves comments' do
+        old_comment.reload
+        expect(old_comment.commentable).to eq(new_wallpaper)
+      end
     end
 
-    it 'destroys old wallpaper' do
-      expect(from_wallpaper).to receive(:destroy)
-      wallpaper_merger.execute
+    context 'with duplicate favourites' do
+      let(:user) { create(:user) }
+      let!(:favourite_1) { create(:favourite, user: user, wallpaper: old_wallpaper) }
+      let!(:favourite_2) { create(:favourite, user: user, wallpaper: new_wallpaper) }
+
+      let!(:merge_result) { wallpaper_merger.execute }
+
+      it 'succeeds' do
+        expect(merge_result).to be_true
+      end
+
+      it 'moves favourites' do
+        ids = [favourite_1.id, favourite_2.id]
+        expect(Favourite.where(id: ids).count).to eq(1)
+      end
     end
   end
 end

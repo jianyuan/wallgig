@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
-    username { "user#{Random.rand(0..1000)}" }
-    email    { "user#{Random.rand(0..1000)}@gmail.com" }
+    sequence(:username) { |n| "user#{n}" }
+    sequence(:email) { |n| "user#{n}@example.com" }
     password '12345678'
 
     after(:create) { |user| user.confirm! }

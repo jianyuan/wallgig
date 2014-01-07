@@ -17,8 +17,9 @@ class WallpaperMerger
       @to_wallpaper.tag_list += @from_wallpaper.tag_list
       @to_wallpaper.source ||= @from_wallpaper.source
 
-      transfer_favourites
-      transfer_impressions
+      merge_comments
+      merge_favourites
+      merge_impressions
 
       @from_wallpaper.destroy
 
@@ -27,21 +28,18 @@ class WallpaperMerger
   end
 
   private
-    def transfer_favourites
-      @from_wallpaper.favourites.each do |favourite|
-        if Favourite.where(wallpaper: @to_wallpaper, user: favourite.user).exists?
-          favourite.destroy
-        else
-          favourite.wallpaper = @to_wallpaper
-          favourite.save
-        end
-      end
+    def merge_comments
+      Comment.where(commentable: @from_wallpaper).update_all(commentable_id: @to_wallpaper.id)
     end
 
-    def transfer_impressions
-      @from_wallpaper.impressions.each do |impression|
-        impression.impressionable = @to_wallpaper
-        impression.save
-      end
+    def merge_favourites
+      user_ids = @from_wallpaper.favourites.pluck(:user_id)
+      Favourite.where(user_id: user_ids, wallpaper_id: @to_wallpaper.id).delete_all
+
+      Favourite.where(wallpaper_id: @from_wallpaper.id).update_all(wallpaper_id: @to_wallpaper.id)
+    end
+
+    def merge_impressions
+      Impression.where(impressionable: @from_wallpaper).update_all(impressionable_id: @to_wallpaper.id)
     end
 end
