@@ -81,9 +81,9 @@ describe WallpapersController do
       let!(:user) { signed_in_user }
 
       context 'not my wallpaper' do
-        it 'raises an error' do
-          expect { delete :destroy, id: not_my_wallpaper.id }.to raise_error CanCan::AccessDenied
-        end
+        before { delete :destroy, id: not_my_wallpaper.id }
+
+        it { should respond_with 401 }
       end
 
       context 'my wallpaper' do
@@ -119,11 +119,11 @@ describe WallpapersController do
         before do
           wallpaper.purity_locked = true
           wallpaper.save
+
+          patch :update_purity, id: wallpaper.id, purity: 'nsfw'
         end
 
-        it 'raises an error' do
-          expect { patch :update_purity, id: wallpaper.id, purity: 'nsfw' }.to raise_error CanCan::AccessDenied
-        end
+        it { should respond_with 401 }
       end
 
       context 'wallpaper with purity not locked' do
@@ -140,7 +140,7 @@ describe WallpapersController do
 
         it 'redirects to the wallpaper' do
           patch :update_purity, id: wallpaper.id, purity: 'nsfw'
-          expect(response). to redirect_to wallpaper
+          expect(response).to redirect_to wallpaper
         end
       end
     end
