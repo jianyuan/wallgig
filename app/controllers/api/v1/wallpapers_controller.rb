@@ -1,4 +1,5 @@
 class Api::V1::WallpapersController < Api::V1::BaseController
+  before_action :ensure_from_mashape!
   before_action :set_wallpaper, only: [:show]
 
   def index

@@ -1,7 +1,6 @@
 json.wallpapers do
   json.array! @wallpapers do |wallpaper|
     json.extract! wallpaper, :id
-    json.api_url api_v1_wallpaper_url(wallpaper)
     json.url wallpaper_url(wallpaper)
     json.owner do
       json.extract! wallpaper.user, :id, :username

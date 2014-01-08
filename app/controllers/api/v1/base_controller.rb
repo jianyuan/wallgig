@@ -17,4 +17,8 @@ class Api::V1::BaseController < ApplicationController
     def current_user
       super || (User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token)
     end
+
+    def ensure_from_mashape!
+      head :unauthorized unless request.headers['X-Mashape-Proxy-Secret'] == ENV['MASHAPE_PROXY_SECRET']
+    end
 end
