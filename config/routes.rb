@@ -74,7 +74,7 @@ Wallgig::Application.routes.draw do
         resources :favourites, only: [:index]
       end
 
-      resources :wallpapers, only: [:index, :show]
+      resources :wallpapers, only: [:index, :show, :create]
     end
   end
 
