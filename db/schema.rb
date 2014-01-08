@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131230231003) do
+ActiveRecord::Schema.define(version: 20140108184338) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -24,9 +27,9 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace"
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
+  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
+  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "collections", force: true do |t|
     t.integer  "user_id"
@@ -39,8 +42,8 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.integer  "impressions_count", default: 0
   end
 
-  add_index "collections", ["ancestry"], name: "index_collections_on_ancestry"
-  add_index "collections", ["user_id"], name: "index_collections_on_user_id"
+  add_index "collections", ["ancestry"], name: "index_collections_on_ancestry", using: :btree
+  add_index "collections", ["user_id"], name: "index_collections_on_user_id", using: :btree
 
   create_table "colors", force: true do |t|
     t.integer "red"
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.string  "hex"
   end
 
-  add_index "colors", ["hex"], name: "index_colors_on_hex", unique: true
+  add_index "colors", ["hex"], name: "index_colors_on_hex", unique: true, using: :btree
 
   create_table "comments", force: true do |t|
     t.string   "title",            limit: 50, default: ""
@@ -62,9 +65,9 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id"
-  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type"
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "favourites", force: true do |t|
     t.integer  "user_id"
@@ -74,9 +77,9 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "favourites", ["collection_id"], name: "index_favourites_on_collection_id"
-  add_index "favourites", ["user_id"], name: "index_favourites_on_user_id"
-  add_index "favourites", ["wallpaper_id"], name: "index_favourites_on_wallpaper_id"
+  add_index "favourites", ["collection_id"], name: "index_favourites_on_collection_id", using: :btree
+  add_index "favourites", ["user_id"], name: "index_favourites_on_user_id", using: :btree
+  add_index "favourites", ["wallpaper_id"], name: "index_favourites_on_wallpaper_id", using: :btree
 
   create_table "impressions", force: true do |t|
     t.string   "impressionable_type"
@@ -94,14 +97,14 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "impressions", ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index"
-  add_index "impressions", ["controller_name", "action_name", "request_hash"], name: "controlleraction_request_index"
-  add_index "impressions", ["controller_name", "action_name", "session_hash"], name: "controlleraction_session_index"
-  add_index "impressions", ["impressionable_type", "impressionable_id", "ip_address"], name: "poly_ip_index"
-  add_index "impressions", ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index"
-  add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
-  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index"
-  add_index "impressions", ["user_id"], name: "index_impressions_on_user_id"
+  add_index "impressions", ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index", using: :btree
+  add_index "impressions", ["controller_name", "action_name", "request_hash"], name: "controlleraction_request_index", using: :btree
+  add_index "impressions", ["controller_name", "action_name", "session_hash"], name: "controlleraction_session_index", using: :btree
+  add_index "impressions", ["impressionable_type", "impressionable_id", "ip_address"], name: "poly_ip_index", using: :btree
+  add_index "impressions", ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index", using: :btree
+  add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index", using: :btree
+  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", using: :btree
+  add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
 
   create_table "oauth_access_grants", force: true do |t|
     t.integer  "resource_owner_id",              null: false
@@ -114,7 +117,7 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.string   "scopes"
   end
 
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: true do |t|
     t.integer  "resource_owner_id"
@@ -127,9 +130,9 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.string   "scopes"
   end
 
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: true do |t|
     t.string   "name",                      null: false
@@ -140,7 +143,7 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"
@@ -150,8 +153,8 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], name: "index_roles_on_name"
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "screen_resolutions", force: true do |t|
     t.integer "width"
@@ -169,15 +172,15 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
 
   create_table "tags", force: true do |t|
     t.string "name"
     t.string "slug"
   end
 
-  add_index "tags", ["slug"], name: "index_tags_on_slug", unique: true
+  add_index "tags", ["slug"], name: "index_tags_on_slug", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -205,21 +208,23 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.integer  "failed_attempts",        default: 0,     null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "authentication_token"
   end
 
-  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-  add_index "users", ["discourse_user_id"], name: "index_users_on_discourse_user_id"
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-  add_index "users", ["username"], name: "index_users_on_username", unique: true
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["discourse_user_id"], name: "index_users_on_discourse_user_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "users_roles", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "role_id"
   end
 
-  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
   create_table "versions", force: true do |t|
     t.string   "item_type",      null: false
@@ -231,7 +236,7 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.text     "object_changes"
   end
 
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   create_table "wallpaper_colors", force: true do |t|
     t.integer "wallpaper_id"
@@ -239,13 +244,13 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.float   "percentage"
   end
 
-  add_index "wallpaper_colors", ["color_id"], name: "index_wallpaper_colors_on_color_id"
-  add_index "wallpaper_colors", ["wallpaper_id"], name: "index_wallpaper_colors_on_wallpaper_id"
+  add_index "wallpaper_colors", ["color_id"], name: "index_wallpaper_colors_on_color_id", using: :btree
+  add_index "wallpaper_colors", ["wallpaper_id"], name: "index_wallpaper_colors_on_wallpaper_id", using: :btree
 
   create_table "wallpapers", force: true do |t|
     t.integer  "user_id"
     t.string   "purity"
-    t.boolean  "processing",          default: true
+    t.boolean  "processing",                    default: true
     t.string   "image_uid"
     t.string   "image_name"
     t.integer  "image_width"
@@ -254,20 +259,20 @@ ActiveRecord::Schema.define(version: 20131230231003) do
     t.datetime "updated_at"
     t.string   "thumbnail_image_uid"
     t.integer  "primary_color_id"
-    t.integer  "impressions_count",   default: 0
+    t.integer  "impressions_count",             default: 0
     t.text     "cached_tag_list"
     t.string   "image_gravity"
-    t.integer  "favourites_count",    default: 0
-    t.boolean  "purity_locked",       default: false
+    t.integer  "favourites_count",              default: 0
+    t.boolean  "purity_locked",                 default: false
     t.string   "source"
-    t.integer  "phash"
+    t.integer  "phash",               limit: 8
     t.string   "scrape_source"
     t.string   "scrape_id"
   end
 
-  add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash"
-  add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id"
-  add_index "wallpapers", ["scrape_source", "scrape_id"], name: "index_wallpapers_on_scrape_source_and_scrape_id", unique: true
-  add_index "wallpapers", ["user_id"], name: "index_wallpapers_on_user_id"
+  add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree
+  add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree
+  add_index "wallpapers", ["scrape_source", "scrape_id"], name: "index_wallpapers_on_scrape_source_and_scrape_id", unique: true, using: :btree
+  add_index "wallpapers", ["user_id"], name: "index_wallpapers_on_user_id", using: :btree
 
 end
