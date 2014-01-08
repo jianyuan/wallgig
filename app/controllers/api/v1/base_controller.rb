@@ -13,6 +13,12 @@ class Api::V1::BaseController < ApplicationController
     end
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    respond_to do |format|
+      format.json { head :not_found }
+    end
+  end
+
   private
     def current_user
       super || (User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token)
