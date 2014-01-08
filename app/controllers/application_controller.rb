@@ -8,9 +8,12 @@ class ApplicationController < ActionController::Base
   helper UsersHelper
   helper_method :last_deploy_time
 
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
-  end if Rails.env.production?
+  rescue_from CanCan::AccessDenied do |e|
+    respond_to do |format|
+      format.html { redirect_to root_url, status: :unauthorized, alert: e.message }
+      format.json { head :unauthorized }
+    end
+  end
 
   protected
     def authenticate_admin_user!

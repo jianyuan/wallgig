@@ -11,7 +11,7 @@ class Api::V1::FavouritesController < Api::V1::BaseController
 
   private
     def set_user
-      @user = User.find_by(username: params[:user_id])
+      @user = User.find_by!(username: params[:user_id])
       authorize! :read, @user
     end
 end
