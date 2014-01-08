@@ -17,7 +17,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def ensure_from_mashape!
-    head :unauthorized unless request.headers['X-Mashape-Proxy-Secret'] == ENV['MASHAPE_PROXY_SECRET']
+    head :unauthorized if Rails.env.production? && request.headers['X-Mashape-Proxy-Secret'] != ENV['MASHAPE_PROXY_SECRET']
   end
 
   def authenticate_user_from_token!
@@ -29,11 +29,11 @@ class Api::V1::BaseController < ApplicationController
 
   def build_error_response(message, status)
     respond_to do |format|
-      format.json { render_json_error(message, status) }
+      format.json { render_json_error(message, status: status) }
     end
   end
 
-  def render_json_error(message, status = :unprocessable_entity)
+  def render_json_error(message, status: :unprocessable_entity)
     if message.is_a?(ActiveRecord::Base)
       message = message.errors.full_messages.to_sentence
     end

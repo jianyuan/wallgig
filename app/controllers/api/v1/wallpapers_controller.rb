@@ -1,5 +1,5 @@
 class Api::V1::WallpapersController < Api::V1::BaseController
-  before_action :ensure_from_mashape! if Rails.env.production?
+  before_action :ensure_from_mashape!
   before_action :authenticate_user_from_token!, only: [:create]
   before_action :set_wallpaper, only: [:show]
 
@@ -29,7 +29,7 @@ class Api::V1::WallpapersController < Api::V1::BaseController
           render action: 'show', status: :created, location: @wallpaper
         end
       else
-        format.json { render_json_error(@wallpaper, :unprocessable_entity)  }
+        format.json { render_json_error(@wallpaper, status: :unprocessable_entity)  }
       end
     end
   end

@@ -88,10 +88,11 @@ class User < ActiveRecord::Base
   end
 
   private
-    def generate_authentication_token
-      loop do
-        token = Devise.friendly_token
-        break token unless self.class.where(authentication_token: token).exists?
-      end
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless self.class.where(authentication_token: token).exists?
     end
+  end
 end
