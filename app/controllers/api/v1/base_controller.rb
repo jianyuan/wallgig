@@ -1,5 +1,17 @@
 class Api::V1::BaseController < ApplicationController
   skip_before_action :verify_authenticity_token
+  respond_to :json
+
+  rescue_from ActionController::ParameterMissing do |e|
+    response = {
+      errors: {
+        e.param => 'param is required'
+      }
+    }
+    respond_to do |format|
+      format.json { render json: response, status: :unprocessable_entity }
+    end
+  end
 
   private
     def current_user

@@ -1,6 +1,6 @@
 class WallpapersDecorator < Draper::CollectionDecorator
   # pagination
-  delegate :current_page, :total_pages, :limit_value, :last_page?
+  delegate :total_count, :limit_value, :current_page, :total_pages, :next_page, :prev_page, :last_page?
 
   def facets
     object.kind_of?(Tire::Results::Collection) ? object.facets : []

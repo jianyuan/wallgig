@@ -7,6 +7,8 @@ Dragonfly.app.configure do
   protect_from_dos_attacks true
   secret ENV['DRAGONFLY_SECRET_KEY']
 
+  url_host ENV['DRAGONFLY_URL_HOST']
+
   url_format "/media/:job/:name"
 
   datastore :file,

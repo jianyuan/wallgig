@@ -69,9 +69,12 @@ Wallgig::Application.routes.draw do
         collection do
           get :me
         end
+
+        resources :wallpapers, only: [:index]
+        resources :favourites, only: [:index]
       end
 
-      resources :wallpapers, only: [:create]
+      resources :wallpapers, only: [:index, :show]
     end
   end
 
