@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108184338) do
+ActiveRecord::Schema.define(version: 20140110033605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,16 @@ ActiveRecord::Schema.define(version: 20140108184338) do
     t.string  "category"
   end
 
+  create_table "tag_links", force: true do |t|
+    t.integer  "parent_id"
+    t.integer  "child_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tag_links", ["child_id"], name: "index_tag_links_on_child_id", using: :btree
+  add_index "tag_links", ["parent_id"], name: "index_tag_links_on_parent_id", using: :btree
+
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -250,7 +260,7 @@ ActiveRecord::Schema.define(version: 20140108184338) do
   create_table "wallpapers", force: true do |t|
     t.integer  "user_id"
     t.string   "purity"
-    t.boolean  "processing",                    default: true
+    t.boolean  "processing",          default: true
     t.string   "image_uid"
     t.string   "image_name"
     t.integer  "image_width"
@@ -259,13 +269,13 @@ ActiveRecord::Schema.define(version: 20140108184338) do
     t.datetime "updated_at"
     t.string   "thumbnail_image_uid"
     t.integer  "primary_color_id"
-    t.integer  "impressions_count",             default: 0
+    t.integer  "impressions_count",   default: 0
     t.text     "cached_tag_list"
     t.string   "image_gravity"
-    t.integer  "favourites_count",              default: 0
-    t.boolean  "purity_locked",                 default: false
+    t.integer  "favourites_count",    default: 0
+    t.boolean  "purity_locked",       default: false
     t.string   "source"
-    t.integer  "phash",               limit: 8
+    t.integer  "phash"
     t.string   "scrape_source"
     t.string   "scrape_id"
   end

@@ -24,6 +24,9 @@ Wallgig::Application.routes.draw do
   # Comments
   resources :comments, only: [:index]
 
+  # Tags
+  resources :tags, only: [:index, :show]
+
   # Users
   devise_for :users, controllers: {
     sessions: 'sessions'
