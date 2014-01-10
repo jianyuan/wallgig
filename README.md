@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/jianyuan/wallgig.png?label=ready)](https://waffle.io/jianyuan/wallgig)
 # [wallgig](http://wallgig.net)
 
 [![Build Status](https://travis-ci.org/jianyuan/wallgig.png?branch=master)](https://travis-ci.org/jianyuan/wallgig)
