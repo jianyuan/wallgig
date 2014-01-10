@@ -1,7 +1,9 @@
-[![Stories in Ready](https://badge.waffle.io/jianyuan/wallgig.png?label=ready)](https://waffle.io/jianyuan/wallgig)
 # [wallgig](http://wallgig.net)
 
 [![Build Status](https://travis-ci.org/jianyuan/wallgig.png?branch=master)](https://travis-ci.org/jianyuan/wallgig)
+[![Code Climate](https://codeclimate.com/github/jianyuan/wallgig.png)](https://codeclimate.com/github/jianyuan/wallgig)
+[![Coverage Status](https://coveralls.io/repos/jianyuan/wallgig/badge.png)](https://coveralls.io/r/jianyuan/wallgig)
+[![Stories in Ready](https://badge.waffle.io/jianyuan/wallgig.png?label=ready)](https://waffle.io/jianyuan/wallgig)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jianyuan/wallgig/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 * [wallgig](http://wallgig.net) is a wallpaper sharing community written in Ruby on Rails 4
