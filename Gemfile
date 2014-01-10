@@ -61,6 +61,7 @@ group :development, :test do
   gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'ffaker'
+  gem 'coveralls', require: false
 
   # utilities
   gem 'annotate'
