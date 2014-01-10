@@ -28,6 +28,7 @@
 #  failed_attempts        :integer          default(0), not null
 #  unlock_token           :string(255)
 #  locked_at              :datetime
+#  authentication_token   :string(255)
 #
 
 require 'spec_helper'

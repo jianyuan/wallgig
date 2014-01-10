@@ -28,6 +28,7 @@
 #  failed_attempts        :integer          default(0), not null
 #  unlock_token           :string(255)
 #  locked_at              :datetime
+#  authentication_token   :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -54,6 +55,8 @@ class User < ActiveRecord::Base
             format: { with: /\A[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*\z/, message: 'Only letters, numbers, and underscores allowed.' },
             length: { minimum: 3, maximum: 20 }
 
+  before_save :ensure_authentication_token
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -65,5 +68,31 @@ class User < ActiveRecord::Base
 
   def to_param
     username
+  end
+
+  def reset_authentication_token
+    self.authentication_token = generate_authentication_token
+  end
+
+  def reset_authentication_token!
+    reset_authentication_token
+    save validate: false
+  end
+
+  def ensure_authentication_token
+    reset_authentication_token if authentication_token.blank?
+  end
+
+  def ensure_authentication_token!
+    reset_authentication_token! if authentication_token.blank?
+  end
+
+  private
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless self.class.where(authentication_token: token).exists?
+    end
   end
 end
