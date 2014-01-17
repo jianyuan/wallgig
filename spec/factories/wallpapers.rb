@@ -23,6 +23,7 @@
 #  phash               :integer
 #  scrape_source       :string(255)
 #  scrape_id           :string(255)
+#  image_hash          :string(255)
 #
 
 FactoryGirl.define do

@@ -23,6 +23,7 @@
 #  phash               :integer
 #  scrape_source       :string(255)
 #  scrape_id           :string(255)
+#  image_hash          :string(255)
 #
 
 class Wallpaper < ActiveRecord::Base
@@ -89,12 +90,13 @@ class Wallpaper < ActiveRecord::Base
   end
 
   # Validation
-  validates :purity, presence: true
-  validates :image, presence: true
+  validates_presence_of :purity
+  validates_presence_of :image
   validates_size_of :image,      maximum: 20.megabytes,                       on: :create
   validates_property :mime_type, of: :image, in: ['image/jpeg', 'image/png'], on: :create
   validates_property :width,     of: :image, in: (600..10240),                on: :create
   validates_property :height,    of: :image, in: (600..10240),                on: :create
+  validate :check_duplicate_image_hash, on: :create
 
   # Scopes
   scope :processing,    -> { where(processing: true ) }
@@ -105,6 +107,8 @@ class Wallpaper < ActiveRecord::Base
   scope :similar_to,    -> (w) { where.not(id: w.id).where(["( SELECT SUM(((phash::bigint # ?) >> bit) & 1 ) FROM generate_series(0, 63) bit) <= 15", w.phash]) }
 
   # Callbacks
+  before_validation :set_image_hash, on: :create
+
   after_create :queue_create_thumbnails
   after_create :queue_process_image
   around_save :check_image_gravity_changed
@@ -276,5 +280,17 @@ class Wallpaper < ActiveRecord::Base
     @resized_image = image.thumb("#{resolution.to_geometry_s}\##{image_gravity}")
     @resized_image_resolution = resolution
     true
+  end
+
+  def set_image_hash
+    self.image_hash = Digest::MD5.hexdigest(image.file.read) if image.present?
+  end
+
+  private
+
+  def check_duplicate_image_hash
+    if image_hash.present? && (duplicate = self.class.where.not(id: self.id).where(image_hash: image_hash).first)
+      errors.add :image, "has already been uploaded (#{duplicate})"
+    end
   end
 end
