@@ -106,9 +106,21 @@ class Wallpaper < ActiveRecord::Base
   after_create :queue_create_thumbnails
   after_create :queue_process_image
   around_save :check_image_gravity_changed
+
+  before_save do
+    if tag_list.empty?
+      self.tag_list << 'tagme'
+    else
+      tag_list.remove('tagme')
+    end
+  end
+
   after_save :update_processing_status, if: :processing?
-  after_save :update_index, unless: :processing?
-  after_destroy :update_index
+
+  unless Rails.env.test?
+    after_save :update_index, unless: :processing?
+    after_destroy :update_index
+  end
 
   def self.ensure_consistency!
     connection.execute('

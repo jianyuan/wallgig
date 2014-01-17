@@ -41,4 +41,16 @@ describe Wallpaper do
     it { should validate_presence_of(:purity) }
     it { should validate_presence_of(:image) }
   end
+
+  context 'tags' do
+    context 'when empty' do
+      subject { create(:wallpaper, tag_list: nil) }
+      it { expect(subject.tag_list).to include('tagme') }
+    end
+
+    context 'when present' do
+      subject { create(:wallpaper, tag_list: ['tagme', 'tag']) }
+      it { expect(subject.tag_list).not_to include('tagme') }
+    end
+  end
 end
