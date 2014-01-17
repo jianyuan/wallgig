@@ -16,5 +16,14 @@
 require 'spec_helper'
 
 describe Report do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'associations' do
+    it { should belong_to(:reportable) }
+    it { should belong_to(:user) }
+    it { should belong_to(:closed_by).class_name('User') }
+  end
+
+  describe 'validations' do
+    it { should validate_presence_of(:reportable) }
+    it { should validate_presence_of(:description) }
+  end
 end

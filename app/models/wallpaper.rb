@@ -32,7 +32,8 @@ class Wallpaper < ActiveRecord::Base
   belongs_to :primary_color, class_name: 'Kolor'
   has_many :favourites, dependent: :destroy
   has_many :favourited_users, through: :favourites, source: :wallpaper
-  has_many :reports, as: :reportable
+  has_many :reports, as: :reportable, dependent: :destroy
+
   # Purity
   extend Enumerize
   enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true

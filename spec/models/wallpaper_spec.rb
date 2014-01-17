@@ -35,6 +35,7 @@ describe Wallpaper do
     it { should belong_to(:primary_color).class_name('Kolor') }
     it { should have_many(:favourites).dependent(:destroy) }
     it { should have_many(:favourited_users).through(:favourites).source(:wallpaper) }
+    it { should have_many(:reports).dependent(:destroy) }
   end
 
   describe 'validations' do

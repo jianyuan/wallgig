@@ -1,6 +1,4 @@
 Wallgig::Application.routes.draw do
-  resources :reports
-
   concern :commentable do
     resources :comments, only: [:index, :create]
   end

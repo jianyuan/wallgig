@@ -17,4 +17,7 @@ class Report < ActiveRecord::Base
   belongs_to :reportable, polymorphic: true
   belongs_to :user
   belongs_to :closed_by, class_name: 'User'
+
+  validates :reportable, presence: true
+  validates :description, presence: true
 end
