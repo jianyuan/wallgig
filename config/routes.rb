@@ -1,6 +1,12 @@
 Wallgig::Application.routes.draw do
+  resources :reports
+
   concern :commentable do
     resources :comments, only: [:index, :create]
+  end
+
+  concern :reportable do
+    resources :reports, only: [:new, :create]
   end
 
   root 'wallpapers#index'
@@ -52,6 +58,7 @@ Wallgig::Application.routes.draw do
     end
 
     concerns :commentable
+    concerns :reportable
 
     resource :favourite do
       member do

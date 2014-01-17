@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108184338) do
+ActiveRecord::Schema.define(version: 20140117060709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,21 @@ ActiveRecord::Schema.define(version: 20140108184338) do
   end
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
+  create_table "reports", force: true do |t|
+    t.integer  "reportable_id"
+    t.string   "reportable_type"
+    t.integer  "user_id"
+    t.text     "description"
+    t.integer  "closed_by_id"
+    t.datetime "closed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reports", ["closed_by_id"], name: "index_reports_on_closed_by_id", using: :btree
+  add_index "reports", ["reportable_id", "reportable_type"], name: "index_reports_on_reportable_id_and_reportable_type", using: :btree
+  add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"

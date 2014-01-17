@@ -1,0 +1,27 @@
+%h1 Listing reports
+
+%table
+  %tr
+    %th Reportable
+    %th User
+    %th Description
+    %th Closed by
+    %th Closed at
+    %th
+    %th
+    %th
+
+  - @reports.each do |report|
+    %tr
+      %td= report.reportable
+      %td= report.user
+      %td= report.description
+      %td= report.closed_by
+      %td= report.closed_at
+      %td= link_to 'Show', report
+      %td= link_to 'Edit', edit_report_path(report)
+      %td= link_to 'Destroy', report, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Report', new_report_path
