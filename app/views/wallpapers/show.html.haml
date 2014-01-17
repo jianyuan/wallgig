@@ -86,7 +86,10 @@
           = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
           = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
         - if user_signed_in? && current_user.admin?
-          = link_to 'Administer', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
+          = link_to 'Admin', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
+        = link_to new_wallpaper_report_path(@wallpaper), class: 'btn btn-sm btn-link' do
+          %span.glyphicon.glyphicon-flag
+          Report
         = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
   .col-lg-10
     = image_tag @wallpaper.requested_image_url, width: @wallpaper.requested_image_width, height: @wallpaper.requested_image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"

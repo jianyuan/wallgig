@@ -6,7 +6,7 @@
         = link_to wallpaper.path_with_resolution, title: wallpaper.cached_tag_list, target: '_blank' do
           = image_tag nil, width: 250, height: 188, class: 'img-wallpaper lazy', data: { src: wallpaper.thumbnail_image_url }
         .overlay.overlay-right
-          = link_to '#', class: 'btn btn-sm btn-report', data: { action: 'report' } do
+          = link_to new_wallpaper_report_path(wallpaper), class: 'btn btn-sm btn-report', data: { action: 'report' } do
             %span.glyphicon.glyphicon-remove.text-danger
         .overlay.overlay-bottom
           %strong= wallpaper.resolution
