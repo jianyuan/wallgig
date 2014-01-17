@@ -16,6 +16,7 @@ class WallpaperMerger
     Wallpaper.transaction do
       @to_wallpaper.tag_list += @from_wallpaper.tag_list
       @to_wallpaper.source ||= @from_wallpaper.source
+      @to_wallpaper.impressions_count += @from_wallpaper.impressions_count
 
       merge_comments
       merge_favourites
