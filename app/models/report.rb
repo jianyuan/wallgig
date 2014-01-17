@@ -20,4 +20,23 @@ class Report < ActiveRecord::Base
 
   validates :reportable, presence: true
   validates :description, presence: true
+
+  scope :closed, -> { where.not(closed_at: nil) }
+  scope :open,   -> { where(closed_at: nil) }
+
+  def closed?
+    closed_at.present?
+  end
+
+  def close_by_user!(user)
+  	self.closed_by = user
+  	self.closed_at = Time.now
+  	save!
+  end
+
+  def open!
+    self.closed_by = nil
+    self.closed_at = nil
+    save!
+  end
 end
