@@ -1,5 +1,11 @@
 %li{:data => {:comment_id => comment.id}}
-  %h5
-    = link_to_user comment.user
-    %small #{time_ago_in_words comment.created_at} ago
-  %p= comment.comment
+  .well.well-sm
+    %h5
+      = link_to_user comment.user
+      %small #{time_ago_in_words comment.created_at} ago
+    %p= comment.comment
+    .text-right
+      %small
+        = link_to new_comment_report_path(comment) do
+          %small.glyphicon.glyphicon-flag
+          Report

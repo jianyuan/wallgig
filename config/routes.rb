@@ -26,7 +26,9 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Comments
-  resources :comments, only: [:index]
+  resources :comments, only: [:index] do
+    concerns :reportable
+  end
 
   # Users
   devise_for :users, controllers: {

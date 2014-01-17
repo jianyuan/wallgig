@@ -23,8 +23,8 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       if @report.save
-        format.html { redirect_to @reportable, notice: 'Report was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @reportable }
+        format.html { redirect_to root_url, notice: 'Report was successfully created.' }
+        format.json { render status: :created }
       else
         format.html { render action: 'new' }
         format.json { render json: @report.errors, status: :unprocessable_entity }
@@ -36,6 +36,9 @@ class ReportsController < ApplicationController
     def set_reportable
       if params[:wallpaper_id].present?
         @reportable = Wallpaper.find(params[:wallpaper_id])
+        authorize! :read, @reportable
+      elsif params[:comment_id].present?
+        @reportable = Comment.find(params[:comment_id])
         authorize! :read, @reportable
       end
     end

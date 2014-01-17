@@ -16,6 +16,8 @@
 class Comment < ActiveRecord::Base
   include ActsAsCommentable::Comment
 
+  include Reportable
+
   belongs_to :commentable, polymorphic: true
 
   scope :latest, -> { reorder('created_at DESC') }
