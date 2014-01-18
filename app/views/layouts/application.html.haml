@@ -25,6 +25,18 @@
             %li= link_to 'Collections', collections_path
             %li= link_to 'Comments', comments_path
             %li= link_to 'Forums', 'http://forums.wallgig.net'
+            %li
+              %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}} 
+                %span.glyphicon.glyphicon-wrench
+                %b.caret
+              %ul.dropdown-menu
+                - if last_deploy_time.present?
+                  %li.disabled
+                    %a{:href => '#'} Deployed #{time_ago_in_words last_deploy_time} ago
+                %li
+                  %a{:href => 'http://forums.wallgig.net/t/wallgig-features-roadmap-changelog/6', :target => '_blank'} Features roadmap and changelog
+                %li
+                  %a{:href => 'https://github.com/jianyuan/wallgig', :target => '_blank'} Source code on GitHub
             %li= link_to '#wallgig@irc.rizon.net', irc_url(current_user)
             %li
               <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">

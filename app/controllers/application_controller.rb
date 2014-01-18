@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   helper UsersHelper
-  helper_method :last_deploy_time
 
   class AccessDenied < CanCan::AccessDenied; end
 
@@ -27,6 +26,7 @@ class ApplicationController < ActionController::Base
   def last_deploy_time
     @last_deploy_time ||= File.new(Rails.root.join('last_deploy')).atime rescue nil
   end
+  helper_method :last_deploy_time
 
   private
 
