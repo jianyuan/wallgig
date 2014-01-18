@@ -77,7 +77,7 @@
           - if comments.size > 4
             = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
 
-    - @wallpaper.find_related_tags.accessible_by(current_ability, :read).limit(9).in_groups_of(3, false).each do |wallpapers|
+    - @wallpaper.find_related_tags.accessible_by(current_ability, :read).processed.limit(9).in_groups_of(3, false).each do |wallpapers|
       .row
         - wallpapers.each do |wallpaper|
           .col-xs-4
