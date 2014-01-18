@@ -20,5 +20,6 @@
 //= require spin
 //= require ladda
 //= require selectize
+//= require jquery.bootstrap-growl
 //= require_tree .
 //= require_tree ../templates/.

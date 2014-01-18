@@ -54,7 +54,15 @@
     = yield(:pre_container)
     #main
       .container
-        = bootstrap_flash
         = content_for?(:content) ? yield(:content) : yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
     = render partial: 'shared/segment_io'
+    - flash.each do |type, message|
+      - type = :success if type == :notice
+      - type = :danger  if type == :alert
+      :javascript
+        $.bootstrapGrowl('#{j message}', {
+          type: '#{type}',
+          offset: {from: 'top', amount: 80},
+          width: 300
+        });
