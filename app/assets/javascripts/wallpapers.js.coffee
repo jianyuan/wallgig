@@ -39,15 +39,15 @@ $ ->
     $('[rel=next]').bind('inview', loadNextPage)
 
     # Favourite action
-    $('body').on 'click', '[data-action=like]', (event) ->
+    $('body').on 'click', '[data-action=favourite]', (event) ->
       $this = $(this)
       $this.on 'ajax:success', (event, data, status, xhr) ->
         $this.find('span.count').text data.count
         if data.favourite
-          $this.addClass 'btn-success'
+          $this.addClass 'btn-info'
           window.analytics.track('Favourited a wallpaper')
         else
-          $this.removeClass 'btn-success'
+          $this.removeClass 'btn-info'
           window.analytics.track('Unfavourited a wallpaper')
       $this.on 'ajax:error', (event, xhr, status, error) ->
         # alert error

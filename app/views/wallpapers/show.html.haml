@@ -4,16 +4,22 @@
 .row
   .col-lg-2
     .panel.panel-default
-      .panel-body
-        - if @wallpaper.user.present?
+      - if @wallpaper.user.present?
+        .panel-body
           .media.media-user
             = link_to @wallpaper.user, class: 'pull-left' do
-              = image_tag gravatar_url(@wallpaper.user, 50), alt: @wallpaper.user.username, class: 'media-object'
+              = image_tag gravatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
             .media-body
-              %h4.media-heading= link_to_user @wallpaper.user
-              %small #{time_ago_in_words @wallpaper.created_at} ago
-        - else
-          %small Uploaded #{time_ago_in_words @wallpaper.created_at} ago
+              %h3.media-heading= link_to_user @wallpaper.user
+
+      .panel-body
+        %ul.list-inline.no-margin
+          %li
+            %span.glyphicon.glyphicon-calendar
+            = @wallpaper.created_at.to_date.to_formatted_s(:long)
+          %li
+            %span.glyphicon.glyphicon-eye-open
+            = @wallpaper.impressions_count
 
       - if user_signed_in?
         .panel-body
@@ -38,22 +44,13 @@
       .panel-body
         = @wallpaper.resolution_select_tag
 
-      .panel-body
-        %ul.list-metadata
-          - if @wallpaper.source.present?
+      - if @wallpaper.source.present?
+        .panel-body
+          %ul.list-metadata
             %li
               %strong Source
               = auto_link @wallpaper.source  do |text|
                 - truncate(text, length: 20)
-          %li
-            %strong Resolution
-            = @wallpaper.resolution
-          %li
-            %strong Views
-            = @wallpaper.impressions_count
-          %li
-            %strong Likes
-            = @wallpaper.favourites_count
 
       .panel-body
         .btn-group.btn-group-justified.btn-group-purity
@@ -68,17 +65,24 @@
                               :'wallpaper-id' => @wallpaper.id,
                               :purity => value }
 
-    .panel.panel-default
-      .panel-heading Comments
-      .panel-body
-        = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
-          = f.input :comment, as: :text, label: false
-          = f.submit 'Post', class: 'btn pull-right', data: { disable_with: 'Posting' }
-      - comments = @wallpaper.comments.includes(:user).recent
-      .panel-body.container-comments{:class => ('hide' if comments.empty?)}
-        %ul.list-unstyled.list-comment= render comments.limit(4)
-        - if comments.size > 4
-          = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
+    - if user_signed_in?
+      .panel.panel-default
+        .panel-body
+          = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
+            = f.input :comment, as: :text, label: false, placeholder: 'Your comment'
+            = f.submit 'Post', class: 'btn btn-default btn-block', data: { disable_with: 'Posting' }
+        - comments = @wallpaper.comments.includes(:user).recent
+        .panel-body.container-comments{:class => ('hide' if comments.empty?)}
+          %ul.list-unstyled.list-comment= render comments.limit(4)
+          - if comments.size > 4
+            = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
+
+    - @wallpaper.find_related_tags.accessible_by(current_ability, :read).limit(9).in_groups_of(3, false).each do |wallpapers|
+      .row
+        - wallpapers.each do |wallpaper|
+          .col-xs-4
+            = link_to wallpaper, class: 'thumbnail' do
+              = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
 
     %p
       .btn-group
