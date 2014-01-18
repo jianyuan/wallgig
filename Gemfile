@@ -118,6 +118,7 @@ gem 'sidetiq', github: 'tobiassvn/sidetiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'doorkeeper', '~> 0.7.0'
 gem 'tire'
+gem 'redis-rails'
 
 # utilities
 gem 'dotenv-rails'

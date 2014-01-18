@@ -20,6 +20,8 @@ module Wallgig
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
+
     config.app_generators.scaffold_controller = :scaffold_controller
   end
 end
