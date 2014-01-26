@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118032801) do
+ActiveRecord::Schema.define(version: 20140126194412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,20 @@ ActiveRecord::Schema.define(version: 20140118032801) do
   add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.string   "wikipedia_title"
+    t.text     "raw_content"
+    t.text     "cooked_content"
+    t.string   "ancestry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["ancestry"], name: "index_categories_on_ancestry", using: :btree
+  add_index "categories", ["slug"], name: "index_categories_on_slug", unique: true, using: :btree
 
   create_table "collections", force: true do |t|
     t.integer  "user_id"
@@ -273,7 +287,7 @@ ActiveRecord::Schema.define(version: 20140118032801) do
     t.integer  "primary_color_id"
     t.integer  "impressions_count",             default: 0
     t.text     "cached_tag_list"
-    t.string   "image_gravity"
+    t.string   "image_gravity",                 default: "c"
     t.integer  "favourites_count",              default: 0
     t.boolean  "purity_locked",                 default: false
     t.string   "source"
@@ -281,8 +295,10 @@ ActiveRecord::Schema.define(version: 20140118032801) do
     t.string   "scrape_source"
     t.string   "scrape_id"
     t.string   "image_hash"
+    t.integer  "category_id"
   end
 
+  add_index "wallpapers", ["category_id"], name: "index_wallpapers_on_category_id", using: :btree
   add_index "wallpapers", ["image_hash"], name: "index_wallpapers_on_image_hash", using: :btree
   add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree

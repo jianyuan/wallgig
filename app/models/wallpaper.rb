@@ -16,7 +16,7 @@
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
-#  image_gravity       :string(255)
+#  image_gravity       :string(255)      default("c")
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
@@ -24,15 +24,20 @@
 #  scrape_source       :string(255)
 #  scrape_id           :string(255)
 #  image_hash          :string(255)
+#  category_id         :integer
 #
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user, counter_cache: true
+
   has_many :wallpaper_colors, -> { order('wallpaper_colors.percentage DESC') }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
   belongs_to :primary_color, class_name: 'Kolor'
+
   has_many :favourites, dependent: :destroy
   has_many :favourited_users, through: :favourites, source: :wallpaper
+
+  belongs_to :category
 
   include Reportable
 
@@ -81,7 +86,8 @@ class Wallpaper < ActiveRecord::Base
       indexes :user_id, type: 'integer', index: 'not_analyzed'
       indexes :user,    type: 'string',  index: 'not_analyzed'
       indexes :purity,  type: 'string',  index: 'not_analyzed'
-      indexes :tags,    type: 'string',  analyzer: 'string_lowercase'
+      indexes :tags,       type: 'string', analyzer: 'string_lowercase'
+      indexes :categories, type: 'string', analyzer: 'string_lowercase'
       indexes :width,   type: 'integer', index: 'not_analyzed'
       indexes :height,  type: 'integer', index: 'not_analyzed'
       indexes :source,  type: 'string'
@@ -225,6 +231,7 @@ class Wallpaper < ActiveRecord::Base
       user:                 user.try(:username),
       purity:               purity,
       tags:                 tag_list,
+      categories:           category_list,
       width:                image_width,
       height:               image_height,
       source:               source,
@@ -293,6 +300,11 @@ class Wallpaper < ActiveRecord::Base
 
   def set_image_hash
     self.image_hash = Digest::MD5.hexdigest(image.file.read) if image.present?
+  end
+
+  def category_list
+    return nil unless category.present?
+    category.ancestors.pluck(:name) << category.name
   end
 
   private

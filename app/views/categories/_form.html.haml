@@ -1,0 +1,10 @@
+= simple_form_for(@category) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :parent_id, collection: @parent_categories, label_method: :name_for_selects, value_method: :id, include_blank: true
+    = f.input :name
+    = f.input :wikipedia_title
+
+  .form-actions
+    = f.button :submit
