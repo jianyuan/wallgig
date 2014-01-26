@@ -16,7 +16,7 @@
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
-#  image_gravity       :string(255)
+#  image_gravity       :string(255)      default("c")
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
@@ -24,15 +24,20 @@
 #  scrape_source       :string(255)
 #  scrape_id           :string(255)
 #  image_hash          :string(255)
+#  category_id         :integer
 #
 
 class Wallpaper < ActiveRecord::Base
   belongs_to :user, counter_cache: true
+
   has_many :wallpaper_colors, -> { order('wallpaper_colors.percentage DESC') }, dependent: :destroy
   has_many :colors, through: :wallpaper_colors, class_name: 'Kolor'
   belongs_to :primary_color, class_name: 'Kolor'
+
   has_many :favourites, dependent: :destroy
   has_many :favourited_users, through: :favourites, source: :wallpaper
+
+  belongs_to :category
 
   include Reportable
 

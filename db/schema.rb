@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140126180544) do
+ActiveRecord::Schema.define(version: 20140126194412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(version: 20140126180544) do
     t.integer  "primary_color_id"
     t.integer  "impressions_count",             default: 0
     t.text     "cached_tag_list"
-    t.string   "image_gravity"
+    t.string   "image_gravity",                 default: "c"
     t.integer  "favourites_count",              default: 0
     t.boolean  "purity_locked",                 default: false
     t.string   "source"
@@ -295,8 +295,10 @@ ActiveRecord::Schema.define(version: 20140126180544) do
     t.string   "scrape_source"
     t.string   "scrape_id"
     t.string   "image_hash"
+    t.integer  "category_id"
   end
 
+  add_index "wallpapers", ["category_id"], name: "index_wallpapers_on_category_id", using: :btree
   add_index "wallpapers", ["image_hash"], name: "index_wallpapers_on_image_hash", using: :btree
   add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree
   add_index "wallpapers", ["primary_color_id"], name: "index_wallpapers_on_primary_color_id", using: :btree

@@ -30,7 +30,7 @@ class Category < ActiveRecord::Base
   end
 
   # Taken from https://github.com/stefankroes/ancestry/wiki/Creating-a-selectbox-for-a-form-using-ancestry
-  def self.arrange_as_array(options={}, hash=nil)                                                                                                                                                            
+  def self.arrange_as_array(options = {}, hash = nil)                                                                                                                                                            
     hash ||= arrange(options)
 
     arr = []
@@ -46,7 +46,7 @@ class Category < ActiveRecord::Base
   end
 
   def possible_parents
-    parents = Category.arrange_as_array(:order => 'name')
+    parents = Category.arrange_as_array(order: :name)
     return new_record? ? parents : parents - subtree
   end
 end
