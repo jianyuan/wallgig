@@ -1,4 +1,6 @@
 Wallgig::Application.routes.draw do
+  resources :categories
+
   concern :commentable do
     resources :comments, only: [:index, :create]
   end

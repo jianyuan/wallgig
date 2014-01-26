@@ -116,7 +116,7 @@ GEM
       activerecord (>= 3.0)
     ancestry (2.0.0)
       activerecord (>= 3.0.0)
-    annotate (2.6.0)
+    annotate (2.6.1)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     ansi (1.4.3)
