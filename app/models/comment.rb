@@ -11,6 +11,7 @@
 #  role             :string(255)      default("comments")
 #  created_at       :datetime
 #  updated_at       :datetime
+#  cooked_comment   :text
 #
 
 class Comment < ActiveRecord::Base
@@ -30,7 +31,10 @@ class Comment < ActiveRecord::Base
   belongs_to :user
 
   validates :comment, presence: true
-  validates :user, presence: true
+
+  before_save do
+    self.cooked_comment = self.class.markdown.render(comment).html_safe
+  end
 
   def self.markdown
     @markdown ||= begin
@@ -40,6 +44,6 @@ class Comment < ActiveRecord::Base
   end
 
   def cooked_comment
-    self.class.markdown.render(comment).html_safe
+    read_attribute(:cooked_comment).html_safe
   end
 end

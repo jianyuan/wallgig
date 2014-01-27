@@ -8,14 +8,14 @@
         = time_tag comment.created_at, title: comment.created_at, class: 'pull-right' do
           = time_ago_in_words(comment.created_at)
           ago
-        %h5.comment-heading
+        .comment-heading
           = link_to_user comment.user
           - if user_signed_in?
-            %small
+            %small.show-when-hover
               - if can? :destroy, comment
-                = link_to comment, class: 'show-when-hover destroy-comment', data: { method: :delete, confirm: 'Are you sure?' } do
+                = link_to comment, class: 'destroy-comment', data: { method: :delete, confirm: 'Are you sure?' } do
                   %span.glyphicon.glyphicon-trash
               - if current_user != comment.user
-                = link_to reply_comment_path(comment), class: 'show-when-hover reply-comment' do
+                = link_to reply_comment_path(comment), class: 'reply-comment' do
                   %span.glyphicon.glyphicon-share-alt
       %p= comment.cooked_comment
