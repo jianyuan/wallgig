@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :comment, presence: true
+  validates :comment, presence: true, length: { minimum: 20 }
 
   before_save do
     self.cooked_comment = self.class.markdown.render(comment).html_safe

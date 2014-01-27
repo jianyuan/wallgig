@@ -60,6 +60,22 @@ $input-color-placeholder: $input-border;
 
 $input-border-focus: $text-color;
 
+$state-success-text:             #fff;
+$state-success-bg:               $brand-success;
+$state-success-border:           darken($state-success-bg, 5%);
+
+$state-info-text:                #fff;
+$state-info-bg:                  $brand-info;
+$state-info-border:              darken($state-info-bg, 7%);
+
+$state-warning-text:             #fff;
+$state-warning-bg:               $brand-warning;
+$state-warning-border:           darken($state-warning-bg, 3%);
+
+$state-danger-text:              #fff;
+$state-danger-bg:                $brand-danger;
+$state-danger-border:            darken($state-danger-bg, 3%);
+
 /* Dropdowns */
 $dropdown-bg:                    $gray-darker;
 $dropdown-border:                rgba(255,255,255,0.1);
@@ -80,5 +96,40 @@ $dropdown-header-color:          $gray-light;
 /* Navbar */
 $navbar-inverse-color: white;
 $navbar-inverse-link-color: white;
+
+/* Modals */
+$modal-inner-padding:         20px;
+
+$modal-title-padding:         15px;
+
+$modal-content-bg:                             lighten($body-bg, 10%);
+$modal-content-border-color:                   rgba(0,0,0,.2);
+$modal-content-fallback-border-color:          #999;
+
+$modal-backdrop-bg:           #000;
+$modal-header-border-color:   $gray-dark;
+$modal-footer-border-color:   $modal-header-border-color;
+
+
+/* Alerts */
+$alert-padding:               15px;
+$alert-border-radius:         $border-radius-base;
+$alert-link-font-weight:      bold;
+
+$alert-success-bg:            $state-success-bg;
+$alert-success-text:          $state-success-text;
+$alert-success-border:        $state-success-border;
+
+$alert-info-bg:               $state-info-bg;
+$alert-info-text:             $state-info-text;
+$alert-info-border:           $state-info-border;
+
+$alert-warning-bg:            $state-warning-bg;
+$alert-warning-text:          $state-warning-text;
+$alert-warning-border:        $state-warning-border;
+
+$alert-danger-bg:             $state-danger-bg;
+$alert-danger-text:           $state-danger-text;
+$alert-danger-border:         $state-danger-border;
 
 @import "bootstrap";
