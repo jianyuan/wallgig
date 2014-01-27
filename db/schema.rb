@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140127163449) do
+ActiveRecord::Schema.define(version: 20140127173948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,18 +211,20 @@ ActiveRecord::Schema.define(version: 20140127163449) do
 
   create_table "user_settings", force: true do |t|
     t.integer  "user_id"
-    t.boolean  "sfw",             default: true
-    t.boolean  "sketchy",         default: false
-    t.boolean  "nsfw",            default: false
-    t.integer  "per_page",        default: 20
-    t.boolean  "infinite_scroll", default: true
+    t.boolean  "sfw",                  default: true
+    t.boolean  "sketchy",              default: false
+    t.boolean  "nsfw",                 default: false
+    t.integer  "per_page",             default: 20
+    t.boolean  "infinite_scroll",      default: true
     t.integer  "screen_width"
     t.integer  "screen_height"
     t.string   "country_code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "screen_resolution_id"
   end
 
+  add_index "user_settings", ["screen_resolution_id"], name: "index_user_settings_on_screen_resolution_id", using: :btree
   add_index "user_settings", ["user_id"], name: "index_user_settings_on_user_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|

@@ -48,6 +48,11 @@ Wallgig::Application.routes.draw do
     resources :favourites, only: [:index]
   end
 
+  # OPTIMIZE
+  resource :user do
+    post 'update_screen_resolution'
+  end
+
   # Wallpapers
   get 'w/:id' => 'wallpapers#show', id: /\d+/, as: :short_wallpaper
   resources :wallpapers do

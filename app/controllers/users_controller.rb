@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show]
+  before_action :authenticate_user!, only: [:update_screen_resolution]
+
   impressionist actions: [:show]
 
   layout 'user_profile'
@@ -30,10 +32,21 @@ class UsersController < ApplicationController
                         .limit(6)
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find_by!(username: params[:id])
-      authorize! :read, @user
+  def update_screen_resolution
+    width  = params.require(:width)
+    height = params.require(:height)
+    current_settings.update(screen_width: width, screen_height: height)
+
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.json { head :no_content }
     end
+  end
+
+  private
+
+  def set_user
+    @user = User.find_by!(username: params[:id])
+    authorize! :read, @user
+  end
 end

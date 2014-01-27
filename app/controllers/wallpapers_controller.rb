@@ -164,7 +164,7 @@ class WallpapersController < ApplicationController
 
       # default values
       p[:order]  ||= 'latest'
-      p[:purity] ||= ['sfw']
+      p[:purity] ||= current_purities
     end
   end
 

@@ -74,6 +74,14 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
     = yield :javascript_for_page
     = render partial: 'shared/segment_io'
+
+    - if user_signed_in? && current_settings.needs_screen_resolution?
+      :javascript
+        $.post('#{update_screen_resolution_user_path}', {
+          'width': window.screen.width,
+          'height': window.screen.height
+        });
+
     - flash.each do |type, message|
       - type = :success if type == :notice
       - type = :danger  if type == :alert
