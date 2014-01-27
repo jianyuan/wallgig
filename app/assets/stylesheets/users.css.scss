@@ -1,9 +1,27 @@
+$developer-color: #25BA29;
+$admin-color: #E66262;
+$moderator-color: #DC8C3D;
+
 .user-developer {
-  color: #25BA29;
+  color: $developer-color;
 }
+a.user-developer:hover {
+  color: darken($developer-color, 10%);
+  text-decoration: none;
+}
+
 .user-admin {
-  color: #E66262;
+  color: $admin-color;
 }
+a.user-admin:hover {
+  color: darken($admin-color, 10%);
+  text-decoration: none;
+}
+
 .user-moderator {
-  color: #DC8C3D;
+  color: $moderator-color;
+}
+a.user-moderator:hover {
+  color: darken($moderator-color, 10%);
+  text-decoration: none;
 }

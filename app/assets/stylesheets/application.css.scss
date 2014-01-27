@@ -13,11 +13,11 @@
  */
 
 @import url(http://fonts.googleapis.com/css?family=Lato:400,700|Roboto:400,700|Roboto+Condensed:400,700);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
 
 @import "bourbon";
 @import "ladda";
-@import "bootstrap_overrides";
-@import "twitter/bootstrap";
+@import "bootstrap_and_overrides";
 
 $wallpaper-thumbnail-width: 250px;
 
@@ -68,11 +68,19 @@ body {
 }
 
 
+/* Panel */
+.panel-transparent {
+  &, .panel-body {
+    border: none;
+  }
+  background: none;
+}
+
 .panel-body {
   border-bottom: 1px solid $panel-default-border;
 }
 .panel-body:last-child {
-  border-bottom: 0;
+  border-bottom: none;
 }
 
 
@@ -94,7 +102,8 @@ body {
 }
 
 
-@import "users";
 @import "collections";
-@import "wallpapers";
+@import "comments";
+@import "users";
 @import "utilities";
+@import "wallpapers";

@@ -1,30 +1,38 @@
 - title ["\##{@wallpaper.id}", @wallpaper.cached_tag_list].reject &:blank?
 - description @wallpaper.cached_tag_list
 - keywords @wallpaper.cached_tag_list
-.row
-  .col-lg-2
-    .panel.panel-default
-      - if @wallpaper.user.present?
-        .panel-body
-          .media.media-user
-            = link_to @wallpaper.user, class: 'pull-left' do
-              = image_tag gravatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
-            .media-body
-              %h3.media-heading= link_to_user @wallpaper.user
 
+- content_for :wallpaper_sidebar_content do
+  .panel.panel-transparent
+    - if @wallpaper.user.present?
       .panel-body
-        %ul.list-inline.no-margin
-          %li
-            %span.glyphicon.glyphicon-calendar
-            = @wallpaper.created_at.to_date.to_formatted_s(:long)
-          %li
-            %span.glyphicon.glyphicon-eye-open
-            = @wallpaper.impressions_count
+        .media.media-user
+          = link_to @wallpaper.user, class: 'pull-left' do
+            = image_tag gravatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
+          .media-body
+            %h3.media-heading= link_to_user @wallpaper.user
 
-      - if user_signed_in?
-        .panel-body
-          = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper.object).first
+    .panel-body
+      %ul.list-inline
+        %li
+          %span.glyphicon.glyphicon-calendar
+          = time_tag @wallpaper.created_at, @wallpaper.created_at.to_date.to_formatted_s(:long), title: @wallpaper.created_at
+        %li
+          %span.glyphicon.glyphicon-eye-open
+          = @wallpaper.impressions_count
+      %ul.list-inline
+        %li
+          %span.glyphicon.glyphicon-file
+          = @wallpaper.resolution
+        %li
+          %span.glyphicon.glyphicon-flag
+          = @wallpaper.purity_text
 
+    - if user_signed_in?
+      .panel-body
+        = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper.object).first
+
+    - if false
       - cache ['show', @wallpaper, 'tag_list'] do
         - if @wallpaper.tag_list.any?
           .panel-body
@@ -34,6 +42,7 @@
                   = link_to wallpapers_path(tags: [tag]) do
                     = tag
 
+    - if false
       - cache ['show', @wallpaper, 'color_list'] do
         - if @wallpaper.wallpaper_colors.any?
           .panel-body.text-center
@@ -41,17 +50,19 @@
               - @wallpaper.wallpaper_colors.includes(:color).each do |color|
                 %li= link_to '', wallpapers_path(search_params.merge(colors: [color.hex])), style: "background-color: \##{color.hex}"
 
+    - if false
       .panel-body
         = @wallpaper.resolution_select_tag
 
-      - if @wallpaper.source.present?
-        .panel-body
-          %ul.list-metadata
-            %li
-              %strong Source
-              = auto_link @wallpaper.source  do |text|
-                - truncate(text, length: 20)
+    - if @wallpaper.source.present?
+      .panel-body
+        %ul.list-metadata
+          %li
+            %strong Source
+            = auto_link @wallpaper.source  do |text|
+              - truncate(text, length: 20)
 
+    - if false
       .panel-body
         .btn-group.btn-group-justified.btn-group-purity
           - Wallpaper.purity.options.each_entry do |label, value|
@@ -66,34 +77,77 @@
                               :purity => value }
 
     - if user_signed_in?
-      .panel.panel-default
-        .panel-body
-          = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
-            = f.input :comment, as: :text, label: false, placeholder: 'Your comment'
-            = f.submit 'Post', class: 'btn btn-default btn-block', data: { disable_with: 'Posting' }
-        - comments = @wallpaper.comments.includes(:user).recent
-        .panel-body.container-comments{:class => ('hide' if comments.empty?)}
-          %ul.list-unstyled.list-comment= render comments.limit(4)
-          - if comments.size > 4
-            = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
+      .panel-body
+        = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
+          .row
+            .col-sm-2
+              = image_tag gravatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
+            .col-sm-10
+              = f.input :comment, as: :text, label: false, placeholder: 'Your comment', input_html: { data: { focus_placeholder: 'Shift+Enter for newline. Enter to post.' } }
+      - comments = @wallpaper.comments.includes(:user).recent
+      .panel-body.container-comments{:class => ('hide' if comments.empty?)}
+        %ul.list-unstyled.list-comment= render partial: 'comments/wallpaper_comment', collection: comments.limit(4), as: :comment
+        - if comments.size > 4
+          = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
 
-    - @wallpaper.find_related_tags.accessible_by(current_ability, :read).processed.limit(9).in_groups_of(3, false).each do |wallpapers|
-      .row
-        - wallpapers.each do |wallpaper|
-          .col-xs-4
-            = link_to wallpaper, class: 'thumbnail' do
-              = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
+  - @wallpaper.find_related_tags.accessible_by(current_ability, :read).processed.limit(9).in_groups_of(3, false).each do |wallpapers|
+    .row
+      - wallpapers.each do |wallpaper|
+        .col-xs-4
+          = link_to wallpaper, class: 'thumbnail' do
+            = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
 
-    %p
-      .btn-group
-        - if can? :update, @wallpaper
-          = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
-          = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
-        - if user_signed_in? && current_user.admin?
-          = link_to 'Admin', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
-        = link_to new_wallpaper_report_path(@wallpaper), class: 'btn btn-sm btn-link' do
-          %span.glyphicon.glyphicon-flag
-          Report
-        = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
-  .col-lg-10
-    = image_tag @wallpaper.requested_image_url, width: @wallpaper.requested_image_width, height: @wallpaper.requested_image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
+  %p
+    .btn-group
+      - if can? :update, @wallpaper
+        = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
+        = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
+      - if user_signed_in? && current_user.admin?
+        = link_to 'Admin', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
+      = link_to new_wallpaper_report_path(@wallpaper), class: 'btn btn-sm btn-link' do
+        %span.glyphicon.glyphicon-flag
+        Report
+      = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
+
+- content_for :wallpaper_stage_content do
+  = image_tag @wallpaper.requested_image_url, width: @wallpaper.requested_image_width, height: @wallpaper.requested_image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
+
+- # OPTIMIZE
+- content_for :javascript_for_page do
+  :javascript
+    $(function() {
+      var $commentForm = $('form.comment');
+      var $commentTextarea = $commentForm.find('textarea#comment_comment');
+      $('.toggle-sidebar-btn').click(function() {
+        $('.wallpaper-show-container').toggleClass('has-sidebar');
+      });
+      $('.list-comment').on('click', '.reply-comment', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var replyToUsername = $this.closest('[data-username]').data('username');
+        $commentTextarea.focus();
+        $commentTextarea.val($commentTextarea.val() + '@' + replyToUsername + ' ');
+      });
+      $commentForm.on('ajax:beforeSend', function() {
+        $commentTextarea.prop('disabled', true);
+      })
+      $commentForm.on('ajax:success', function() {
+        $commentTextarea.val('');
+      });
+      $commentForm.on('ajax:complete', function() {
+        $commentTextarea.prop('disabled', false);
+      });
+      $commentTextarea.data('original-placeholder', $commentTextarea.attr('placeholder'));
+      $commentTextarea.focusin(function() {
+        $commentTextarea.attr('placeholder', $commentTextarea.data('focus-placeholder'));
+      });
+      $commentTextarea.focusout(function() {
+        $commentTextarea.attr('placeholder', $commentTextarea.data('original-placeholder'));
+      });
+      $commentTextarea.keydown(function(e) {
+        if (e.keyCode == 13 && ! e.shiftKey) {
+          e.preventDefault();
+          $commentForm.submit();
+        }
+      });
+    });

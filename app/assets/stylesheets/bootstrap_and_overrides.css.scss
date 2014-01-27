@@ -1,0 +1,25 @@
+/* Basics */
+$body-bg: #191919;
+$text-color: #ddd;
+$link-color: #898989;
+$font-family-sans-serif: 'Droid Sans', sans-serif;
+
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+
+$grid-gutter-width: 20px;
+
+/* Forms */
+$input-bg: $body-bg;
+$input-color: $text-color;
+$input-border: #666;
+$input-color-placeholder: $input-border;
+
+$input-border-focus: $text-color;
+
+/* Navbar */
+$navbar-inverse-color: white;
+$navbar-inverse-link-color: white;
+
+@import "bootstrap";

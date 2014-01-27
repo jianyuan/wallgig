@@ -1,8 +1,123 @@
-.wallpapers.show {
-  #main > .container {
-    @extend .container-full;
+$wallpaper-sidebar-width: 320px;
+
+.wallpaper-show-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  &.has-navbar {
+    top: 50px;
+  }
+
+  /* Large buttons */
+  .toggle-sidebar-btn, .close-btn {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .close-btn {
+    padding: 10px;
+    font-size: 20px;
+    color: $text-color;
+  }
+
+  .wallpaper-stage:hover .toggle-sidebar-btn {
+    opacity: 1;
+  }
+  .toggle-sidebar-btn {
+    @include transition(all 0.1s ease-in);
+    opacity: 0;
+    color: darken($text-color, 60%);
+    padding: 20px;
+    &:hover {
+      color: $text-color;
+    }
+    .glyphicon.glyphicon-resize-full {
+      display: none;
+    }
+    .glyphicon.glyphicon-resize-small {
+      display: block;
+    }
+  }
+  &.has-sidebar {
+    .toggle-sidebar-btn {
+      .glyphicon.glyphicon-resize-full {
+        display: block;
+      }
+      .glyphicon.glyphicon-resize-small {
+        display: none;
+      }
+    }
+  }
+
+  /* Comments */
+  textarea#comment_comment {
+    font-size: 13px;
+  }
+  .list-comment {
+    li {
+      margin-bottom: 10px;
+      .show-when-hover {
+        opacity: 0;
+        @include transition(opacity 0.1s ease-in);
+      }
+      &:hover .show-when-hover {
+        opacity: 1;
+      }
+    }
   }
 }
+
+
+.wallpaper-show-container.has-sidebar .wallpaper-stage {
+  right: $wallpaper-sidebar-width;
+}
+.wallpaper-stage {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  .img-wallpaper {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-height: 95%;
+    max-width: 95%;
+    margin: auto;
+    height: auto;
+    width: auto;
+  }
+}
+
+.wallpaper-show-container.has-sidebar .wallpaper-sidebar {
+  display: block;
+}
+.wallpaper-sidebar {
+  display: none;
+  width: $wallpaper-sidebar-width;
+  margin-left: auto;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+
+// .wallpapers.show {
+//   #main > .container {
+//     @extend .container-full;
+//   }
+// }
 
 
 .list-wallpaper {
@@ -161,17 +276,17 @@
 }
 
 .img-wallpaper {
-  @include box-shadow(#666 0px 0px 5px);
+  // @include box-shadow(#666 0px 0px 5px);
   @include transition(all 0.1s ease-in);
 
-  &.state-1 {
-    cursor: -webkit-zoom-in;  cursor: zoom-in;
-    @extend .img-responsive;
-  }
+  // &.state-1 {
+  //   cursor: -webkit-zoom-in;  cursor: zoom-in;
+  //   @extend .img-responsive;
+  // }
 
-  &.state-2 {
-    cursor: -webkit-zoom-out;  cursor: zoom-out;
-  }
+  // &.state-2 {
+  //   cursor: -webkit-zoom-out;  cursor: zoom-out;
+  // }
 }
 
 .form-group.favourite_collection {

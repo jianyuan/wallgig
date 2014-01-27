@@ -28,8 +28,11 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Comments
-  resources :comments, only: [:index] do
+  resources :comments, only: [:index, :destroy] do
     concerns :reportable
+    member do
+      get 'reply'
+    end
   end
 
   # Users

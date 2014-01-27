@@ -31,4 +31,15 @@ class Comment < ActiveRecord::Base
 
   validates :comment, presence: true
   validates :user, presence: true
+
+  def self.markdown
+    @markdown ||= begin
+      renderer = Redcarpet::Render::HTML.new(hard_wrap: true)
+      Redcarpet::Markdown.new(renderer, space_after_headers: true)
+    end
+  end
+
+  def cooked_comment
+    self.class.markdown.render(comment).html_safe
+  end
 end

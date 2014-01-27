@@ -2,9 +2,12 @@ class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
+
   impressionist actions: [:show]
 
   helper_method :search_params
+
+  layout 'fullscreen_wallpaper', only: :show
 
   # GET /wallpapers
   # GET /wallpapers.json
