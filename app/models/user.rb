@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
   has_many :favourites, dependent: :destroy
   has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
 
+  has_one :settings, class_name: 'UserSetting', dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -56,6 +58,10 @@ class User < ActiveRecord::Base
             length: { minimum: 3, maximum: 20 }
 
   before_save :ensure_authentication_token
+
+  before_create do
+    build_settings
+  end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
@@ -85,6 +91,10 @@ class User < ActiveRecord::Base
 
   def ensure_authentication_token!
     reset_authentication_token! if authentication_token.blank?
+  end
+
+  def settings
+    super || build_settings
   end
 
   private
