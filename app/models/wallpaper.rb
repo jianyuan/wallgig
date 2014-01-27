@@ -27,6 +27,8 @@
 #  category_id         :integer
 #
 
+require 'redcarpet_renderers'
+
 class Wallpaper < ActiveRecord::Base
   belongs_to :user, counter_cache: true
 
@@ -305,6 +307,20 @@ class Wallpaper < ActiveRecord::Base
   def category_list
     return nil unless category.present?
     category.ancestors.pluck(:name) << category.name
+  end
+
+  def cooked_source
+    @cooked_source ||= begin
+      renderer = Redcarpet::Render::HTMLWithoutBlockElements.new({
+        filter_html: true,
+        hard_wrap: true
+      })
+      markdown = Redcarpet::Markdown.new(renderer, {
+        autolink: true,
+        no_intra_emphasis: true
+      })
+      markdown.render(source).html_safe
+    end if source.present?
   end
 
   private

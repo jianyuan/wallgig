@@ -19,5 +19,6 @@
 //= require ladda
 //= require selectize
 //= require jquery.bootstrap-growl
+//= require jquery.cookie
 //= require_tree .
 //= require_tree ../templates/.

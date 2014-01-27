@@ -27,8 +27,50 @@
         %li
           %span.glyphicon.glyphicon-flag
           = @wallpaper.purity_text
+      - if @wallpaper.source.present?
+        %ul.list-inline
+          %li
+            %span.glyphicon.glyphicon-question-sign
+            = @wallpaper.cooked_source
 
     - if user_signed_in?
+      .panel-body
+        .btn-group.btn-group-justified
+          = link_to '#', class: 'btn btn-default' do
+            %span.glyphicon.glyphicon-star-empty
+            Like
+          = link_to '#', class: 'btn btn-default' do
+            %span.glyphicon.glyphicon-folder-open
+            Collect
+          .btn-group
+            = link_to '#', class: 'btn btn-default dropdown-toggle', data: { toggle: 'dropdown' } do
+              %span.glyphicon.glyphicon-list
+            %ul.dropdown-menu.pull-right{:role => 'menu'}
+              - if user_signed_in?
+                - if can? :update, @wallpaper
+                  %li
+                    = link_to edit_wallpaper_path(@wallpaper) do
+                      %span.glyphicon.glyphicon-pencil
+                      Edit metadata
+                - if can? :destroy, @wallpaper
+                  %li
+                    = link_to @wallpaper, data: { method: :delete, confirm: 'Are you sure?' } do
+                      %span.glyphicon.glyphicon-remove
+                      Delete wallpaper
+                %li
+                  = link_to new_wallpaper_report_path(@wallpaper) do
+                    %span.glyphicon.glyphicon-flag
+                    Report
+                - if can? :update, @wallpaper
+                  %li
+                    = link_to history_wallpaper_path(@wallpaper) do
+                      %span.glyphicon.glyphicon-list-alt
+                      Edit history
+                - if current_user.admin?
+                  %li
+                    = link_to admin_wallpaper_path(@wallpaper) do
+                      %span.glyphicon.glyphicon-fire
+                      Administer
       .panel-body
         = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper.object).first
 
@@ -53,14 +95,6 @@
     - if false
       .panel-body
         = @wallpaper.resolution_select_tag
-
-    - if @wallpaper.source.present?
-      .panel-body
-        %ul.list-metadata
-          %li
-            %strong Source
-            = auto_link @wallpaper.source  do |text|
-              - truncate(text, length: 20)
 
     - if false
       .panel-body
@@ -97,18 +131,6 @@
           = link_to wallpaper, class: 'thumbnail' do
             = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
 
-  %p
-    .btn-group
-      - if can? :update, @wallpaper
-        = link_to 'Edit', edit_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-default'
-        = link_to 'History', history_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
-      - if user_signed_in? && current_user.admin?
-        = link_to 'Admin', admin_wallpaper_path(@wallpaper), class: 'btn btn-sm btn-link'
-      = link_to new_wallpaper_report_path(@wallpaper), class: 'btn btn-sm btn-link' do
-        %span.glyphicon.glyphicon-flag
-        Report
-      = link_to 'Back', wallpapers_path, class: 'btn btn-sm btn-link'
-
 - content_for :wallpaper_stage_content do
   = image_tag @wallpaper.requested_image_url, width: @wallpaper.requested_image_width, height: @wallpaper.requested_image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
 
@@ -116,10 +138,20 @@
 - content_for :javascript_for_page do
   :javascript
     $(function() {
+      var $wallpaperShowContainer = $('.wallpaper-show-container');
       var $commentForm = $('form.comment');
       var $commentTextarea = $commentForm.find('textarea#comment_comment');
+      var hideSidebarPreference = $.cookie('wallpaper_show:hide_sidebar');
+      if (hideSidebarPreference) {
+        $wallpaperShowContainer.removeClass('has-sidebar');
+      }
       $('.toggle-sidebar-btn').click(function() {
-        $('.wallpaper-show-container').toggleClass('has-sidebar');
+        $wallpaperShowContainer.toggleClass('has-sidebar');
+        if ($wallpaperShowContainer.is('.has-sidebar')) {
+          $.removeCookie('wallpaper_show:hide_sidebar');
+        } else {
+          $.cookie('wallpaper_show:hide_sidebar', true);
+        }
       });
       $('.list-comment').on('click', '.reply-comment', function(e) {
         e.preventDefault();
