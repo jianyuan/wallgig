@@ -4,7 +4,6 @@
 #
 #  id   :integer          not null, primary key
 #  name :string(255)
-#  slug :string(255)
 #
 
 class ActsAsTaggableOn::Tag

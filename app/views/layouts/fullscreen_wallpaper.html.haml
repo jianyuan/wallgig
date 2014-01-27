@@ -1,0 +1,15 @@
+- content_for(:hide_navbar, true) if user_signed_in?
+
+- content_for :main_container do
+  .wallpaper-show-container.has-sidebar{:class => yield(:hide_navbar) ? '' : 'has-navbar'}
+    .wallpaper-stage
+      = yield :wallpaper_stage_content
+      %a.toggle-sidebar-btn
+        %span.glyphicon.glyphicon-resize-full
+        %span.glyphicon.glyphicon-resize-small
+    .wallpaper-sidebar
+      = link_to wallpapers_path, class: 'close-btn' do
+        %span.glyphicon.glyphicon-remove
+      = yield :wallpaper_sidebar_content
+
+= render template: 'layouts/application'

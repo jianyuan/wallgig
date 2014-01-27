@@ -1,9 +1,13 @@
 class WallpapersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
+  before_action :set_available_categories, only: [:new, :edit, :create, :update]
+
   impressionist actions: [:show]
 
   helper_method :search_params
+
+  layout 'fullscreen_wallpaper', only: :show
 
   # GET /wallpapers
   # GET /wallpapers.json
@@ -124,42 +128,47 @@ class WallpapersController < ApplicationController
   end
 
   private
-    def set_wallpaper
-      @wallpaper = Wallpaper.find(params[:id])
-      authorize! :read, @wallpaper
-    end
 
-    def wallpaper_params
-      params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity, :source)
-    end
+  def set_wallpaper
+    @wallpaper = Wallpaper.find(params[:id])
+    authorize! :read, @wallpaper
+  end
 
-    def update_wallpaper_params_with_purity
-      params.require(:wallpaper).permit(:tag_list, :image_gravity, :source, :purity)
-    end
+  def set_available_categories
+    @available_categories = Category.arrange_as_array order: :name
+  end
 
-    def update_wallpaper_params_without_purity
-      update_wallpaper_params_with_purity.except(:purity)
-    end
+  def wallpaper_params
+    params.require(:wallpaper).permit(:purity, :image, :tag_list, :image_gravity, :source, :category_id)
+  end
 
-    def update_wallpaper_params
-      if can? :update_purity, @wallpaper
-        update_wallpaper_params_with_purity
-      else
-        update_wallpaper_params_without_purity
-      end
-    end
+  def update_wallpaper_params_with_purity
+    params.require(:wallpaper).permit(:tag_list, :image_gravity, :source, :purity, :category_id)
+  end
 
-    def search_params(load_session = true)
-      params.permit(:q, :page, :width, :height, :order, purity: [], tags: [], exclude_tags: [], colors: []).tap do |p|
-        p.reverse_merge! session[:search_params] if load_session && p.blank? && session[:search_params].present?
+  def update_wallpaper_params_without_purity
+    update_wallpaper_params_with_purity.except(:purity)
+  end
 
-        # default values
-        p[:order]  ||= 'latest'
-        p[:purity] ||= ['sfw']
-      end
+  def update_wallpaper_params
+    if can? :update_purity, @wallpaper
+      update_wallpaper_params_with_purity
+    else
+      update_wallpaper_params_without_purity
     end
+  end
 
-    def resize_params
-      params.permit(:width, :height)
+  def search_params(load_session = true)
+    params.permit(:q, :page, :width, :height, :order, purity: [], tags: [], exclude_tags: [], colors: []).tap do |p|
+      p.reverse_merge! session[:search_params] if load_session && p.blank? && session[:search_params].present?
+
+      # default values
+      p[:order]  ||= 'latest'
+      p[:purity] ||= ['sfw']
     end
+  end
+
+  def resize_params
+    params.permit(:width, :height)
+  end
 end

@@ -11,6 +11,7 @@
 #  role             :string(255)      default("comments")
 #  created_at       :datetime
 #  updated_at       :datetime
+#  cooked_comment   :text
 #
 
 class Comment < ActiveRecord::Base
@@ -29,6 +30,20 @@ class Comment < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :comment, presence: true
-  validates :user, presence: true
+  validates :comment, presence: true, length: { minimum: 20 }
+
+  before_save do
+    self.cooked_comment = self.class.markdown.render(comment).html_safe
+  end
+
+  def self.markdown
+    @markdown ||= begin
+      renderer = Redcarpet::Render::HTML.new(hard_wrap: true)
+      Redcarpet::Markdown.new(renderer, space_after_headers: true)
+    end
+  end
+
+  def cooked_comment
+    read_attribute(:cooked_comment).html_safe
+  end
 end

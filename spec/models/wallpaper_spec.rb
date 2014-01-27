@@ -16,7 +16,7 @@
 #  primary_color_id    :integer
 #  impressions_count   :integer          default(0)
 #  cached_tag_list     :text
-#  image_gravity       :string(255)
+#  image_gravity       :string(255)      default("c")
 #  favourites_count    :integer          default(0)
 #  purity_locked       :boolean          default(FALSE)
 #  source              :string(255)
@@ -24,6 +24,7 @@
 #  scrape_source       :string(255)
 #  scrape_id           :string(255)
 #  image_hash          :string(255)
+#  category_id         :integer
 #
 
 require 'spec_helper'

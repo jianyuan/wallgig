@@ -9,53 +9,70 @@
       %script{src: 'https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js'}
     = csrf_meta_tags
   %body{:class => "#{controller_name.parameterize} #{action_name.parameterize}"}
-    %nav.navbar.navbar-inverse.navbar-fixed-top{:role => "navigation"}
-      .container
-        .navbar-header
-          %button{:type => 'button', :class => 'navbar-toggle', :data => {:toggle => 'collapse', :target => '#navbar-collapse'}}
-            %span.sr-only Toggle navigation
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          = link_to root_path, class: 'navbar-brand' do
-            wallgig
-        .collapse.navbar-collapse#navbar-collapse
-          %ul.nav.navbar-nav
-            %li= link_to 'Upload', new_wallpaper_path
-            %li= link_to 'Collections', collections_path
-            %li= link_to 'Comments', comments_path
-            %li= link_to 'Forums', 'http://forums.wallgig.net'
-            %li= link_to '#wallgig@irc.rizon.net', irc_url(current_user)
-            %li
-              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">
-              <input type="hidden" name="cmd" value="_s-xclick">
-              <input type="hidden" name="hosted_button_id" value="MGHTWLTMG7GRJ">
-              <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-              <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-              </form>
-          %ul.nav.navbar-nav.navbar-right
-            - if user_signed_in?
-              %li.dropdown
-                %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}}
-                  = username_tag current_user
+    - unless content_for?(:hide_navbar) && yield(:hide_navbar)
+      %nav.navbar.navbar-inverse.navbar-fixed-top{:role => "navigation"}
+        .container
+          .navbar-header
+            %button{:type => 'button', :class => 'navbar-toggle', :data => {:toggle => 'collapse', :target => '#navbar-collapse'}}
+              %span.sr-only Toggle navigation
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            = link_to root_path, class: 'navbar-brand' do
+              wallgig
+          .collapse.navbar-collapse#navbar-collapse
+            %ul.nav.navbar-nav
+              %li= link_to 'Upload', new_wallpaper_path
+              %li= link_to 'Collections', collections_path
+              %li= link_to 'Comments', comments_path
+              %li= link_to 'Forums', 'http://forums.wallgig.net'
+              %li
+                %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}} 
+                  %span.glyphicon.glyphicon-wrench
                   %b.caret
                 %ul.dropdown-menu
-                  %li= link_to 'Profile', current_user
-                  %li= link_to 'Collections', user_collections_path(current_user)
-                  %li= link_to 'Favourites', user_favourites_path(current_user)
-                  %li.divider
-                  %li= link_to 'Manage collections', account_collections_path
-                  %li.divider
-                  %li= link_to 'Settings', edit_user_registration_path
-                  %li= link_to 'Sign Out', destroy_user_session_path, method: :delete
-            - else
-              %li= link_to 'Sign Up', new_user_registration_path
-              %li= link_to 'Sign In', new_user_session_path
+                  - if last_deploy_time.present?
+                    %li.disabled
+                      %a{:href => '#'} Deployed #{time_ago_in_words last_deploy_time} ago
+                  %li
+                    %a{:href => 'http://forums.wallgig.net/t/wallgig-features-roadmap-changelog/6', :target => '_blank'} Features roadmap and changelog
+                  %li
+                    %a{:href => 'https://github.com/jianyuan/wallgig', :target => '_blank'} Source code on GitHub
+              %li= link_to '#wallgig@irc.rizon.net', irc_url(current_user)
+              %li
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="MGHTWLTMG7GRJ">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                </form>
+            %ul.nav.navbar-nav.navbar-right
+              - if user_signed_in?
+                %li.dropdown
+                  %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}}
+                    = username_tag current_user
+                    %b.caret
+                  %ul.dropdown-menu
+                    %li= link_to 'Profile', current_user
+                    %li= link_to 'Collections', user_collections_path(current_user)
+                    %li= link_to 'Favourites', user_favourites_path(current_user)
+                    %li.divider
+                    %li= link_to 'Manage collections', account_collections_path
+                    %li.divider
+                    %li= link_to 'Settings', edit_user_registration_path
+                    %li= link_to 'Sign Out', destroy_user_session_path, method: :delete
+              - else
+                %li= link_to 'Sign Up', new_user_registration_path
+                %li= link_to 'Sign In', new_user_session_path
     = yield(:pre_container)
-    #main
-      .container
-        = content_for?(:content) ? yield(:content) : yield
+    - if content_for?(:main_container)
+      = yield :main_container
+    - else
+      #main
+        .container
+          = content_for?(:content) ? yield(:content) : yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
+    = yield :javascript_for_page
     = render partial: 'shared/segment_io'
     - flash.each do |type, message|
       - type = :success if type == :notice

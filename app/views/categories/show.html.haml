@@ -1,0 +1,15 @@
+%p
+  %b Name:
+  = @category.name
+%p
+  %b Wikipedia title:
+  = @category.wikipedia_title
+%p
+  = raw @category.cooked_content
+%p
+  %b Ancestry:
+  = @category.ancestry
+
+= link_to 'Edit', edit_category_path(@category)
+\|
+= link_to 'Back', categories_path

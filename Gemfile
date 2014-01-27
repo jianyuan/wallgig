@@ -22,9 +22,6 @@ gem 'therubyracer', platforms: :ruby
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
@@ -107,9 +104,8 @@ gem 'simple_form'
 gem 'eco'
 
 # assets
-gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails', github: 'anjlab/bootstrap-rails'
+gem 'bootstrap-sass', '~> 3.0.3.0'
 gem 'bourbon'
-gem 'jquery-turbolinks'
 
 # services
 gem 'newrelic_rpm'
@@ -127,11 +123,11 @@ gem 'miro'
 gem 'color'
 gem 'colorscore'
 gem 'httparty'
-gem 'rails_autolink'
 gem 'active_link_to'
 gem 'meta-tags', :require => 'meta_tags'
 gem 'phashion'
 gem 'draper', github: 'jianyuan/draper'
+gem 'redcarpet'
 
 # rack
 gem 'rack-cache', require:  'rack/cache', group: :production

@@ -11,6 +11,7 @@
 #  role             :string(255)      default("comments")
 #  created_at       :datetime
 #  updated_at       :datetime
+#  cooked_comment   :text
 #
 
 FactoryGirl.define do

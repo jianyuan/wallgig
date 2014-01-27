@@ -22,6 +22,9 @@ module Wallgig
 
     config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
 
+    # Silence deprecation warning
+    config.i18n.enforce_available_locales = true
+
     config.app_generators.scaffold_controller = :scaffold_controller
   end
 end

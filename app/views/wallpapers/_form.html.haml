@@ -2,14 +2,13 @@
   = f.error_notification
 
   .form-inputs
+    = f.input :purity unless @wallpaper.purity_locked?
     = f.input :image, as: :file unless @wallpaper.persisted?
-    = f.input :source, hint: 'Enter URL or Artist'
-    - unless @wallpaper.purity_locked?
-      = f.input :purity
+    = f.input :category_id, collection: @available_categories, label_method: :name_for_selects, value_method: :id, include_blank: true, hint: 'Try to set the deepest possible category'
     .form-group
       = f.label :tag_list, label: 'Tags'
-      - # OPTIMIZE
-      = f.text_field :tag_list, class: 'form-control', autocomplete: 'off', data: { provide: 'tag_editor', tags: ActsAsTaggableOn::Tag.alphabetically.pluck(:name), search_path: api_v1_tags_path }
+      = f.text_field :tag_list, class: 'form-control', autocomplete: 'off', data: { provide: 'tag_editor', search_path: api_v1_tags_path }
+    = f.input :source, hint: 'Enter URL or Artist'
     = f.input :image_gravity, label: 'Crop position'
 
   .form-actions

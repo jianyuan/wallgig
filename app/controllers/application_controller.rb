@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   helper UsersHelper
-  helper_method :last_deploy_time
+  helper_method :current_settings
+  helper_method :current_purities
 
   class AccessDenied < CanCan::AccessDenied; end
 
@@ -27,8 +28,21 @@ class ApplicationController < ActionController::Base
   def last_deploy_time
     @last_deploy_time ||= File.new(Rails.root.join('last_deploy')).atime rescue nil
   end
+  helper_method :last_deploy_time
 
-  private
+  def current_settings
+    @current_settings ||= begin
+      if user_signed_in?
+        current_user.settings
+      else
+        UserSetting.new
+      end
+    end
+  end
+
+  def current_purities
+    current_settings.purities
+  end
 
   def access_denied_response(exception)
     respond_to do |format|
