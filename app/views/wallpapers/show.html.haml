@@ -24,7 +24,7 @@
         %li
           %span.glyphicon.glyphicon-file
           = @wallpaper.resolution
-        %li
+        %li{:class => "purity-#{@wallpaper.purity}"}
           %span.glyphicon.glyphicon-flag
           = @wallpaper.purity_text
       - if @wallpaper.source.present?
@@ -38,9 +38,9 @@
         .btn-group.btn-group-justified
           = link_to '#', class: 'btn btn-default' do
             %span.glyphicon.glyphicon-star-empty
-            Like
+            Fav
           = link_to '#', class: 'btn btn-default' do
-            %span.glyphicon.glyphicon-folder-open
+            %span.glyphicon.glyphicon-folder-close
             Collect
           .btn-group
             = link_to '#', class: 'btn btn-default dropdown-toggle', data: { toggle: 'dropdown' } do

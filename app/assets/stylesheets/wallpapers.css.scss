@@ -256,22 +256,37 @@ $wallpaper-sidebar-width: 320px;
 
 .btn-group-purity {
 }
+.purity-sfw, .btn-sfw {
+  color: $btn-success-bg;
+}
+.purity-sketchy, .btn-sketchy {
+  color: $btn-warning-bg;
+}
+.purity-nsfw, .btn-nsfw {
+  color: $btn-danger-bg;
+}
 .btn-sfw {
-  color: $btn-default-color;
   &.btn-active {
-    @extend .btn-default;
+    @extend .btn-success;
+  }
+  &:hover {
+    color: darken($btn-success-bg, 10%);
   }
 }
 .btn-sketchy {
-  color: $btn-warning-bg;
   &.btn-active {
     @extend .btn-warning;
   }
+  &:hover {
+    color: darken($btn-warning-bg, 10%);
+  }
 }
 .btn-nsfw {
-  color: $btn-danger-bg;
   &.btn-active {
     @extend .btn-danger;
+  }
+  &:hover {
+    color: darken($btn-danger-bg, 10%);
   }
 }
 
