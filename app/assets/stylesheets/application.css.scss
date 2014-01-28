@@ -47,25 +47,36 @@ body {
   }  
 }
 
-@include responsive-container-width(1);
-@include responsive-container-width(2);
-@include responsive-container-width(3);
-@include responsive-container-width(4);
-@include responsive-container-width(5);
-@include responsive-container-width(6);
-@include responsive-container-width(7);
-@include responsive-container-width(8);
-@include responsive-container-width(9);
-@include responsive-container-width(10);
-@include responsive-container-width(11);
-@include responsive-container-width(12);
-@include responsive-container-width(13);
-@include responsive-container-width(14);
-@include responsive-container-width(15);
-@include responsive-container-width(16);
+.container {
+  @extend .container-full;
+}
+// @include responsive-container-width(1);
+// @include responsive-container-width(2);
+// @include responsive-container-width(3);
+// @include responsive-container-width(4);
+// @include responsive-container-width(5);
+// @include responsive-container-width(6);
+// @include responsive-container-width(7);
+// @include responsive-container-width(8);
+// @include responsive-container-width(9);
+// @include responsive-container-width(10);
+// @include responsive-container-width(11);
+// @include responsive-container-width(12);
+// @include responsive-container-width(13);
+// @include responsive-container-width(14);
+// @include responsive-container-width(15);
+// @include responsive-container-width(16);
 
 .open .dropdown-menu > li > a {
   padding: 10px 20px;
+}
+
+/* Navbar */
+.navbar .navbar-nav div .btn {
+  margin-top: 8px;
+}
+.btn-upload {
+  margin-right: 20px;
 }
 
 

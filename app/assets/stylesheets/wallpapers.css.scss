@@ -126,6 +126,7 @@ $wallpaper-sidebar-width: 320px;
   margin-left: -10px;
   margin-right: -10px;
   overflow: hidden;
+  text-align: center;
   &.row-1 {
     height: 208px;
   }
@@ -137,7 +138,7 @@ $wallpaper-sidebar-width: 320px;
     height: 188px;
     margin: 10px;
     overflow: hidden;
-    float: left;
+    display: inline-block;
     position: relative;
     @include transition(all 0.1s ease-in);
     .overlay {
