@@ -9,6 +9,8 @@
 #  country_code             :string(255)
 #  created_at               :datetime
 #  updated_at               :datetime
+#  username_color_hex       :string(255)
+#  title                    :string(255)
 #
 
 class UserProfile < ActiveRecord::Base
@@ -31,5 +33,9 @@ class UserProfile < ActiveRecord::Base
       styles << "background-position: center center"
     end
     styles.join ';'
+  end
+
+  def username_color_hex=(value)
+    write_attribute :username_color_hex, Kolor.normalize_html_hex(value)
   end
 end

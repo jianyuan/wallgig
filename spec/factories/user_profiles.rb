@@ -9,6 +9,8 @@
 #  country_code             :string(255)
 #  created_at               :datetime
 #  updated_at               :datetime
+#  username_color_hex       :string(255)
+#  title                    :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

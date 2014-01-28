@@ -18,7 +18,9 @@ module UsersHelper
   end
 
   def role_name_for(user)
-    if user.developer?
+    if user.profile.title.present?
+      user.profile.title
+    elsif user.developer?
       'Developer'
     elsif user.admin?
       'Admin'
