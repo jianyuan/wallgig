@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Group:
+  = @forum.group
+%p
+  %b Name:
+  = @forum.name
+%p
+  %b Slug:
+  = @forum.slug
+%p
+  %b Description:
+  = @forum.description
+%p
+  %b Position:
+  = @forum.position
+
+= link_to 'Edit', edit_group_forum_path(@group, @forum)
+\|
+= link_to 'Back', group_forums_path(@group)

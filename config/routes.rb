@@ -1,4 +1,8 @@
 Wallgig::Application.routes.draw do
+  resources :groups do
+    resources :forums
+  end
+
   resources :categories
 
   concern :commentable do

@@ -1,0 +1,4 @@
+.page-header
+  %h1= @group.name
+  %h2= markdown_line(@group.tagline) if @group.tagline.present?
+= link_to 'Edit', edit_group_path(@group)

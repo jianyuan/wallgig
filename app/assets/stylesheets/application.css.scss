@@ -17,7 +17,8 @@
 
 @import "bourbon";
 @import "ladda";
-@import "bootstrap_and_overrides";
+// @import "bootstrap_and_overrides";
+@import "bootstrap_and_overrides_old";
 
 $wallpaper-thumbnail-width: 250px;
 
@@ -104,6 +105,8 @@ body {
 
 @import "collections";
 @import "comments";
+@import "groups";
 @import "users";
 @import "utilities";
 @import "wallpapers";
+@import "header_cover";

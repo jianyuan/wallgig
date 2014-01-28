@@ -32,4 +32,31 @@ module ApplicationHelper
     url
   end
 
+  # Taken from http://icelab.com.au/articles/render-single-line-markdown-text-with-redcarpet/
+  def markdown(text)
+    renderer = Redcarpet::Render::HTML.new({
+      :filter_html => true,
+      :hard_wrap => true
+    })
+    markdown = Redcarpet::Markdown.new(renderer, {
+      :autolink => true,
+      :no_intra_emphasis => true
+    })
+
+    markdown.render(text).html_safe
+  end
+
+  def markdown_line(text)
+    renderer = Redcarpet::Render::HTMLWithoutBlockElements.new({
+      :filter_html => true,
+      :hard_wrap => true
+    })
+    markdown = Redcarpet::Markdown.new(renderer, {
+      :autolink => true,
+      :no_intra_emphasis => true
+    })
+
+    markdown.render(text).html_safe
+  end
+
 end

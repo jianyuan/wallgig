@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
   has_many :favourites, dependent: :destroy
   has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
 
+  has_many :owned_groups, class_name: 'Group', foreign_key: 'owner_id'
+
   has_one :profile,  class_name: 'UserProfile', dependent: :destroy
   has_one :settings, class_name: 'UserSetting', dependent: :destroy
 

@@ -1,0 +1,23 @@
+.page-header
+  .pull-right
+    = link_to 'Create group', new_group_path, class: 'btn btn-md btn-primary'
+  %h1 Groups
+
+.row
+  .col-lg-9
+    test
+  .col-lg-3
+    %h2 Official groups
+    - @official_groups.each do |group|
+      .panel.panel-default
+        .panel-heading
+          .media
+            - if true
+              = link_to group, class: 'pull-left' do
+                %img{:src => "http://placekitten.com/50/50", :alt => ""}/ 
+            .media-body
+              %h4.media-heading= link_to group.name, group
+              %h5= markdown_line(group.tagline) if group.tagline.present?
+        - if group.description.present?
+          .panel-body
+            = markdown_line(group.description)
