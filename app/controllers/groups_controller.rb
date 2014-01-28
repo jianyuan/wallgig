@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy, :apps, :update_apps]
-  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :apps, :update_apps, :join, :leave]
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy, :apps, :update_apps, :join, :leave]
 
   layout 'group', except: :index
 
@@ -87,6 +87,30 @@ class GroupsController < ApplicationController
         format.html { render action: 'apps' }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def join
+    authorize! :join, @group
+
+    respond_to do |format|
+      if @group.add_member(current_user)
+        format.html { redirect_to @group, notice: 'You have successfully joined this group.' }
+        format.json { head :no_content }
+      else
+        format.html { render groups_url, alert: 'You cannot join this group.' }
+        format.json { head :unprocessable_entity }
+      end
+    end
+  end
+
+  def leave
+    authorize! :leave, @group
+    @group.users_groups.find_by!(user_id: current_user.id).destroy
+
+    respond_to do |format|
+      format.html { redirect_to @group, notice: 'You have left the group.' }
+      format.json { head :no_content }
     end
   end
 

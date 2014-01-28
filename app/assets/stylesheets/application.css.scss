@@ -33,6 +33,7 @@ body {
 }
 
 .container-full {
+  // TODO deprecate
   width: 100% !important;
   margin: 0 auto;
 }
@@ -48,7 +49,8 @@ body {
 }
 
 .container {
-  @extend .container-full;
+  width: 98% !important;
+  margin: 0 auto;
 }
 // @include responsive-container-width(1);
 // @include responsive-container-width(2);
@@ -113,6 +115,7 @@ body {
   margin: 0;
 }
 
+@import "header_cover";
 
 @import "collections";
 @import "comments";
@@ -120,4 +123,3 @@ body {
 @import "users";
 @import "utilities";
 @import "wallpapers";
-@import "header_cover";

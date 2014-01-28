@@ -2,9 +2,15 @@ Wallgig::Application.routes.draw do
   resources :groups do
     resources :forums
 
+    resources :collections
+
+    resources :favourites
+
     member do
       get :apps
       patch :update_apps
+      post :join
+      delete :leave
     end
   end
 

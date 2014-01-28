@@ -32,8 +32,8 @@ class Group < ActiveRecord::Base
   extend Enumerize
   enumerize :access, in: [:public, :private, :secret], default: :public
 
-  validates :name,   presence: true, length: { minimum: 5 }, uniqueness: { case_sensitive: false }
-  validates :access, presence: true
+  validates :name,    presence: true, length: { minimum: 5 }, uniqueness: { case_sensitive: false }
+  validates :access,  presence: true
 
   scope :official,   -> { where(official: true) }
   scope :unofficial, -> { where.not(official: true) }
@@ -42,5 +42,9 @@ class Group < ActiveRecord::Base
 
   def create_admin_user!
     users_groups.create! user_id: owner_id, role: :admin
+  end
+
+  def add_member(user)
+    users_groups.create user_id: user.id
   end
 end

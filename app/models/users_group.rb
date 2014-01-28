@@ -17,6 +17,6 @@ class UsersGroup < ActiveRecord::Base
   extend Enumerize
   enumerize :role, in: { admin: 1, moderator: 2, banned: -1 }
 
-  validates :user_id,  presence: true
+  validates :user_id,  presence: true, uniqueness: { scope: [:group_id], message: 'already joined this group' }
   validates :group_id, presence: true
 end
