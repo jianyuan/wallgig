@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140127173948) do
+ActiveRecord::Schema.define(version: 20140128001056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,6 +209,18 @@ ActiveRecord::Schema.define(version: 20140127173948) do
     t.string "name"
   end
 
+  create_table "user_profiles", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "cover_wallpaper_id"
+    t.integer  "cover_wallpaper_y_offset"
+    t.string   "country_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_profiles", ["cover_wallpaper_id"], name: "index_user_profiles_on_cover_wallpaper_id", using: :btree
+  add_index "user_profiles", ["user_id"], name: "index_user_profiles_on_user_id", unique: true, using: :btree
+
   create_table "user_settings", force: true do |t|
     t.integer  "user_id"
     t.boolean  "sfw",                  default: true
@@ -218,7 +230,6 @@ ActiveRecord::Schema.define(version: 20140127173948) do
     t.boolean  "infinite_scroll",      default: true
     t.integer  "screen_width"
     t.integer  "screen_height"
-    t.string   "country_code"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "screen_resolution_id"

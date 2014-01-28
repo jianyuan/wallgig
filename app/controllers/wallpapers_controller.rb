@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history]
+  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
 
   impressionist actions: [:show]
@@ -124,6 +124,15 @@ class WallpapersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back, notice: 'Search settings successfully saved.' }
       format.json { head :no_content }
+    end
+  end
+
+  def set_profile_cover
+    current_profile.cover_wallpaper = @wallpaper
+    current_profile.save!
+
+    respond_to do |format|
+      format.html { redirect_to user_path(current_user, anchor: 'reposition'), notice: 'Profile cover was successfully changed. You may reposition it now.' }
     end
   end
 

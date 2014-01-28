@@ -6,8 +6,9 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   helper UsersHelper
-  helper_method :current_settings
+  helper_method :current_profile
   helper_method :current_purities
+  helper_method :current_settings
 
   class AccessDenied < CanCan::AccessDenied; end
 
@@ -30,6 +31,20 @@ class ApplicationController < ActionController::Base
   end
   helper_method :last_deploy_time
 
+  def current_profile
+    @current_profile ||= begin
+      if user_signed_in?
+        current_user.profile
+      else
+        UserProfile.new
+      end
+    end
+  end
+
+  def current_purities
+    current_settings.purities
+  end
+
   def current_settings
     @current_settings ||= begin
       if user_signed_in?
@@ -38,10 +53,6 @@ class ApplicationController < ActionController::Base
         UserSetting.new
       end
     end
-  end
-
-  def current_purities
-    current_settings.purities
   end
 
   def access_denied_response(exception)

@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   has_many :favourites, dependent: :destroy
   has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
 
+  has_one :profile,  class_name: 'UserProfile', dependent: :destroy
   has_one :settings, class_name: 'UserSetting', dependent: :destroy
 
   # Include default devise modules. Others available are:
@@ -60,6 +61,7 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   before_create do
+    build_profile
     build_settings
   end
 
@@ -95,6 +97,10 @@ class User < ActiveRecord::Base
 
   def settings
     super || build_settings
+  end
+
+  def profile
+    super || build_profile
   end
 
   private

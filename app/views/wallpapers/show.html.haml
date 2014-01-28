@@ -47,11 +47,20 @@
               %span.glyphicon.glyphicon-list
             %ul.dropdown-menu.pull-right{:role => 'menu'}
               - if user_signed_in?
+                %li
+                  = link_to set_profile_cover_wallpaper_path(@wallpaper), data: { method: :post, confirm: 'Are you sure?' } do
+                    %span.glyphicon.glyphicon-picture
+                    Set as profile cover
                 - if can? :update, @wallpaper
                   %li
                     = link_to edit_wallpaper_path(@wallpaper) do
                       %span.glyphicon.glyphicon-pencil
                       Edit metadata
+                - if can? :update, @wallpaper
+                  %li
+                    = link_to history_wallpaper_path(@wallpaper) do
+                      %span.glyphicon.glyphicon-list-alt
+                      View edit history
                 - if can? :destroy, @wallpaper
                   %li
                     = link_to @wallpaper, data: { method: :delete, confirm: 'Are you sure?' } do
@@ -60,12 +69,7 @@
                 %li
                   = link_to new_wallpaper_report_path(@wallpaper) do
                     %span.glyphicon.glyphicon-flag
-                    Report
-                - if can? :update, @wallpaper
-                  %li
-                    = link_to history_wallpaper_path(@wallpaper) do
-                      %span.glyphicon.glyphicon-list-alt
-                      Edit history
+                    Report abuse
                 - if current_user.admin?
                   %li
                     = link_to admin_wallpaper_path(@wallpaper) do

@@ -22,6 +22,12 @@ Wallgig::Application.routes.draw do
 
       resources :wallpapers
     end
+
+    resource :profile do
+      member do
+        delete :remove_profile_cover
+      end
+    end
   end
 
   # Collections
@@ -62,6 +68,7 @@ Wallgig::Application.routes.draw do
     end
 
     member do
+      post :set_profile_cover
       get :history
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
       get ':width/:height' => 'wallpapers#show', width: /\d+/, height: /\d+/, as: :resized

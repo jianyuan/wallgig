@@ -11,7 +11,6 @@
 #  infinite_scroll      :boolean          default(TRUE)
 #  screen_width         :integer
 #  screen_height        :integer
-#  country_code         :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
 #  screen_resolution_id :integer
