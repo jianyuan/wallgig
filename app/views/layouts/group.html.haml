@@ -14,13 +14,9 @@
                     %span.glyphicon.glyphicon-cog
                     Edit settings
                 %li
-                  = link_to edit_group_path(@group) do
+                  = link_to apps_group_path(@group) do
                     %span.glyphicon.glyphicon-cloud
                     Add/Remove apps
-                %li
-                  = link_to edit_group_path(@group) do
-                    %span.glyphicon.glyphicon-lock
-                    Edit permissions
           - else
             = link_to '#', class: 'btn btn-lg btn-primary' do
               %span.glyphicon.glyphicon-plus
@@ -42,5 +38,7 @@
           / = active_link_to 'Favourites', user_favourites_path(@user), wrap_tag: :li
           = active_link_to 'Followers', '#', wrap_tag: :li
           = active_link_to 'Following', '#', wrap_tag: :li
+          - if @group.has_forums
+            = active_link_to 'Forums', group_forums_path(@group), wrap_tag: :li
 
 = render template: 'layouts/application'

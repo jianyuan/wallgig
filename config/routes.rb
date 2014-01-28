@@ -1,6 +1,11 @@
 Wallgig::Application.routes.draw do
   resources :groups do
     resources :forums
+
+    member do
+      get :apps
+      patch :update_apps
+    end
   end
 
   resources :categories

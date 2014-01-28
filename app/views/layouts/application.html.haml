@@ -22,9 +22,9 @@
               wallgig
           .collapse.navbar-collapse#navbar-collapse
             %ul.nav.navbar-nav
-              %li= link_to 'Upload', new_wallpaper_path
               %li= link_to 'Collections', collections_path
               %li= link_to 'Comments', comments_path
+              %li= link_to 'Groups<sup>NEW</sup>'.html_safe, groups_path
               %li= link_to 'Forums', 'http://forums.wallgig.net'
               %li
                 %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}} 
@@ -48,6 +48,8 @@
                 </form>
             %ul.nav.navbar-nav.navbar-right
               - if user_signed_in?
+                %li
+                  %div= link_to 'Upload', new_wallpaper_path, class: 'btn btn-primary btn-upload'
                 %li.dropdown
                   %a{:href => '#', :class => 'dropdown-toggle', :data => {:toggle => 'dropdown'}}
                     = username_tag current_user

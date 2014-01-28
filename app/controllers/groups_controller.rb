@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :apps, :update_apps]
   before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
 
   layout 'group', except: :index
@@ -72,6 +72,24 @@ class GroupsController < ApplicationController
     end
   end
 
+  def apps
+    authorize! :update, @group
+  end
+
+  def update_apps
+    authorize! :update, @group
+
+    respond_to do |format|
+      if @group.update!(update_group_apps_params)
+        format.html { redirect_to apps_group_url(@group), notice: 'Group apps was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'apps' }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def set_group
@@ -80,6 +98,10 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name, :tagline, :description, :public, :admin_title, :moderator_title, :member_title, :has_forums)
+    params.require(:group).permit(:name, :tagline, :description, :public, :admin_title, :moderator_title, :member_title)
+  end
+
+  def update_group_apps_params
+    params.require(:group).permit(:has_forums)
   end
 end

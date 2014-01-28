@@ -1,0 +1,10 @@
+.row
+  .col-lg-4.col-lg-offset-4
+    .page-header
+      %h2 Add/Remove apps
+
+    = simple_form_for @group, url: update_apps_group_path(@group), method: :patch do |f|
+      .form-inputs
+        = f.input :has_forums, label: 'Forums', hint: 'Enable discussion forums.'
+      .form-inputs
+        = f.button :submit, 'Save', class: 'btn btn-primary'
