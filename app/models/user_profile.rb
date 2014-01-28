@@ -23,7 +23,7 @@ class UserProfile < ActiveRecord::Base
 
   def cover_style
     styles = []
-    if cover_wallpaper.present?
+    if cover_wallpaper.present? && cover_wallpaper.sfw?
       styles << "background-image: url(#{cover_wallpaper.image.url})"
       styles << "background-position: center center"
     else

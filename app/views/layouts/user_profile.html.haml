@@ -1,7 +1,7 @@
 - myself = user_signed_in? && current_user == @user
 - content_for :pre_container do
   %header.user-profile-header
-    .user-profile-cover{:class => ('has-cover' if @user.profile.cover_wallpaper.present?), :style => @user.profile.cover_style, :data => {:spy => 'affix', offset_top: 300}}
+    .user-profile-cover{:class => ('has-cover' if @user.profile.cover_wallpaper.present?), :style => @user.profile.cover_style, :data => {:spy => 'affix', offset_top: 325}}
       .user-profile-meta
         .container
           .pull-right
@@ -12,10 +12,6 @@
                     %span.glyphicon.glyphicon-picture
                     Edit cover
                   %ul.dropdown-menu.pull-right{:role => 'menu'}
-                    %li
-                      = link_to '#' do
-                        %span.glyphicon.glyphicon-move
-                        Reposition
                     %li
                       = link_to remove_profile_cover_account_profile_path, data: { method: :delete, confirm: 'Are you sure?' } do
                         %span.glyphicon.glyphicon-remove
@@ -30,9 +26,9 @@
           .media.media-user
             - if myself
               = link_to '#', class: 'pull-left' do
-                = image_tag gravatar_url(@user, 120), alt: @user.username, class: 'media-object', width: 120, height: 120
+                = image_tag gravatar_url(@user, 100), alt: @user.username, class: 'media-object', width: 100, height: 100
             - else
-              = image_tag gravatar_url(@user, 120), alt: @user.username, class: 'media-object pull-left', width: 120, height: 120
+              = image_tag gravatar_url(@user, 100), alt: @user.username, class: 'media-object pull-left', width: 100, height: 100
             .media-body
               %h2.media-heading
                 = username_tag @user

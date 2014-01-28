@@ -128,11 +128,12 @@ class WallpapersController < ApplicationController
   end
 
   def set_profile_cover
-    current_profile.cover_wallpaper = @wallpaper
-    current_profile.save!
-
-    respond_to do |format|
-      format.html { redirect_to user_path(current_user, anchor: 'reposition'), notice: 'Profile cover was successfully changed. You may reposition it now.' }
+    if @wallpaper.sfw?
+      current_profile.cover_wallpaper = @wallpaper
+      current_profile.save!
+      redirect_to current_user, notice: 'Profile cover was successfully changed.'
+    else
+      redirect_to current_user, alert: 'Only SFW wallpapers can be set as profile cover.'
     end
   end
 

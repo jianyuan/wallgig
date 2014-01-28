@@ -36,7 +36,7 @@ a.user-moderator:hover {
   margin: 0;
   background: rgba(0, 0, 0, 0.6);
   .navbar-nav {
-    margin-left: 135px;
+    margin-left: 110px;
   }
 }
 
@@ -51,7 +51,7 @@ a.user-moderator:hover {
 .user-profile-cover.affix {
   left: 0;
   right: 0;
-  top: -250px;
+  top: -275px;
   position: fixed;
 }
 
@@ -64,20 +64,15 @@ a.user-moderator:hover {
   right: 0;
   z-index: 20;
   height: 160px;
-  padding-top: 65px;
+  padding-top: 100px;
   .container {
     height: 80px;
   }
   .media-user {
     margin-top: 0;
     overflow: visible;
-    height: 80px;
-    .media-object {
-      @extend .img-thumbnail;
-      border-color: $navbar-inverse-border;
-      padding: 5px;
-    }
-    .media-body {
+    height: 70px;
+    .media-heading {
       margin-top: 10px;
     }
     small {

@@ -45,7 +45,7 @@ class Wallpaper < ActiveRecord::Base
 
   # Purity
   extend Enumerize
-  enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true
+  enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true, predicates: true
   enumerize :image_gravity, in: Dragonfly::ImageMagick::Processors::Thumb::GRAVITIES.keys
 
   # Image
