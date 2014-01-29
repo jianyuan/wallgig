@@ -1,4 +1,4 @@
-= simple_form_for(@forum_topic) do |f|
+= simple_form_for(@forum_topic, url: form_url) do |f|
   .form-inputs
     = f.input :title
     = f.input :content

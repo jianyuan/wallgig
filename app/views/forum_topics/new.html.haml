@@ -3,4 +3,4 @@
     .page-header
       %h1 New topic
 
-    = render 'form'
+    = render partial: 'form', locals: { form_url: group_forum_forum_topics_path(@group, @forum) }
