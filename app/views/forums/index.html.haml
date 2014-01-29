@@ -1,27 +1,25 @@
-%h1 Listing forums
+- title [@group.name, 'Forums']
 
-%table
-  %tr
-    %th Group
-    %th Name
-    %th Slug
-    %th Description
-    %th Position
-    %th
-    %th
-    %th
+.page-header
+  %h2 Forums
 
-  - @forums.each do |forum|
+%table.table.table-striped.table-hover
+  %thead
     %tr
-      %td= forum.group
-      %td= forum.name
-      %td= forum.slug
-      %td= forum.description
-      %td= forum.position
-      %td= link_to 'Show', [@group, forum]
-      %td= link_to 'Edit', edit_group_forum_path(@group, forum)
-      %td= link_to 'Destroy', [@group, forum], :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %th.col-md-6 Forum
+      %th.col-md-1 Topics
+      %th.col-md-1 Replies
+      %th.col-md-4 Last post
 
-%br
+  %tbody
+    - @forums.each do |forum|
+      %tr
+        %td
+          = link_to forum.name, [@group, forum]
+          = markdown_line forum.description
+        %td TODO
+        %td TODO
+        %td TODO
 
-= link_to 'New Forum', new_group_forum_path(@group)
+- if can? :crud, @forum
+  = link_to 'New Forum', new_group_forum_path(@group)

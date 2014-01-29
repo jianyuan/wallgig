@@ -41,7 +41,7 @@
     %nav.navbar.navbar-default{:role => 'navigation'}
       .container
         %ul.nav.navbar-nav
-          = active_link_to 'Overview', @group, wrap_tag: :li
+          = active_link_to 'Overview', @group, active: [['groups'], ['show']], wrap_tag: :li
           = active_link_to 'Collections', group_collections_path(@group), wrap_tag: :li
           = active_link_to 'Favourites', group_favourites_path(@group), wrap_tag: :li
           - if @group.has_forums

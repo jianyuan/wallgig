@@ -1,6 +1,7 @@
 .page-header
   .pull-right
-    = link_to 'Create group', new_group_path, class: 'btn btn-md btn-primary'
+    - if can? :create, Group
+      = link_to 'Create group', new_group_path, class: 'btn btn-md btn-primary'
   %h1 Groups
 
 .row

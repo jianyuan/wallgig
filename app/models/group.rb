@@ -19,6 +19,11 @@
 #
 
 class Group < ActiveRecord::Base
+  DEFAULT_ADMIN_TITLE     = 'Administrator'
+  DEFAULT_MODERATOR_TITLE = 'Moderator'
+  DEFAULT_MEMBER_TITLE    = 'Member'
+  DEFAULT_BANNED_TITLE    = 'Banned'
+
   belongs_to :owner, class_name: 'User'
 
   has_many :users_groups, dependent: :destroy
@@ -46,5 +51,17 @@ class Group < ActiveRecord::Base
 
   def add_member(user)
     users_groups.create user_id: user.id
+  end
+
+  def title_for(users_group)
+    if users_group.admin?
+      admin_title || DEFAULT_ADMIN_TITLE
+    elsif users_group.moderator?
+      moderator_title || DEFAULT_MODERATOR_TITLE
+    elsif users_group.banned?
+      DEFAULT_BANNED_TITLE
+    else
+      member_title || DEFAULT_MEMBER_TITLE
+    end
   end
 end

@@ -2,18 +2,19 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy, :apps, :update_apps, :join, :leave]
   before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy, :apps, :update_apps, :join, :leave]
 
-  layout 'group', except: :index
+  layout 'group', except: [:index, :new, :create]
 
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.unofficial
-    @official_groups = Group.official
+    @groups = Group.unofficial.accessible_by(current_ability, :read)
+    @official_groups = Group.official.accessible_by(current_ability, :read)
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @officers = @group.users_groups.officers.includes(user: :profile)
   end
 
   # GET /groups/new

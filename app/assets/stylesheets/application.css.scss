@@ -33,8 +33,7 @@ body {
 }
 
 .container-full {
-  // TODO deprecate
-  width: 100% !important;
+  width: 98% !important;
   margin: 0 auto;
 }
 
@@ -48,10 +47,6 @@ body {
   }  
 }
 
-.container {
-  width: 98% !important;
-  margin: 0 auto;
-}
 // @include responsive-container-width(1);
 // @include responsive-container-width(2);
 // @include responsive-container-width(3);

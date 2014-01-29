@@ -5,9 +5,9 @@
 #  id         :integer          not null, primary key
 #  user_id    :integer
 #  group_id   :integer
-#  role       :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  role       :string(255)
 #
 
 require 'spec_helper'

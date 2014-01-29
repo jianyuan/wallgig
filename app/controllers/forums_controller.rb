@@ -2,10 +2,12 @@ class ForumsController < ApplicationController
   before_action :set_group
   before_action :set_forum, only: [:show, :edit, :update, :destroy]
 
+  layout 'group'
+
   # GET /forums
   # GET /forums.json
   def index
-    @forums = @group.forums
+    @forums = @group.forums.accessible_by(current_ability, :read)
   end
 
   # GET /forums/1
