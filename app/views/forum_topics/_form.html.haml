@@ -1,11 +1,7 @@
-= simple_form_for([@group, @forum, @forum_topic]) do |f|
+= simple_form_for(@forum_topic) do |f|
   .form-inputs
     = f.input :title
     = f.input :content
-    - if can? :moderate, @forum
-      = f.input :pinned
-      = f.input :locked
-      = f.input :hidden
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

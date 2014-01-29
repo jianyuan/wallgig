@@ -12,7 +12,7 @@ class ForumTopicsController < ApplicationController
   # GET /forum_topics
   # GET /forum_topics.json
   def index
-    @forum_topics = @forum.topics
+    @forum_topics = @forum.topics.accessible_by(current_ability, :read).pinned_first
   end
 
   # GET /forum_topics/1

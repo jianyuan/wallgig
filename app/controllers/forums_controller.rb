@@ -13,7 +13,7 @@ class ForumsController < ApplicationController
   # GET /forums/1
   # GET /forums/1.json
   def show
-    @topics = @forum.topics.accessible_by(current_ability, :read)
+    @topics = @forum.topics.accessible_by(current_ability, :read).pinned_first.latest
   end
 
   # GET /forums/new

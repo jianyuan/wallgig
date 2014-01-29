@@ -9,7 +9,7 @@
     %li= link_to 'Forums', group_forums_path(@group)
   %h2= @forum.name
 
-%table.table.table-striped.table-hover
+%table.table.table-hover
   %thead
     %tr
       %th.col-md-6 Topic
@@ -29,7 +29,12 @@
               %span.label.label-warning Hidden
             = topic.title
         %td TODO
-        %td TODO
+        %td
+          - if true
+            started by
+            = link_to_user topic.user
+          = time_tag topic.updated_at, time_ago_in_words(topic.updated_at), title: topic.updated_at
+          ago
 
 - if can? :update, @forum
   %ul.list-inline

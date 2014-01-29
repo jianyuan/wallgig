@@ -24,8 +24,19 @@ class ForumTopic < ActiveRecord::Base
   validates :title,    presence: true, length: { minimum: 10 }
   validates :content,  presence: true, length: { minimum: 20 }
 
+  scope :pinned_first, -> { order(pinned: :desc) }
+  scope :latest,       -> { order(updated_at: :desc) }
+
+  before_save do
+    self.cooked_content = ApplicationController.helpers.markdown(content) if content_changed?
+  end
+
   def to_param
     "#{id}-#{title.parameterize}"
+  end
+
+  def cooked_content
+    read_attribute(:cooked_content).try(:html_safe)
   end
 
   def pin!

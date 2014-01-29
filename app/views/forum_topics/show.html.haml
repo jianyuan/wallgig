@@ -35,6 +35,11 @@
               = link_to hide_forum_topic_path(@forum_topic), method: :patch do
                 %span.glyphicon.glyphicon-eye-open
                 Hide topic
+          - if can? :update, @forum_topic
+            %li
+              = link_to edit_forum_topic_path(@forum_topic) do
+                %span.glyphicon.glyphicon-pencil
+                Edit topic
           %li
             = link_to @forum_topic, data: { method: :destroy, confirm: 'Are you sure?' } do
               %span.glyphicon.glyphicon-remove
@@ -45,35 +50,34 @@
   %ol.breadcrumb
     %li= link_to 'Forums', group_forums_path(@group)
     %li= link_to @forum.name, [@group, @forum]
-  %h2
-    = @forum_topic.title
-    - if @forum_topic.pinned?
-      %small
-        %span.label.label-primary Pinned
-    - if @forum_topic.locked?
-      %small
-        %span.label.label-danger Locked
-    - if @forum_topic.hidden?
-      %small
-        %span.label.label-warning Hidden
-%p
-  %b Content:
-  = @forum_topic.content
-%p
-  %b Cooked content:
-  = @forum_topic.cooked_content
-%p
-  %b Pinned:
-  = @forum_topic.pinned
-%p
-  %b Locked:
-  = @forum_topic.locked
-%p
-  %b Hidden:
-  = @forum_topic.hidden
-
-- if can? :update, @forum
-  %ul.list-inline
-    %li
-      %strong Administer:
-    %li= link_to 'Edit', edit_forum_topic_path(@forum_topic)
+.panel.panel-default
+  .panel-body
+    %h2.no-top-margin
+      = @forum_topic.title
+      - if @forum_topic.pinned?
+        %small
+          %span.label.label-primary Pinned
+      - if @forum_topic.locked?
+        %small
+          %span.label.label-danger Locked
+      - if @forum_topic.hidden?
+        %small
+          %span.label.label-warning Hidden
+    %hr/
+    .row
+      .col-sm-2
+        = link_to @forum_topic.user do
+          = image_tag gravatar_url(@forum_topic.user, 100), alt: @forum_topic.user.username, width: 100, height: 100
+        %h4= link_to_user @forum_topic.user
+        %h5= @group.title_for(@forum_topic.user) || role_name_for(@forum_topic.user)
+      .col-sm-10
+        = @forum_topic.cooked_content
+        %ul.list-inline
+          %li.text-muted
+            %small #{time_tag @forum_topic.created_at, time_ago_in_words(@forum_topic.created_at), title: @forum_topic.created_at} ago
+          - if @forum_topic.created_at != @forum_topic.updated_at
+            %li.text-muted
+              %small updated #{time_tag @forum_topic.updated_at, time_ago_in_words(@forum_topic.updated_at), title: @forum_topic.updated_at} ago
+          - if can? :update, @forum_topic
+            %li.text-muted
+              %small= link_to 'Edit topic', edit_forum_topic_path(@forum_topic)
