@@ -71,7 +71,7 @@
       = yield :main_container
     - else
       #main
-        .container
+        .container{:class => ('container-full' if content_for?(:use_full_container) && yield(:use_full_container))}
           = content_for?(:content) ? yield(:content) : yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
     = yield :javascript_for_page
