@@ -6,7 +6,7 @@
 
 .row
   .col-lg-9
-    test
+    = debug @groups.map &:name
   .col-lg-3
     %h2 Official groups
     - @official_groups.each do |group|

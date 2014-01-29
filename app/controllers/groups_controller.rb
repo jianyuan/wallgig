@@ -123,7 +123,7 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name, :tagline, :description, :public, :admin_title, :moderator_title, :member_title)
+    params.require(:group).permit(:name, :tagline, :description, :public, :admin_title, :moderator_title, :member_title, :access)
   end
 
   def update_group_apps_params
