@@ -32,6 +32,10 @@ $navbar-height: 52px;
     color: white;
   }
 
+  .text-muted {
+    color: $body-bg;
+  }
+
   .navbar {
     position: absolute;
     bottom: -$navbar-height;

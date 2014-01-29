@@ -1,0 +1,79 @@
+- title [@group.name, 'Forums', @forum.name, @forum_topic.title]
+
+.page-header
+  .pull-right
+    - if can? :moderate, @forum_topic
+      .btn-group
+        %button{:type => 'button', :class => 'btn btn-default dropdown-toggle', :data => {:toggle => 'dropdown'}}
+          %span.glyphicon.glyphicon-wrench
+          Tools
+        %ul.dropdown-menu.pull-right{:role => 'menu'}
+          %li
+            - if @forum_topic.pinned?
+              = link_to unpin_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-pushpin
+                Unpin topic
+            - else
+              = link_to pin_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-pushpin
+                Pin topic
+          %li
+            - if @forum_topic.locked?
+              = link_to unlock_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-lock
+                Unlock topic
+            - else
+              = link_to lock_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-lock
+                Lock topic
+          %li
+            - if @forum_topic.hidden?
+              = link_to unhide_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-eye-close
+                Unhide topic
+            - else
+              = link_to hide_forum_topic_path(@forum_topic), method: :patch do
+                %span.glyphicon.glyphicon-eye-open
+                Hide topic
+          %li
+            = link_to @forum_topic, data: { method: :destroy, confirm: 'Are you sure?' } do
+              %span.glyphicon.glyphicon-remove
+              Delete topic
+    = link_to new_group_forum_forum_topic_path(@group, @forum), class: 'btn btn-primary' do
+      %span.glyphicon.glyphicon-plus
+      New reply
+  %ol.breadcrumb
+    %li= link_to 'Forums', group_forums_path(@group)
+    %li= link_to @forum.name, [@group, @forum]
+  %h2
+    = @forum_topic.title
+    - if @forum_topic.pinned?
+      %small
+        %span.label.label-primary Pinned
+    - if @forum_topic.locked?
+      %small
+        %span.label.label-danger Locked
+    - if @forum_topic.hidden?
+      %small
+        %span.label.label-warning Hidden
+%p
+  %b Content:
+  = @forum_topic.content
+%p
+  %b Cooked content:
+  = @forum_topic.cooked_content
+%p
+  %b Pinned:
+  = @forum_topic.pinned
+%p
+  %b Locked:
+  = @forum_topic.locked
+%p
+  %b Hidden:
+  = @forum_topic.hidden
+
+- if can? :update, @forum
+  %ul.list-inline
+    %li
+      %strong Administer:
+    %li= link_to 'Edit', edit_forum_topic_path(@forum_topic)

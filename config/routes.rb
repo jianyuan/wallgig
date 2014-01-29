@@ -1,6 +1,17 @@
 Wallgig::Application.routes.draw do
   resources :groups do
-    resources :forums
+    resources :forums do
+      resources :forum_topics, path: :topics, except: [:index], shallow: true do
+        member do
+          patch :pin
+          patch :unpin
+          patch :lock
+          patch :unlock
+          patch :hide
+          patch :unhide
+        end
+      end
+    end
 
     resources :collections
 

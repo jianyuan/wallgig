@@ -1,24 +1,38 @@
 - title [@group.name, 'Forums', @forum.name]
 
 .page-header
+  .pull-right
+    = link_to new_group_forum_forum_topic_path(@group, @forum), class: 'btn btn-primary' do
+      %span.glyphicon.glyphicon-plus
+      New topic
+  %ol.breadcrumb
+    %li= link_to 'Forums', group_forums_path(@group)
   %h2= @forum.name
 
-%p
-  %b Group:
-  = @forum.group
-%p
-  %b Name:
-  = @forum.name
-%p
-  %b Slug:
-  = @forum.slug
-%p
-  %b Description:
-  = @forum.description
-%p
-  %b Position:
-  = @forum.position
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th.col-md-6 Topic
+      %th.col-md-1 Replies
+      %th.col-md-4 Last activity
 
-= link_to 'Edit', edit_group_forum_path(@group, @forum)
-\|
-= link_to 'Back', group_forums_path(@group)
+  %tbody
+    - @topics.each do |topic|
+      %tr
+        %td
+          = link_to topic do
+            - if topic.pinned?
+              %span.label.label-primary Pinned
+            - if topic.locked?
+              %span.label.label-danger Locked
+            - if topic.hidden?
+              %span.label.label-warning Hidden
+            = topic.title
+        %td TODO
+        %td TODO
+
+- if can? :update, @forum
+  %ul.list-inline
+    %li
+      %strong Administer:
+    %li= link_to 'Edit forum', edit_group_forum_path(@group, @forum)

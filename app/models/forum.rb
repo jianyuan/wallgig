@@ -20,6 +20,7 @@
 
 class Forum < ActiveRecord::Base
   belongs_to :group
+  has_many :topics, class_name: 'ForumTopic'
 
   extend FriendlyId
   friendly_id :name, use: [:slugged, :scoped], scope: :group

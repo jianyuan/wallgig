@@ -1,0 +1,33 @@
+%h1 Listing forum_topics
+
+%table
+  %tr
+    %th Forum
+    %th User
+    %th Title
+    %th Content
+    %th Cooked content
+    %th Pinned
+    %th Locked
+    %th Hidden
+    %th
+    %th
+    %th
+
+  - @forum_topics.each do |forum_topic|
+    %tr
+      %td= forum_topic.forum
+      %td= forum_topic.user
+      %td= forum_topic.title
+      %td= forum_topic.content
+      %td= forum_topic.cooked_content
+      %td= forum_topic.pinned
+      %td= forum_topic.locked
+      %td= forum_topic.hidden
+      %td= link_to 'Show', forum_topic
+      %td= link_to 'Edit', edit_forum_topic_path(forum_topic)
+      %td= link_to 'Destroy', forum_topic, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Forum topic', new_forum_topic_path

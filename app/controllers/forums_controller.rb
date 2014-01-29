@@ -13,21 +13,25 @@ class ForumsController < ApplicationController
   # GET /forums/1
   # GET /forums/1.json
   def show
+    @topics = @forum.topics.accessible_by(current_ability, :read)
   end
 
   # GET /forums/new
   def new
     @forum = @group.forums.new
+    authorize! :create, @forum
   end
 
   # GET /forums/1/edit
   def edit
+    authorize! :update, @forum
   end
 
   # POST /forums
   # POST /forums.json
   def create
     @forum = @group.forums.new(forum_params)
+    authorize! :create, @forum
 
     respond_to do |format|
       if @forum.save
@@ -43,6 +47,8 @@ class ForumsController < ApplicationController
   # PATCH/PUT /forums/1
   # PATCH/PUT /forums/1.json
   def update
+    authorize! :update, @forum
+
     respond_to do |format|
       if @forum.update(forum_params)
         format.html { redirect_to [@group, @forum], notice: 'Forum was successfully updated.' }
@@ -57,6 +63,8 @@ class ForumsController < ApplicationController
   # DELETE /forums/1
   # DELETE /forums/1.json
   def destroy
+    authorize! :destroy, @forum
+
     @forum.destroy
     respond_to do |format|
       format.html { redirect_to group_forums_url(@group) }
@@ -68,15 +76,14 @@ class ForumsController < ApplicationController
 
   def set_group
     @group = Group.friendly.find(params[:group_id])
-    raise AccessDenied unless @group.has_forums? # Check if forum is enabled.
     authorize! :read, @group
   end
 
   def set_forum
     @forum = @group.forums.friendly.find(params[:id])
+    authorize! :read, @forum
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def forum_params
     params.require(:forum).permit(:name, :slug, :description)
   end

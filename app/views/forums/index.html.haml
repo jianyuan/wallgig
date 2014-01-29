@@ -21,5 +21,8 @@
         %td TODO
         %td TODO
 
-- if can? :crud, @forum
-  = link_to 'New Forum', new_group_forum_path(@group)
+- if can? :crud, @group.forums.new
+  %ul.list-inline
+    %li
+      %strong Administer:
+    %li= link_to 'New forum', new_group_forum_path(@group)

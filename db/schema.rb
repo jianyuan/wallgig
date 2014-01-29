@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140129001036) do
+ActiveRecord::Schema.define(version: 20140129002345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,22 @@ ActiveRecord::Schema.define(version: 20140129001036) do
   add_index "favourites", ["collection_id"], name: "index_favourites_on_collection_id", using: :btree
   add_index "favourites", ["user_id"], name: "index_favourites_on_user_id", using: :btree
   add_index "favourites", ["wallpaper_id"], name: "index_favourites_on_wallpaper_id", using: :btree
+
+  create_table "forum_topics", force: true do |t|
+    t.integer  "forum_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "content"
+    t.text     "cooked_content"
+    t.boolean  "pinned",         default: true
+    t.boolean  "locked",         default: true
+    t.boolean  "hidden",         default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forum_topics", ["forum_id"], name: "index_forum_topics_on_forum_id", using: :btree
+  add_index "forum_topics", ["user_id"], name: "index_forum_topics_on_user_id", using: :btree
 
   create_table "forums", force: true do |t|
     t.integer  "group_id"

@@ -2,13 +2,12 @@
   = f.error_notification
 
   .form-inputs
-    = f.association :group
     = f.input :name
-    = f.input :slug
     = f.input :description
     = f.input :position
 
-  .form-inputs
+  %fieldset
+    %legend Forum permissions
     = f.input :guest_can_read
     = f.input :guest_can_post
     = f.input :guest_can_reply
@@ -17,4 +16,4 @@
     = f.input :member_can_reply
 
   .form-actions
-    = f.button :submit
+    = f.button :submit, class: 'btn btn-primary'
