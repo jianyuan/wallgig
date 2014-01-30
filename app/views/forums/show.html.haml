@@ -2,42 +2,47 @@
 
 .page-header
   .pull-right
-    = link_to new_group_forum_forum_topic_path(@group, @forum), class: 'btn btn-primary' do
-      %span.glyphicon.glyphicon-plus
-      New topic
+    - if can? :update, @forum
+      = link_to edit_group_forum_path(@group, @forum), class: 'btn btn-default' do
+        %span.glyphicon.glyphicon-edit
+        Edit forum
+    - if can? :create, @forum.topics.new
+      = link_to new_group_forum_forum_topic_path(@group, @forum), class: 'btn btn-primary' do
+        %span.glyphicon.glyphicon-plus
+        New topic
   %ol.breadcrumb
     %li= link_to 'Forums', group_forums_path(@group)
   %h2= @forum.name
 
-%table.table.table-hover
-  %thead
-    %tr
-      %th.col-md-6 Topic
-      %th.col-md-1 Replies
-      %th.col-md-4 Last activity
-
-  %tbody
-    - @topics.each do |topic|
+- if @topics.any?
+  %table.table.table-hover
+    %thead
       %tr
-        %td
-          = link_to topic do
-            - if topic.pinned?
-              %span.label.label-primary Pinned
-            - if topic.locked?
-              %span.label.label-danger Locked
-            - if topic.hidden?
-              %span.label.label-warning Hidden
-            = topic.title
-        %td TODO
-        %td
-          - if true
-            started by
-            = link_to_user topic.user
-          = time_tag topic.updated_at, time_ago_in_words(topic.updated_at), title: topic.updated_at
-          ago
+        %th.col-md-6 Topic
+        %th.col-md-1 Replies
+        %th.col-md-4 Last activity
 
-- if can? :update, @forum
-  %ul.list-inline
-    %li
-      %strong Administer:
-    %li= link_to 'Edit forum', edit_group_forum_path(@group, @forum)
+    %tbody
+      - @topics.each do |topic|
+        %tr
+          %td
+            = link_to topic do
+              - if topic.pinned?
+                %span.label.label-primary Pinned
+              - if topic.locked?
+                %span.label.label-danger Locked
+              - if topic.hidden?
+                %span.label.label-warning Hidden
+              = topic.title
+          %td TODO
+          %td
+            - if true
+              started by
+              = link_to_user topic.user
+            = time_tag topic.updated_at, time_ago_in_words(topic.updated_at), title: topic.updated_at
+            ago
+- else
+  %p.text-center
+    There are no topics yet.
+    - if can? :create, @forum.topics.new
+      = link_to 'Start the first topic!', new_group_forum_forum_topic_path(@group, @forum)

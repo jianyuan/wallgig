@@ -102,9 +102,9 @@ ActiveRecord::Schema.define(version: 20140129002345) do
     t.string   "title"
     t.text     "content"
     t.text     "cooked_content"
-    t.boolean  "pinned",         default: true
-    t.boolean  "locked",         default: true
-    t.boolean  "hidden",         default: true
+    t.boolean  "pinned",         default: false
+    t.boolean  "locked",         default: false
+    t.boolean  "hidden",         default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

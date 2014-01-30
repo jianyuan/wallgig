@@ -1,9 +1,14 @@
 - title [@group.name, 'Forums']
 
 .page-header
+  - if can? :create, @group.forums.new
+    .pull-right
+      = link_to new_group_forum_path(@group), class: 'btn btn-primary' do
+        %span.glyphicon.glyphicon-plus
+        New forum
   %h2 Forums
 
-%table.table.table-striped.table-hover
+%table.table.table-hover
   %thead
     %tr
       %th.col-md-6 Forum
@@ -20,9 +25,3 @@
         %td TODO
         %td TODO
         %td TODO
-
-- if can? :crud, @group.forums.new
-  %ul.list-inline
-    %li
-      %strong Administer:
-    %li= link_to 'New forum', new_group_forum_path(@group)

@@ -8,9 +8,9 @@
 #  title          :string(255)
 #  content        :text
 #  cooked_content :text
-#  pinned         :boolean          default(TRUE)
-#  locked         :boolean          default(TRUE)
-#  hidden         :boolean          default(TRUE)
+#  pinned         :boolean          default(FALSE)
+#  locked         :boolean          default(FALSE)
+#  hidden         :boolean          default(FALSE)
 #  created_at     :datetime
 #  updated_at     :datetime
 #

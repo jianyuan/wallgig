@@ -59,13 +59,13 @@ class Group < ActiveRecord::Base
     end
 
     if users_group.admin?
-      admin_title #|| DEFAULT_ADMIN_TITLE
+      admin_title || DEFAULT_ADMIN_TITLE
     elsif users_group.moderator?
-      moderator_title #|| DEFAULT_MODERATOR_TITLE
+      moderator_title || DEFAULT_MODERATOR_TITLE
     elsif users_group.banned?
       DEFAULT_BANNED_TITLE
     else
-      member_title #|| DEFAULT_MEMBER_TITLE
+      member_title || DEFAULT_MEMBER_TITLE
     end
   end
 end
