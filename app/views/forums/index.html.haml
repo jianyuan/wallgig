@@ -12,8 +12,8 @@
   %thead
     %tr
       %th.col-md-6 Forum
-      %th.col-md-1 Topics
-      %th.col-md-1 Replies
+      %th.col-md-1.text-center Topics
+      / %th.col-md-1.text-center Replies
       %th.col-md-4 Last post
 
   %tbody
@@ -22,6 +22,12 @@
         %td
           = link_to forum.name, [@group, forum]
           = markdown_line forum.description
-        %td TODO
-        %td TODO
-        %td TODO
+        %td.text-center= forum.topics.count
+        / %td.text-center TODO
+        %td
+          - if forum.latest_topic.present?
+            = link_to forum.latest_topic do
+              lastest topic by
+              = forum.latest_topic.user.username
+              = time_tag forum.latest_topic.updated_at, time_ago_in_words(forum.latest_topic.updated_at), title: forum.latest_topic.updated_at
+              ago

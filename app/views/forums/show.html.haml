@@ -19,7 +19,7 @@
     %thead
       %tr
         %th.col-md-6 Topic
-        %th.col-md-1 Replies
+        %th.col-md-1.text-center Replies
         %th.col-md-4 Last activity
 
     %tbody
@@ -34,7 +34,7 @@
               - if topic.hidden?
                 %span.label.label-warning Hidden
               = topic.title
-          %td TODO
+          %td.text-center= topic.comments.count
           %td
             - if true
               started by
