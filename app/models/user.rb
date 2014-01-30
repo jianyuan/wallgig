@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
     super || build_profile
   end
 
-  def favourites
+  def favourite_wallpapers
     get_voted Wallpaper
   end
 

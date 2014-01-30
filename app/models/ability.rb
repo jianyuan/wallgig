@@ -27,7 +27,7 @@ class Ability
     can :read, Forum, group: { has_forums: true }, guest_can_read: true
 
     # Forum topic
-    can :read, ForumTopic, guest_can_read: true
+    can :read, ForumTopic, hidden: false
 
     if user.persisted?
       # Wallpaper

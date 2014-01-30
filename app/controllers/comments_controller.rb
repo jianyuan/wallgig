@@ -15,11 +15,21 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    
+    authorize! :update, @comment
   end
 
   def update
+    authorize! :update, @comment
 
+    respond_to do |format|
+      if @comment.update(comment_params)
+        format.html { redirect_to @parent || @comment.commentable, notice: 'Forum topic was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @parent.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /parent/1/comments
@@ -30,6 +40,7 @@ class CommentsController < ApplicationController
 
     authorize! :create, @comment
 
+    # OPTIMIZE
     if @comment.save
       if @parent.is_a?(ForumTopic)
         redirect_to @parent, notice: 'Comment was successfully created.'
@@ -37,7 +48,11 @@ class CommentsController < ApplicationController
         render partial: partial_name, locals: { comment: @comment }
       end
     else
-      render json: @comment.errors.full_messages, status: :unprocessable_entity
+      if request.xhr?
+        render json: @comment.errors.full_messages, status: :unprocessable_entity
+      else
+        render action: 'new'
+      end
     end
   end
 

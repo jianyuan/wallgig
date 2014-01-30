@@ -16,13 +16,10 @@
                       = link_to remove_profile_cover_account_profile_path, data: { method: :delete, confirm: 'Are you sure?' } do
                         %span.glyphicon.glyphicon-remove
                         Remove cover
-            - else
-              = link_to '#', class: 'btn btn-lg btn-primary' do
-                %span.glyphicon.glyphicon-plus
-                Follow
-              = link_to '#', class: 'btn btn-lg btn-primary' do
-                %span.glyphicon.glyphicon-plus
-                Follow
+            / - else
+            /   = link_to '#', class: 'btn btn-lg btn-primary' do
+            /     %span.glyphicon.glyphicon-plus
+            /     Follow
           .media
             - if myself
               = link_to '#', class: 'pull-left' do
@@ -40,7 +37,7 @@
             = active_link_to 'Wallpapers', wallpapers_path(q: "user:#{@user.username}"), wrap_tag: :li
             = active_link_to 'Collections', user_collections_path(@user), wrap_tag: :li
             = active_link_to 'Favourites', user_favourites_path(@user), wrap_tag: :li
-            = active_link_to 'Followers', '#', wrap_tag: :li
-            = active_link_to 'Following', '#', wrap_tag: :li
+            / = active_link_to 'Followers', '#', wrap_tag: :li
+            / = active_link_to 'Following', '#', wrap_tag: :li
 
 = render template: 'layouts/application'
