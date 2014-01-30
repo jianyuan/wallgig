@@ -161,16 +161,13 @@ class WallpapersController < ApplicationController
   end
 
   def toggle_collect
-    collection_params = params.require(:collection).permit(:id)
     @collection = current_user.collections.find(collection_params[:id])
 
-    @favourite = @collection.favourites.where(wallpaper_id: @wallpaper.id).first
-
-    if @favourite.present?
-      @favourite.destroy
+    if @collection.collected?(@wallpaper)
+      @collection.uncollect(@wallpaper)
       @collect_status = false
     else
-      @collection.favourites.create wallpaper_id: @wallpaper.id
+      @collection.collect(@wallpaper)
       @collect_status = true
     end
 
@@ -222,5 +219,9 @@ class WallpapersController < ApplicationController
 
   def resize_params
     params.permit(:width, :height)
+  end
+
+  def collection_params
+    params.require(:collection).permit(:id)
   end
 end
