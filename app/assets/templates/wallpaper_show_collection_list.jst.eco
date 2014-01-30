@@ -1,6 +1,6 @@
-<div class="list-group no-margin">
+<div class="list-group">
   <% for collection in @collections: %>
-    <a href="" class="list-group-item <%= collection.collect_status && 'active' %>" data-remote="true">
+    <a href="<%= @toggle_collect_url %>" class="list-group-item <%= 'active' if collection.collect_status %>" data-remote="true" data-method="post" data-params="collection[id]=<%= collection.id %>" data-action="toggle-collect">
       <%= collection.name %>
       <% unless collection.public: %>
         <span class="label label-danger">Private</span>
@@ -8,3 +8,8 @@
     </a>
   <% end %>
 </div>
+
+<a href="/account/collections" class="btn btn-default">
+  <span class="glyphicon glyphicon-pencil"></span>
+  Manage collections
+</a>

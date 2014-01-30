@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite, :collections]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite, :collections]
+  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite, :collections, :toggle_collect]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite, :collections, :toggle_collect]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
 
   impressionist actions: [:show]
@@ -154,6 +154,25 @@ class WallpapersController < ApplicationController
   def collections
     @collections = current_user.collections.ordered
     @collections = WallpaperCollectionStatus.new(@collections, @wallpaper).collections
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def toggle_collect
+    collection_params = params.require(:collection).permit(:id)
+    @collection = current_user.collections.find(collection_params[:id])
+
+    @favourite = @collection.favourites.where(wallpaper_id: @wallpaper.id).first
+
+    if @favourite.present?
+      @favourite.destroy
+      @collect_status = false
+    else
+      @collection.favourites.create wallpaper_id: @wallpaper.id
+      @collect_status = true
+    end
 
     respond_to do |format|
       format.json

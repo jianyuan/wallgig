@@ -11,10 +11,18 @@ $ ->
       $('.fav-count').text(data.fav_count)
 
     # Handle collection
-    $('.btn-collect').on 'ajax:success', (e, collections) ->
-      template = JST['wallpaper_show_collection_list'](collections: collections)
-      $(JST['modal'](title: 'Add to/Remove from collection', raw_body: template)).modal()
-
+    $('.btn-collect').on 'ajax:success', (e, data) ->
+      template = JST['wallpaper_show_collection_list'](data)
+      $modal = $(JST['modal'](title: 'Add to/Remove from collection', raw_body: template))
+      $modal.find('[data-action=toggle-collect]').on 'ajax:success', (e, data) ->
+        $this = $(this)
+        if data.collect_status
+          $this.addClass('active')
+        else
+          $this.removeClass('active')
+      $modal.modal()
+      $modal.on 'hidden.bs.modal', (e) ->
+        $(this).remove()
 
   if $('body.wallpapers.index, body.collections.show, body.users.show, body.favourites.index').length == 1
     applyLazyLoad = ->
