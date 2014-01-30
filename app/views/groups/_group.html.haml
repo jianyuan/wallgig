@@ -1,0 +1,11 @@
+.panel.panel-default
+  .panel-body
+    .media
+      - if true
+        = link_to group, class: 'pull-left' do
+          %img{:src => "http://placekitten.com/50/50", :alt => ""}/ 
+      .media-body
+        .pull-right.text-muted
+          %small last active #{time_ago_in_words group.updated_at} ago
+        %h4.media-heading= link_to group.name, group
+        %h5= markdown_line(group.tagline) if group.tagline.present?

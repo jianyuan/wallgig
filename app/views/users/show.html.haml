@@ -1,7 +1,7 @@
 - title @user.username
 
 .row
-  .col-lg-10
+  .col-lg-9
     - if @collections.any?
       - if @user.collections.size > @collections.size
         %h3
@@ -27,7 +27,7 @@
       = render partial: 'wallpapers/list', locals: { wallpapers: @wallpapers, extra_css_class: 'row-1' }
 
     - if @favourite_wallpapers.any?
-      - if @user.favourites.size > @favourite_wallpapers.size
+      - if @user.favourite_wallpapers.size > @favourite_wallpapers.size
         %h3
           = link_to user_favourites_path(@user), class: 'btn btn-link pull-right' do
             More
@@ -35,10 +35,10 @@
       %h3
         %span.glyphicon.glyphicon-star
         Favourites
-        %small= @user.favourites.size
+        %small= @user.favourite_wallpapers.size
       = render partial: 'wallpapers/list', locals: { wallpapers: @favourite_wallpapers, extra_css_class: 'row-2' }
 
-  .col-lg-2
+  .col-lg-3
     %h3
       %span.glyphicon.glyphicon-comment
       Comments

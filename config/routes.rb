@@ -1,13 +1,43 @@
 Wallgig::Application.routes.draw do
-  resources :categories
-
   concern :commentable do
-    resources :comments, only: [:index, :create]
+    resources :comments, only: [:index, :new, :create]
   end
 
   concern :reportable do
     resources :reports, only: [:new, :create]
   end
+
+  resources :groups do
+    resources :forums do
+      resources :forum_topics, path: :topics, except: [:index], shallow: true do
+        concerns :commentable
+
+        concerns :reportable
+
+        member do
+          patch :pin
+          patch :unpin
+          patch :lock
+          patch :unlock
+          patch :hide
+          patch :unhide
+        end
+      end
+    end
+
+    resources :collections
+
+    resources :favourites
+
+    member do
+      get :apps
+      patch :update_apps
+      post :join
+      delete :leave
+    end
+  end
+
+  resources :categories
 
   root 'wallpapers#index'
 
@@ -34,7 +64,7 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Comments
-  resources :comments, only: [:index, :destroy] do
+  resources :comments, only: [:index, :edit, :update, :destroy] do
     concerns :reportable
     member do
       get 'reply'
@@ -62,21 +92,25 @@ Wallgig::Application.routes.draw do
   # Wallpapers
   get 'w/:id' => 'wallpapers#show', id: /\d+/, as: :short_wallpaper
   resources :wallpapers do
+    concerns :commentable
+    concerns :reportable
 
     collection do
       post :save_search_params
     end
 
     member do
+      get :collections
+      post :toggle_collect
+      post :toggle_favourite
       post :set_profile_cover
       get :history
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
       get ':width/:height' => 'wallpapers#show', width: /\d+/, height: /\d+/, as: :resized
     end
 
-    concerns :commentable
-    concerns :reportable
 
+    # TODO deprecate
     resource :favourite do
       member do
         post :toggle

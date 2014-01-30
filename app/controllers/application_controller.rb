@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
   def access_denied_response(exception)
     respond_to do |format|
-      format.html { redirect_to root_url, alert: exception.message, status: :unauthorized }
+      format.html { redirect_to root_url, alert: exception.message }
       format.json do
         response = {
           error: {

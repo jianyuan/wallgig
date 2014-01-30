@@ -3,7 +3,7 @@
     - collections.each do |collection|
       - next unless can?(:read, collection)
       - # OPTIMIZE
-      - wallpapers = collection.wallpapers.accessible_by(current_ability, :index).where.not(thumbnail_image_uid: nil).limit(4)
+      - wallpapers = collection.wallpapers.accessible_by(current_ability, :read).where.not(thumbnail_image_uid: nil).limit(4)
       - wallpapers = WallpapersDecorator.new(wallpapers, context: { user: current_user })
       - next if wallpapers.empty?
       %li{:data => {:collection_id => collection.id}}

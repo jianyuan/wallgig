@@ -1,15 +1,28 @@
 $ ->
   if $('body.wallpapers.show').length == 1
-    # Wallpaper resizer
-    $imgWallpaper = $('.img-wallpaper')
-    $imgWallpaper.click ->
+    # Handle favourite
+    $('.btn-favourite').on 'ajax:success', (e, data) ->
       $this = $(this)
-      if $this.is('.state-1')
-        $this.removeClass('state-1')
-        $this.addClass('state-2')
+      if data.fav_status
+        $this.addClass('favourited').html('<span class="glyphicon glyphicon-star"></span> Faved')
       else
-        $this.removeClass('state-2')
-        $this.addClass('state-1')
+        $this.removeClass('favourited').html('<span class="glyphicon glyphicon-star-empty"></span> Fav')
+
+      $('.fav-count').text(data.fav_count)
+
+    # Handle collection
+    $('.btn-collect').on 'ajax:success', (e, data) ->
+      template = JST['wallpaper_show_collection_list'](data)
+      $modal = $(JST['modal'](title: 'Add to/Remove from collection', raw_body: template))
+      $modal.find('[data-action=toggle-collect]').on 'ajax:success', (e, data) ->
+        $this = $(this)
+        if data.collect_status
+          $this.addClass('active')
+        else
+          $this.removeClass('active')
+      $modal.modal()
+      $modal.on 'hidden.bs.modal', (e) ->
+        $(this).remove()
 
   if $('body.wallpapers.index, body.collections.show, body.users.show, body.favourites.index').length == 1
     applyLazyLoad = ->

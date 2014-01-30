@@ -1,0 +1,27 @@
+- title [@group.name, 'Forums']
+
+.page-header
+  - if can? :create, @group.forums.new
+    .pull-right
+      = link_to new_group_forum_path(@group), class: 'btn btn-primary' do
+        %span.glyphicon.glyphicon-plus
+        New forum
+  %h2 Forums
+
+%table.table.table-hover
+  %thead
+    %tr
+      %th.col-md-6 Forum
+      %th.col-md-1 Topics
+      %th.col-md-1 Replies
+      %th.col-md-4 Last post
+
+  %tbody
+    - @forums.each do |forum|
+      %tr
+        %td
+          = link_to forum.name, [@group, forum]
+          = markdown_line forum.description
+        %td TODO
+        %td TODO
+        %td TODO

@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover]
+  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite, :collections, :toggle_collect]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite, :collections, :toggle_collect]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
 
   impressionist actions: [:show]
@@ -137,6 +137,45 @@ class WallpapersController < ApplicationController
     end
   end
 
+  def toggle_favourite
+    if current_user.voted_for?(@wallpaper)
+      @wallpaper.unliked_by current_user
+      @fav_status = false
+    else
+      @wallpaper.liked_by current_user
+      @fav_status = true
+    end
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def collections
+    @collections = current_user.collections.ordered
+    @collections = WallpaperCollectionStatus.new(@collections, @wallpaper).collections
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def toggle_collect
+    @collection = current_user.collections.find(collection_params[:id])
+
+    if @collection.collected?(@wallpaper)
+      @collection.uncollect(@wallpaper)
+      @collect_status = false
+    else
+      @collection.collect(@wallpaper)
+      @collect_status = true
+    end
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
   private
 
   def set_wallpaper
@@ -180,5 +219,9 @@ class WallpapersController < ApplicationController
 
   def resize_params
     params.permit(:width, :height)
+  end
+
+  def collection_params
+    params.require(:collection).permit(:id)
   end
 end

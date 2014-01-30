@@ -15,12 +15,11 @@ class UsersController < ApplicationController
                        .limit(6)
     @wallpapers = WallpapersDecorator.new(wallpapers, context: { user: current_user })
 
-    favourites = @user.favourites
-                       .includes(:wallpaper)
-                       .accessible_by(current_ability, :read)
-                       .latest
-                       .limit(10)
-    @favourite_wallpapers = WallpapersDecorator.new(favourites.map(&:wallpaper), context: { user: current_user })
+    favourite_wallpapers = @user.favourite_wallpapers
+                      .accessible_by(current_ability, :read)
+                      .latest
+                      .limit(10)
+    @favourite_wallpapers = WallpapersDecorator.new(favourite_wallpapers, context: { user: current_user })
 
     # OPTIMIZE
     @collections = @user.collections

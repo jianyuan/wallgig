@@ -40,6 +40,9 @@ class ReportsController < ApplicationController
       elsif params[:comment_id].present?
         @reportable = Comment.find(params[:comment_id])
         authorize! :read, @reportable
+      elsif params[:forum_topic_id].present?
+        @reportable = ForumTopic.find(params[:forum_topic_id])
+        authorize! :read, @reportable
       end
     end
 

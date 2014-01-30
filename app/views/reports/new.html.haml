@@ -11,5 +11,5 @@
   %h1= @reportable
 
 %h3 New report
-%p Could you tell to us what is wrong with this #{@reportable.class.name.humanize.downcase}?
+%p Could you tell to us what is wrong with this #{@reportable.class.name.underscore.humanize.downcase}?
 = render 'form'

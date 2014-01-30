@@ -1,0 +1,7 @@
+= simple_form_for(@forum_topic, url: form_url) do |f|
+  .form-inputs
+    = f.input :title
+    = f.input :content
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'

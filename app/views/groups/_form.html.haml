@@ -1,0 +1,21 @@
+- content_for :access_hint do
+  %strong Public:
+  Members can see and join the group.
+  %br/
+  %strong Private:
+  Members can see the group but must request or be invited by group officers to join.
+  %br/
+  %strong Secret:
+  Only group members can see the group. Members must be invited by group officers to join.
+
+= simple_form_for(@group) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :tagline
+    = f.input :description
+    = f.input :access, as: :radio_buttons, hint: yield(:access_hint)
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary btn-block'

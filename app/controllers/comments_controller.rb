@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_parent
-  before_action :set_comment, only: [:destroy]
+  before_action :set_comment, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, only: :create
 
   # GET /comments
@@ -14,6 +14,24 @@ class CommentsController < ApplicationController
     end
   end
 
+  def edit
+    authorize! :update, @comment
+  end
+
+  def update
+    authorize! :update, @comment
+
+    respond_to do |format|
+      if @comment.update(comment_params)
+        format.html { redirect_to @parent || @comment.commentable, notice: 'Forum topic was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @parent.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # POST /parent/1/comments
   # POST /parent/1/comments.json
   def create
@@ -22,10 +40,19 @@ class CommentsController < ApplicationController
 
     authorize! :create, @comment
 
+    # OPTIMIZE
     if @comment.save
-      render partial: partial_name, locals: { comment: @comment }
+      if @parent.is_a?(ForumTopic)
+        redirect_to @parent, notice: 'Comment was successfully created.'
+      else
+        render partial: partial_name, locals: { comment: @comment }
+      end
     else
-      render json: @comment.errors.full_messages, status: :unprocessable_entity
+      if request.xhr?
+        render json: @comment.errors.full_messages, status: :unprocessable_entity
+      else
+        render action: 'new'
+      end
     end
   end
 
@@ -44,11 +71,15 @@ class CommentsController < ApplicationController
   def set_parent
     if params[:wallpaper_id].present?
       @parent = Wallpaper.find(params[:wallpaper_id])
+      authorize! :read, @parent
     elsif params[:user_id].present?
       @parent = User.find_by(username: params[:user_id])
+      authorize! :read, @parent
+    elsif params[:forum_topic_id].present?
+      @parent = ForumTopic.find(params[:forum_topic_id])
+      authorize! :read, @parent
+      authorize! :reply, @parent
     end
-
-    authorize! :read, @parent
   end
 
   def set_comment

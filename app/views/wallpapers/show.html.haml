@@ -20,6 +20,9 @@
         %li
           %span.glyphicon.glyphicon-eye-open
           = @wallpaper.impressions_count
+        %li
+          %span.glyphicon.glyphicon-star
+          %span.fav-count= @wallpaper.likes.size
       %ul.list-inline
         %li
           %span.glyphicon.glyphicon-file
@@ -36,10 +39,15 @@
     - if user_signed_in?
       .panel-body
         .btn-group.btn-group-justified
-          = link_to '#', class: 'btn btn-default' do
-            %span.glyphicon.glyphicon-star-empty
-            Fav
-          = link_to '#', class: 'btn btn-default' do
+          - if user_signed_in? && current_user.voted_for?(@wallpaper.object)
+            = link_to toggle_favourite_wallpaper_path(@wallpaper), class: 'btn btn-favourite favourited', data: { method: :post, remote: true } do
+              %span.glyphicon.glyphicon-star
+              Faved
+          - else
+            = link_to toggle_favourite_wallpaper_path(@wallpaper), class: 'btn btn-favourite', data: { method: :post, remote: true } do
+              %span.glyphicon.glyphicon-star-empty
+              Fav
+          = link_to collections_wallpaper_path(@wallpaper), class: 'btn btn-collect', data: { remote: true } do
             %span.glyphicon.glyphicon-folder-close
             Collect
           .btn-group
@@ -76,8 +84,6 @@
                     = link_to admin_wallpaper_path(@wallpaper) do
                       %span.glyphicon.glyphicon-fire
                       Administer
-      .panel-body
-        = render 'favourite_button', wallpaper: @wallpaper, favourite: current_user.favourites.where(wallpaper: @wallpaper.object).first
 
     - if false
       - cache ['show', @wallpaper, 'tag_list'] do

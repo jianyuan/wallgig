@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140128021154) do
+ActiveRecord::Schema.define(version: 20140130150658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,17 @@ ActiveRecord::Schema.define(version: 20140128021154) do
   add_index "collections", ["ancestry"], name: "index_collections_on_ancestry", using: :btree
   add_index "collections", ["user_id"], name: "index_collections_on_user_id", using: :btree
 
+  create_table "collections_wallpapers", force: true do |t|
+    t.integer  "collection_id"
+    t.integer  "wallpaper_id"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "collections_wallpapers", ["collection_id"], name: "index_collections_wallpapers_on_collection_id", using: :btree
+  add_index "collections_wallpapers", ["wallpaper_id"], name: "index_collections_wallpapers_on_wallpaper_id", using: :btree
+
   create_table "colors", force: true do |t|
     t.integer "red"
     t.integer "green"
@@ -95,6 +106,61 @@ ActiveRecord::Schema.define(version: 20140128021154) do
   add_index "favourites", ["collection_id"], name: "index_favourites_on_collection_id", using: :btree
   add_index "favourites", ["user_id"], name: "index_favourites_on_user_id", using: :btree
   add_index "favourites", ["wallpaper_id"], name: "index_favourites_on_wallpaper_id", using: :btree
+
+  create_table "forum_topics", force: true do |t|
+    t.integer  "forum_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "content"
+    t.text     "cooked_content"
+    t.boolean  "pinned",         default: false
+    t.boolean  "locked",         default: false
+    t.boolean  "hidden",         default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "forum_topics", ["forum_id"], name: "index_forum_topics_on_forum_id", using: :btree
+  add_index "forum_topics", ["user_id"], name: "index_forum_topics_on_user_id", using: :btree
+
+  create_table "forums", force: true do |t|
+    t.integer  "group_id"
+    t.string   "name"
+    t.string   "slug"
+    t.text     "description"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "guest_can_read",   default: true
+    t.boolean  "guest_can_post",   default: true
+    t.boolean  "guest_can_reply",  default: true
+    t.boolean  "member_can_read",  default: true
+    t.boolean  "member_can_post",  default: true
+    t.boolean  "member_can_reply", default: true
+  end
+
+  add_index "forums", ["group_id"], name: "index_forums_on_group_id", using: :btree
+  add_index "forums", ["slug"], name: "index_forums_on_slug", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.integer  "owner_id"
+    t.string   "name"
+    t.string   "slug"
+    t.text     "description"
+    t.string   "admin_title"
+    t.string   "moderator_title"
+    t.string   "member_title"
+    t.boolean  "has_forums"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "tagline"
+    t.string   "access"
+    t.boolean  "official",        default: false
+  end
+
+  add_index "groups", ["access"], name: "index_groups_on_access", using: :btree
+  add_index "groups", ["owner_id"], name: "index_groups_on_owner_id", using: :btree
+  add_index "groups", ["slug"], name: "index_groups_on_slug", unique: true, using: :btree
 
   create_table "impressions", force: true do |t|
     t.string   "impressionable_type"
@@ -277,6 +343,18 @@ ActiveRecord::Schema.define(version: 20140128021154) do
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  create_table "users_groups", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "role"
+  end
+
+  add_index "users_groups", ["group_id"], name: "index_users_groups_on_group_id", using: :btree
+  add_index "users_groups", ["role"], name: "index_users_groups_on_role", using: :btree
+  add_index "users_groups", ["user_id"], name: "index_users_groups_on_user_id", using: :btree
+
   create_table "users_roles", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "role_id"
@@ -295,6 +373,21 @@ ActiveRecord::Schema.define(version: 20140128021154) do
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
+  create_table "votes", force: true do |t|
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.boolean  "vote_flag"
+    t.string   "vote_scope"
+    t.integer  "vote_weight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "votes", ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope", using: :btree
+  add_index "votes", ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope", using: :btree
 
   create_table "wallpaper_colors", force: true do |t|
     t.integer "wallpaper_id"

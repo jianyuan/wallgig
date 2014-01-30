@@ -106,6 +106,7 @@ GEM
     acts_as_commentable (4.0.1)
     acts_as_list (0.3.0)
       activerecord (>= 3.0)
+    acts_as_votable (0.8.0)
     ancestry (2.0.0)
       activerecord (>= 3.0.0)
     annotate (2.6.1)
@@ -487,6 +488,7 @@ DEPENDENCIES
   acts-as-taggable-on
   acts_as_commentable
   acts_as_list
+  acts_as_votable (~> 0.8.0)
   ancestry
   annotate
   better_errors
