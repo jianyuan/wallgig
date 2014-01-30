@@ -29,6 +29,8 @@ class Collection < ActiveRecord::Base
   scope :ordered, -> { order(position: :asc) }
   scope :latest, -> { order(updated_at: :desc) }
 
+  attr_accessor :collect_status
+
   def to_param
     "#{id}-#{name.parameterize}"
   end

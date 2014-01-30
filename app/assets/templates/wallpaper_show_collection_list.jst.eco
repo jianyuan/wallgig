@@ -1,0 +1,10 @@
+<div class="list-group no-margin">
+  <% for collection in @collections: %>
+    <a href="" class="list-group-item <%= collection.collect_status && 'active' %>" data-remote="true">
+      <%= collection.name %>
+      <% unless collection.public: %>
+        <span class="label label-danger">Private</span>
+      <% end %>
+    </a>
+  <% end %>
+</div>

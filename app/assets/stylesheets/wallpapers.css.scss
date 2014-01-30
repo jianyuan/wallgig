@@ -298,6 +298,10 @@ $wallpaper-sidebar-width: 320px;
   }
 }
 
+.btn-collect {
+  @extend .btn-default;
+}
+
 .img-wallpaper {
   // @include box-shadow(#666 0px 0px 5px);
   @include transition(all 0.1s ease-in);

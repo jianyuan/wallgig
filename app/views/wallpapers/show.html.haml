@@ -47,7 +47,7 @@
             = link_to toggle_favourite_wallpaper_path(@wallpaper), class: 'btn btn-favourite', data: { method: :post, remote: true } do
               %span.glyphicon.glyphicon-star-empty
               Fav
-          = link_to '#', class: 'btn btn-default' do
+          = link_to collections_wallpaper_path(@wallpaper), class: 'btn btn-collect', data: { remote: true } do
             %span.glyphicon.glyphicon-folder-close
             Collect
           .btn-group

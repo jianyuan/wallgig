@@ -100,6 +100,7 @@ Wallgig::Application.routes.draw do
     end
 
     member do
+      get :collections
       post :toggle_favourite
       post :set_profile_cover
       get :history

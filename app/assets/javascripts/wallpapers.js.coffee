@@ -1,5 +1,6 @@
 $ ->
   if $('body.wallpapers.show').length == 1
+    # Handle favourite
     $('.btn-favourite').on 'ajax:success', (e, data) ->
       $this = $(this)
       if data.fav_status
@@ -8,6 +9,12 @@ $ ->
         $this.removeClass('favourited').html('<span class="glyphicon glyphicon-star-empty"></span> Fav')
 
       $('.fav-count').text(data.fav_count)
+
+    # Handle collection
+    $('.btn-collect').on 'ajax:success', (e, collections) ->
+      template = JST['wallpaper_show_collection_list'](collections: collections)
+      $(JST['modal'](title: 'Add to/Remove from collection', raw_body: template)).modal()
+
 
   if $('body.wallpapers.index, body.collections.show, body.users.show, body.favourites.index').length == 1
     applyLazyLoad = ->

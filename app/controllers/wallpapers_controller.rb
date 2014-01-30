@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite]
+  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite, :collections]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite, :collections]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
 
   impressionist actions: [:show]
@@ -145,6 +145,15 @@ class WallpapersController < ApplicationController
       @wallpaper.liked_by current_user
       @fav_status = true
     end
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
+  def collections
+    @collections = current_user.collections.ordered
+    @collections = WallpaperCollectionStatus.new(@collections, @wallpaper).collections
 
     respond_to do |format|
       format.json
