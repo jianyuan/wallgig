@@ -52,6 +52,8 @@ class User < ActiveRecord::Base
 
   acts_as_commentable
 
+  acts_as_voter
+
   is_impressionable
 
   validates :username,

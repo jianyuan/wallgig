@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover]
-  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover]
+  before_action :authenticate_user!, except: [:index, :show, :set_profile_cover, :toggle_favourite]
+  before_action :set_wallpaper, only: [:show, :edit, :update, :destroy, :update_purity, :history, :set_profile_cover, :toggle_favourite]
   before_action :set_available_categories, only: [:new, :edit, :create, :update]
 
   impressionist actions: [:show]
@@ -134,6 +134,20 @@ class WallpapersController < ApplicationController
       redirect_to current_user, notice: 'Profile cover was successfully changed.'
     else
       redirect_to current_user, alert: 'Only SFW wallpapers can be set as profile cover.'
+    end
+  end
+
+  def toggle_favourite
+    if current_user.voted_for?(@wallpaper)
+      @wallpaper.unliked_by current_user
+      @fav_status = false
+    else
+      @wallpaper.liked_by current_user
+      @fav_status = true
+    end
+
+    respond_to do |format|
+      format.json
     end
   end
 

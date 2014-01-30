@@ -291,6 +291,13 @@ $wallpaper-sidebar-width: 320px;
   }
 }
 
+.btn-favourite {
+  @extend .btn-default;
+  &.favourited {
+    @extend .btn-primary;
+  }
+}
+
 .img-wallpaper {
   // @include box-shadow(#666 0px 0px 5px);
   @include transition(all 0.1s ease-in);

@@ -92,21 +92,23 @@ Wallgig::Application.routes.draw do
   # Wallpapers
   get 'w/:id' => 'wallpapers#show', id: /\d+/, as: :short_wallpaper
   resources :wallpapers do
+    concerns :commentable
+    concerns :reportable
 
     collection do
       post :save_search_params
     end
 
     member do
+      post :toggle_favourite
       post :set_profile_cover
       get :history
       patch 'update_purity/:purity', action: :update_purity, as: :update_purity
       get ':width/:height' => 'wallpapers#show', width: /\d+/, height: /\d+/, as: :resized
     end
 
-    concerns :commentable
-    concerns :reportable
 
+    # TODO deprecate
     resource :favourite do
       member do
         post :toggle

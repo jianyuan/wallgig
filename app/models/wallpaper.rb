@@ -43,6 +43,8 @@ class Wallpaper < ActiveRecord::Base
 
   include Reportable
 
+  acts_as_votable
+
   # Purity
   extend Enumerize
   enumerize :purity, in: [:sfw, :sketchy, :nsfw], default: :sfw, scope: true, predicates: true
