@@ -1,7 +1,19 @@
 Wallgig::Application.routes.draw do
+  concern :commentable do
+    resources :comments, only: [:index, :new, :create]
+  end
+
+  concern :reportable do
+    resources :reports, only: [:new, :create]
+  end
+
   resources :groups do
     resources :forums do
       resources :forum_topics, path: :topics, except: [:index], shallow: true do
+        concerns :commentable
+
+        concerns :reportable
+
         member do
           patch :pin
           patch :unpin
@@ -26,14 +38,6 @@ Wallgig::Application.routes.draw do
   end
 
   resources :categories
-
-  concern :commentable do
-    resources :comments, only: [:index, :create]
-  end
-
-  concern :reportable do
-    resources :reports, only: [:new, :create]
-  end
 
   root 'wallpapers#index'
 
@@ -60,7 +64,7 @@ Wallgig::Application.routes.draw do
   resources :collections, only: [:index, :show]
 
   # Comments
-  resources :comments, only: [:index, :destroy] do
+  resources :comments, only: [:index, :edit, :update, :destroy] do
     concerns :reportable
     member do
       get 'reply'

@@ -25,7 +25,6 @@ class Ability
 
     # Forum
     can :read, Forum, guest_can_read: true
-    cannot :crud, Forum, group: { has_forums: false }
 
     if user.persisted?
       # Wallpaper
@@ -77,5 +76,11 @@ class Ability
       can :create, ForumTopic, forum: { guest_can_post:  true }
       can :reply,  ForumTopic, forum: { guest_can_reply: true }
     end
+
+    # Forum
+    cannot :crud, Forum, group: { has_forums: false }
+
+    # Forum topic
+    cannot :reply, ForumTopic, locked: true
   end
 end

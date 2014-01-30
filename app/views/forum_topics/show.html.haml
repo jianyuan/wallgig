@@ -44,13 +44,14 @@
             = link_to @forum_topic, data: { method: :destroy, confirm: 'Are you sure?' } do
               %span.glyphicon.glyphicon-remove
               Delete topic
-    = link_to new_group_forum_forum_topic_path(@group, @forum), class: 'btn btn-primary' do
-      %span.glyphicon.glyphicon-plus
-      New reply
+    - if can? :reply, @forum_topic
+      = link_to new_forum_topic_comment_path(@group, @forum), class: 'btn btn-primary' do
+        %span.glyphicon.glyphicon-plus
+        New reply
   %ol.breadcrumb
     %li= link_to 'Forums', group_forums_path(@group)
     %li= link_to @forum.name, [@group, @forum]
-.panel.panel-default
+.panel.panel-default.panel-forum-topic
   .panel-body
     %h2.no-top-margin
       = @forum_topic.title
@@ -71,13 +72,27 @@
         %h4= link_to_user @forum_topic.user
         %h5= @group.title_for(@forum_topic.user) || role_name_for(@forum_topic.user)
       .col-sm-10
-        = @forum_topic.cooked_content
-        %ul.list-inline
-          %li.text-muted
-            %small #{time_tag @forum_topic.created_at, time_ago_in_words(@forum_topic.created_at), title: @forum_topic.created_at} ago
-          - if @forum_topic.created_at != @forum_topic.updated_at
-            %li.text-muted
-              %small updated #{time_tag @forum_topic.updated_at, time_ago_in_words(@forum_topic.updated_at), title: @forum_topic.updated_at} ago
+        %ul.list-inline.pull-right
           - if can? :update, @forum_topic
-            %li.text-muted
-              %small= link_to 'Edit topic', edit_forum_topic_path(@forum_topic)
+            %li
+              %small= link_to 'Edit', edit_forum_topic_path(@forum_topic)
+          %li
+            %small= link_to 'Report', new_forum_topic_report_path(@forum_topic)
+        = @forum_topic.cooked_content
+        %p.text-muted
+          %small
+            #{time_tag @forum_topic.created_at, time_ago_in_words(@forum_topic.created_at), title: @forum_topic.created_at} ago
+            - if @forum_topic.created_at != @forum_topic.updated_at
+              &middot; updated #{time_tag @forum_topic.updated_at, time_ago_in_words(@forum_topic.updated_at), title: @forum_topic.updated_at} ago
+
+.text-center= paginate @comments
+
+.panel.panel-default
+  = render partial: 'comments/forum_topic_comment', collection: @comments, as: :comment
+
+.text-center= paginate @comments
+
+- if can? :reply, @forum_topic
+  = simple_form_for :comment, url: forum_topic_comments_path(@forum_topic), remote: true, data: { provide: 'comments' } do |f|
+    = f.input :comment, as: :text, label: false
+    = f.submit 'Post', class: 'btn btn-primary', data: { disable_with: 'Posting' }

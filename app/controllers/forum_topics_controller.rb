@@ -18,6 +18,8 @@ class ForumTopicsController < ApplicationController
   # GET /forum_topics/1
   # GET /forum_topics/1.json
   def show
+    @comments = @forum_topic.comments.page
+    @comments = @comments.page(params[:page] || @comments.total_pages)
   end
 
   # GET /forum_topics/new

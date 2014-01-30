@@ -1,0 +1,6 @@
+.page-header
+  %h1 Editing comment
+
+= simple_form_for(@comment) do |f|
+  = f.input :comment
+  = f.button :submit, class: 'btn btn-primary'

@@ -19,6 +19,10 @@ class ForumTopic < ActiveRecord::Base
   belongs_to :forum
   belongs_to :user
 
+  acts_as_commentable
+
+  include Reportable
+
   validates :forum_id, presence: true
   validates :user_id,  presence: true
   validates :title,    presence: true, length: { minimum: 10 }
@@ -29,6 +33,10 @@ class ForumTopic < ActiveRecord::Base
 
   before_save do
     self.cooked_content = ApplicationController.helpers.markdown(content) if content_changed?
+  end
+
+  def to_s
+    title
   end
 
   def to_param
