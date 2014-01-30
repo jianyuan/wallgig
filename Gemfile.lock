@@ -139,6 +139,9 @@ GEM
     capistrano-rails (1.1.0)
       capistrano (>= 3.0.0)
       capistrano-bundler (>= 1.0.0)
+    capistrano-rbenv (2.0.0)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2.0)
     capistrano-rvm (0.1.0)
       capistrano (~> 3.0)
       sshkit (~> 1.2.0)
@@ -322,7 +325,6 @@ GEM
       activerecord (>= 3.0, < 5.0)
       activesupport (>= 3.0, < 5.0)
     pg (0.17.0)
-    phashion (1.0.6)
     polyamorous (0.6.4)
       activerecord (>= 3.0)
     polyglot (0.3.3)
@@ -444,7 +446,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sqlite3 (1.3.8)
     sshkit (1.2.0)
       net-scp (>= 1.1.2)
       net-ssh
@@ -500,6 +501,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-puma!
   capistrano-rails
+  capistrano-rbenv
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   color
@@ -536,7 +538,6 @@ DEPENDENCIES
   omniauth-facebook
   paper_trail (~> 3.0.0)
   pg
-  phashion
   pry-rails
   puma
   rack-cache
@@ -554,7 +555,6 @@ DEPENDENCIES
   sinatra (>= 1.3.0)
   slim
   spork-rails
-  sqlite3
   therubyracer
   tire
   uglifier (>= 1.3.0)

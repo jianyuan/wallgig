@@ -267,11 +267,12 @@ class Wallpaper < ActiveRecord::Base
   end
 
   def update_phash
-    return unless image.present?
+    # TODO disable this for now
+    # return unless image.present?
 
-    fingerprint = Phashion::Image.new(image.path).fingerprint
-    self.phash = (fingerprint & ~(1 << 63)) - (fingerprint & (1 << 63)) # convert 64 bit unsigned to signed
-    self.save
+    # fingerprint = Phashion::Image.new(image.path).fingerprint
+    # self.phash = (fingerprint & ~(1 << 63)) - (fingerprint & (1 << 63)) # convert 64 bit unsigned to signed
+    # self.save
   end
 
   def similar_wallpapers
