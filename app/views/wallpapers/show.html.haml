@@ -86,16 +86,6 @@
                       Administer
 
     - if false
-      - cache ['show', @wallpaper, 'tag_list'] do
-        - if @wallpaper.tag_list.any?
-          .panel-body
-            %ul.list-tag
-              - @wallpaper.tag_list.each do |tag|
-                %li
-                  = link_to wallpapers_path(tags: [tag]) do
-                    = tag
-
-    - if false
       - cache ['show', @wallpaper, 'color_list'] do
         - if @wallpaper.wallpaper_colors.any?
           .panel-body.text-center
@@ -135,12 +125,24 @@
         - if comments.size > 4
           = link_to 'Load all comments', wallpaper_comments_path(@wallpaper), class: 'btn btn-block', remote: true, data: { action: 'load-comments' }
 
-  - @wallpaper.find_related_tags.accessible_by(current_ability, :read).processed.limit(9).in_groups_of(3, false).each do |wallpapers|
-    .row
-      - wallpapers.each do |wallpaper|
-        .col-xs-4
-          = link_to wallpaper, class: 'thumbnail' do
-            = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
+
+    / - cache ['show', @wallpaper, 'tag_list'] do
+    - if @wallpaper.tag_list.any?
+      .panel-body
+        %ul.list-inline
+          %li
+            %span.glyphicon.glyphicon-tags
+          - @wallpaper.tag_list.each do |tag|
+            %li
+              = link_to wallpapers_path(tags: [tag]), class: 'label label-default' do
+                = tag
+
+  / - @wallpaper.find_related_tags.accessible_by(current_ability, :read).processed.limit(9).in_groups_of(3, false).each do |wallpapers|
+  /   .row
+  /     - wallpapers.each do |wallpaper|
+  /       .col-xs-4
+  /         = link_to wallpaper, class: 'thumbnail' do
+  /           = image_tag wallpaper.thumbnail_image.thumb('80x80#').url, width: 80, height: 80
 
 - content_for :wallpaper_stage_content do
   = image_tag @wallpaper.requested_image_url, width: @wallpaper.requested_image_width, height: @wallpaper.requested_image_height, class: "img-wallpaper img-#{@wallpaper.format} state-1"
