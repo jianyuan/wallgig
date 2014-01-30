@@ -37,15 +37,15 @@ body {
   margin: 0 auto;
 }
 
-@mixin responsive-container-width($columns) {
-  $container-width: ($wallpaper-thumbnail-width + $grid-gutter-width) * $columns;
-  $container-padding: 40px;
-  @media (min-width: $container-width + $container-padding) {
-    .container {
-      width: $container-width;
-    }
-  }  
-}
+// @mixin responsive-container-width($columns) {
+//   $container-width: ($wallpaper-thumbnail-width + $grid-gutter-width) * $columns;
+//   $container-padding: 40px;
+//   @media (min-width: $container-width + $container-padding) {
+//     .container {
+//       width: $container-width;
+//     }
+//   }  
+// }
 
 // @include responsive-container-width(1);
 // @include responsive-container-width(2);
@@ -64,6 +64,12 @@ body {
 // @include responsive-container-width(15);
 // @include responsive-container-width(16);
 
+/* Heading */
+.page-subheader {
+  margin-bottom: 20px;
+}
+
+/* Dropdown menu */
 .open .dropdown-menu > li > a {
   padding: 10px 20px;
 }

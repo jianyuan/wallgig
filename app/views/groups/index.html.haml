@@ -6,19 +6,16 @@
 
 .row
   .col-lg-9
-    = debug @groups.map &:name
+    .page-subheader
+      %ul.nav.nav-tabs
+        %li.disabled
+          %a{:href => '#'} Order by:
+        = active_link_to 'Recency',  groups_path,                               wrap_tag: :li, active: @order_by.blank?
+        = active_link_to 'Newest groups',  groups_path(order: :newest),         wrap_tag: :li, active: @order_by == 'newest'
+        = active_link_to 'Alphabetically', groups_path(order: :alphabetically), wrap_tag: :li, active: @order_by == 'alphabetically'
+    = render partial: 'group', collection: @groups
+    .text-center= paginate @groups
   .col-lg-3
-    %h2 Official groups
-    - @official_groups.each do |group|
-      .panel.panel-default
-        .panel-heading
-          .media
-            - if true
-              = link_to group, class: 'pull-left' do
-                %img{:src => "http://placekitten.com/50/50", :alt => ""}/ 
-            .media-body
-              %h4.media-heading= link_to group.name, group
-              %h5= markdown_line(group.tagline) if group.tagline.present?
-        - if group.description.present?
-          .panel-body
-            = markdown_line(group.description)
+    .page-subheader
+      %h3 Official groups
+    = render partial: 'group', collection: @official_groups

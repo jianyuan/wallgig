@@ -4,11 +4,22 @@ class GroupsController < ApplicationController
 
   layout 'group', except: [:index, :new, :create]
 
-  # GET /groups
-  # GET /groups.json
   def index
-    @groups = Group.unofficial.accessible_by(current_ability, :read)
-    @official_groups = Group.official.accessible_by(current_ability, :read)
+    @groups = Group.unofficial
+                   .accessible_by(current_ability, :read)
+                   .page(params[:page])
+
+    @order_by = params[:order]
+    case @order_by
+    when 'newest'
+      @groups = @groups.newest
+    when 'alphabetically'
+      @groups = @groups.alphabetically
+    else
+      @groups = @groups.recently_active
+    end
+
+    @official_groups = Group.official.accessible_by(current_ability, :read).alphabetically
   end
 
   # GET /groups/1
@@ -81,7 +92,7 @@ class GroupsController < ApplicationController
     authorize! :update, @group
 
     respond_to do |format|
-      if @group.update!(update_group_apps_params)
+      if @group.update(update_group_apps_params)
         format.html { redirect_to apps_group_url(@group), notice: 'Group apps was successfully updated.' }
         format.json { head :no_content }
       else

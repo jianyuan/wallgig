@@ -42,6 +42,9 @@ class Group < ActiveRecord::Base
 
   scope :official,   -> { where(official: true) }
   scope :unofficial, -> { where.not(official: true) }
+  scope :recently_active, -> { order(updated_at: :desc) }
+  scope :newest,          -> { order(created_at: :desc) }
+  scope :alphabetically,  -> { order(name: :asc) }
 
   after_create :create_admin_user!
 

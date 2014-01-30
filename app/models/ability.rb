@@ -24,7 +24,10 @@ class Ability
     can :read, Group, access: ['public', 'private']
 
     # Forum
-    can :read, Forum, guest_can_read: true
+    can :read, Forum, group: { has_forums: true }, guest_can_read: true
+
+    # Forum topic
+    can :read, ForumTopic, guest_can_read: true
 
     if user.persisted?
       # Wallpaper
