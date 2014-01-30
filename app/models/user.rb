@@ -35,9 +35,10 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   has_many :collections, dependent: :destroy
+
   has_many :wallpapers, dependent: :nullify
-  has_many :favourites, dependent: :destroy
-  has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
+  # has_many :favourites, dependent: :destroy
+  # has_many :favourite_wallpapers, -> { reorder('favourites.created_at DESC') }, through: :favourites, source: :wallpaper
 
   has_many :owned_groups, class_name: 'Group', foreign_key: 'owner_id'
 
@@ -105,6 +106,10 @@ class User < ActiveRecord::Base
 
   def profile
     super || build_profile
+  end
+
+  def favourites
+    get_voted Wallpaper
   end
 
   private

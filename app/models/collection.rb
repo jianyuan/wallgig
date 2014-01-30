@@ -14,8 +14,8 @@
 #
 
 class Collection < ActiveRecord::Base
+  # TODO polymorphic
   belongs_to :user
-  # has_many :favourites, dependent: :nullify
   has_many :collections_wallpapers, dependent: :destroy
   has_many :wallpapers, -> { order('collections_wallpapers.position ASC') }, through: :collections_wallpapers
 

@@ -15,7 +15,6 @@ class CollectionsController < ApplicationController
                            .where.not({ wallpapers: { id: nil } })
     end
 
-
     @collections = relation.includes(:user, :wallpapers)
                            .accessible_by(current_ability, :read)
                            .order('collections.updated_at desc')
