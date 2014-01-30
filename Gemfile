@@ -130,5 +130,8 @@ gem 'meta-tags', :require => 'meta_tags'
 gem 'draper', github: 'jianyuan/draper'
 gem 'redcarpet'
 
+gem 'chunky_png', require: false
+gem 'oily_png', '~> 1.1.0'
+
 # rack
-gem 'rack-cache', require:  'rack/cache', group: :production
+gem 'rack-cache', require: 'rack/cache', group: :production
