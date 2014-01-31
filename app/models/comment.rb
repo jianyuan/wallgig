@@ -44,6 +44,6 @@ class Comment < ActiveRecord::Base
   end
 
   def cooked_comment
-    read_attribute(:cooked_comment).html_safe
+    read_attribute(:cooked_comment).try(:html_safe)
   end
 end
