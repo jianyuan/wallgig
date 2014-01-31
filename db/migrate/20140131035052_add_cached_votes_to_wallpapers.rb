@@ -12,7 +12,7 @@ class AddCachedVotesToWallpapers < ActiveRecord::Migration
     add_index  :wallpapers, :cached_weighted_score
 
     # Uncomment this line to force caching of existing votes
-    Wallpaper.find_each(&:update_cached_votes)
+    # Wallpaper.find_each(&:update_cached_votes)
   end
 
   def self.down
