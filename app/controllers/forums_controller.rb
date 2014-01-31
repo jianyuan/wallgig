@@ -1,13 +1,18 @@
 class ForumsController < ApplicationController
-  before_action :set_group
+  before_action :set_group, except: [:official_index]
   before_action :set_forum, only: [:show, :edit, :update, :destroy]
 
-  layout 'group'
+  layout 'group', except: [:official_index]
 
   # GET /forums
   # GET /forums.json
   def index
     @forums = @group.forums.accessible_by(current_ability, :read)
+  end
+
+  def official_index
+    @groups = Group.official.accessible_by(current_ability, :read)
+                   .includes(:forums)
   end
 
   # GET /forums/1
