@@ -16,7 +16,7 @@
       - group.forums.each do |forum|
         %tr
           %td
-            = link_to forum.name, [@group, forum]
+            = link_to forum.name, [group, forum]
             = markdown_line forum.description
           %td.text-center= forum.topics.count
           / %td.text-center TODO
