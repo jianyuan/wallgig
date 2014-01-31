@@ -24,5 +24,11 @@ en:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
     labels:
+      defaults:
+        sfw: "SFW"
+        nsfw: "NSFW"
       user:
         login: "Username or Email"
+      user_setting:
+        per_page: "Thumbnails per page"
+        infinite_scroll: "User infinite scroll"

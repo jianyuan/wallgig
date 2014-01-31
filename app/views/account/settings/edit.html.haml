@@ -1,0 +1,23 @@
+.row
+  .col-lg-6.col-lg-offset-3
+    .page-header
+      %h1 Edit settings
+    = simple_form_for @settings, url: account_settings_path do |f|
+      = f.error_notification
+
+      .form-inputs
+        .form-group
+          %label Purity
+          .row
+            .col-xs-4
+              = f.input :sfw
+            .col-xs-4
+              = f.input :sketchy
+            .col-xs-4
+              = f.input :nsfw
+        = f.input :per_page
+        = f.input :infinite_scroll
+        = f.association :screen_resolution
+
+      .form-actions
+        = f.button :submit, 'Update settings', class: 'btn btn-primary'

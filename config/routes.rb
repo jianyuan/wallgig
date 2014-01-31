@@ -60,6 +60,10 @@ Wallgig::Application.routes.draw do
         delete :remove_profile_cover
       end
     end
+
+    resource :settings, only: [:edit, :update] do
+      
+    end
   end
 
   # Collections
