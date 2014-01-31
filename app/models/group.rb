@@ -56,10 +56,13 @@ class Group < ActiveRecord::Base
     users_groups.create user_id: user.id
   end
 
+  # OPTIMIZE
   def title_for(users_group)
     if users_group.is_a?(User)
       users_group = users_groups.find_by(user_id: users_group.id)
     end
+
+    return nil if users_group.blank?
 
     if users_group.admin?
       admin_title || DEFAULT_ADMIN_TITLE
