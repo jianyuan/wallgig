@@ -33,7 +33,7 @@ class Ability
       # Wallpaper
       can :crud, Wallpaper, user_id: user.id
       can :read, Wallpaper, processing: false
-      # can [:update, :update_purity], Wallpaper
+      can [:update, :update_purity], Wallpaper
       cannot :update_purity, Wallpaper, purity_locked: true
 
       # Favourite
