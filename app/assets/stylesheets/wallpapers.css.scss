@@ -34,7 +34,7 @@ $wallpaper-sidebar-width: 320px;
   .toggle-sidebar-btn {
     @include transition(all 0.1s ease-in);
     opacity: 0;
-    color: darken($text-color, 60%);
+    color: #333333 !important;
     padding: 20px;
     &:hover {
       color: $text-color;
