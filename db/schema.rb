@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130150658) do
+ActiveRecord::Schema.define(version: 20140131035052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -401,7 +401,7 @@ ActiveRecord::Schema.define(version: 20140130150658) do
   create_table "wallpapers", force: true do |t|
     t.integer  "user_id"
     t.string   "purity"
-    t.boolean  "processing",                    default: true
+    t.boolean  "processing",                      default: true
     t.string   "image_uid"
     t.string   "image_name"
     t.integer  "image_width"
@@ -410,19 +410,29 @@ ActiveRecord::Schema.define(version: 20140130150658) do
     t.datetime "updated_at"
     t.string   "thumbnail_image_uid"
     t.integer  "primary_color_id"
-    t.integer  "impressions_count",             default: 0
+    t.integer  "impressions_count",               default: 0
     t.text     "cached_tag_list"
-    t.string   "image_gravity",                 default: "c"
-    t.integer  "favourites_count",              default: 0
-    t.boolean  "purity_locked",                 default: false
+    t.string   "image_gravity",                   default: "c"
+    t.integer  "favourites_count",                default: 0
+    t.boolean  "purity_locked",                   default: false
     t.string   "source"
-    t.integer  "phash",               limit: 8
+    t.integer  "phash",                 limit: 8
     t.string   "scrape_source"
     t.string   "scrape_id"
     t.string   "image_hash"
     t.integer  "category_id"
+    t.integer  "cached_votes_total",              default: 0
+    t.integer  "cached_votes_score",              default: 0
+    t.integer  "cached_votes_up",                 default: 0
+    t.integer  "cached_votes_down",               default: 0
+    t.integer  "cached_weighted_score",           default: 0
   end
 
+  add_index "wallpapers", ["cached_votes_down"], name: "index_wallpapers_on_cached_votes_down", using: :btree
+  add_index "wallpapers", ["cached_votes_score"], name: "index_wallpapers_on_cached_votes_score", using: :btree
+  add_index "wallpapers", ["cached_votes_total"], name: "index_wallpapers_on_cached_votes_total", using: :btree
+  add_index "wallpapers", ["cached_votes_up"], name: "index_wallpapers_on_cached_votes_up", using: :btree
+  add_index "wallpapers", ["cached_weighted_score"], name: "index_wallpapers_on_cached_weighted_score", using: :btree
   add_index "wallpapers", ["category_id"], name: "index_wallpapers_on_category_id", using: :btree
   add_index "wallpapers", ["image_hash"], name: "index_wallpapers_on_image_hash", using: :btree
   add_index "wallpapers", ["phash"], name: "index_wallpapers_on_phash", using: :btree

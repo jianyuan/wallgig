@@ -55,8 +55,8 @@ $ ->
     $('body').on 'click', '[data-action=favourite]', (event) ->
       $this = $(this)
       $this.on 'ajax:success', (event, data, status, xhr) ->
-        $this.find('span.count').text data.count
-        if data.favourite
+        $this.find('span.count').text data.fav_count
+        if data.fav_status
           $this.addClass 'btn-info'
           window.analytics.track('Favourited a wallpaper')
         else

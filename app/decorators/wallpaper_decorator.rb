@@ -42,7 +42,7 @@ class WallpaperDecorator < Draper::Decorator
   end
 
   def favourite_button
-    url = h.toggle_wallpaper_favourite_path(wallpaper, format: :json)
+    url = h.toggle_favourite_wallpaper_path(wallpaper)
     options = {
       class: 'btn btn-sm pull-left',
       data: {
@@ -55,7 +55,7 @@ class WallpaperDecorator < Draper::Decorator
 
     h.link_to url, options do
       "<span class='glyphicon glyphicon-star'></span>" \
-      "<span class='count'>#{favourites_count}</span>".html_safe
+      "<span class='count'>#{cached_votes_total}</span>".html_safe
     end
   end
 
