@@ -1,7 +1,7 @@
 environment 'production'
 threads 0,16
 workers %x{grep -c processor /proc/cpuinfo}.strip
-bind 'unix:///var/run/wallgig.sock'
+bind 'tcp://0.0.0.0:9000'
 preload_app!
 
 on_worker_boot do
