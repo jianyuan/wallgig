@@ -5,7 +5,7 @@
       .media-meta
         .container
           .pull-right
-            - if myself
+            - if can? :update, @user
               .btn-group
                 %button{:type => 'button', :class => 'btn btn-lg btn-default dropdown-toggle', :data => {:toggle => 'dropdown'}}
                   %span.glyphicon.glyphicon-cog
@@ -21,6 +21,11 @@
                       %a{:href => '#', :data => {:action => 'explain-add-profile-cover'}}
                         %span.glyphicon.glyphicon-picture
                         Add profile cover
+                  %li.divider
+                  %li
+                    = link_to account_collections_path do
+                      %span.glyphicon.glyphicon-pencil
+                      Manage collections
             / - else
             /   = link_to '#', class: 'btn btn-lg btn-primary' do
             /     %span.glyphicon.glyphicon-plus

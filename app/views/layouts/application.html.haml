@@ -36,9 +36,9 @@
                     %li.disabled
                       %a{:href => '#'} Deployed #{time_ago_in_words last_deploy_time} ago
                   %li
-                    %a{:href => 'http://forums.wallgig.net/t/wallgig-features-roadmap-changelog/6', :target => '_blank'} Features roadmap and changelog
+                    %a{:href => 'https://github.com/wallgig/wallgig/issues', :target => '_blank'} Issue tracker
                   %li
-                    %a{:href => 'https://github.com/jianyuan/wallgig', :target => '_blank'} Source code on GitHub
+                    %a{:href => 'https://github.com/wallgig/wallgig', :target => '_blank'} Source code on GitHub
               %li
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top: 12px; margin-left: 10px">
                 <input type="hidden" name="cmd" value="_s-xclick">
@@ -55,14 +55,35 @@
                     = username_tag current_user
                     %b.caret
                   %ul.dropdown-menu
-                    %li= link_to 'Profile', current_user
-                    %li= link_to 'Collections', user_collections_path(current_user)
-                    %li= link_to 'Favourites', user_favourites_path(current_user)
+                    %li
+                      = link_to current_user do
+                        %span.glyphicon.glyphicon-user
+                        Profile
+                      = link_to user_collections_path(current_user) do
+                        %span.glyphicon.glyphicon-folder-close
+                        Collections
+                    %li
+                      = link_to user_favourites_path(current_user) do
+                        %span.glyphicon.glyphicon-star
+                        Favourites
                     %li.divider
-                    %li= link_to 'Manage collections', account_collections_path
+                    %li
+                      = link_to account_collections_path do
+                        %span.glyphicon.glyphicon-pencil
+                        Manage collections
                     %li.divider
-                    %li= link_to 'Settings', edit_user_registration_path
-                    %li= link_to 'Sign Out', destroy_user_session_path, method: :delete
+                    %li
+                      = link_to edit_account_settings_path do
+                        %span.glyphicon.glyphicon-wrench
+                        Edit settings
+                    %li
+                      = link_to edit_user_registration_path do
+                        %span.glyphicon.glyphicon-cog
+                        Edit account
+                    %li
+                      = link_to destroy_user_session_path, method: :delete do
+                        %span.glyphicon.glyphicon-log-out
+                        Sign out
               - else
                 %li= link_to 'Sign Up', new_user_registration_path
                 %li= link_to 'Sign In', new_user_session_path

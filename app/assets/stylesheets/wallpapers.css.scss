@@ -133,6 +133,9 @@ $wallpaper-sidebar-width: 320px;
   &.row-2 {
     height: 416px;
   }
+  &.left {
+    text-align: left;
+  }
   li {
     width: 250px;
     height: 188px;

@@ -13,6 +13,7 @@ class WallpapersController < ApplicationController
   # GET /wallpapers.json
   def index
     search_options = search_params
+    search_options[:per_page] = current_settings.per_page
 
     if search_options[:order] == 'random'
       search_options[:random_seed] = session[:random_seed]
@@ -21,8 +22,9 @@ class WallpapersController < ApplicationController
       session[:random_seed] = search_options[:random_seed]
     end
 
-    wallpapers = WallpaperSearch.new(search_options).wallpapers
-    @wallpapers = WallpapersDecorator.new(wallpapers, context: {
+
+    @wallpapers = WallpaperSearch.new(search_options).wallpapers
+    @wallpapers = WallpapersDecorator.new(@wallpapers, context: {
       user: current_user,
       search_options: search_options
     })
