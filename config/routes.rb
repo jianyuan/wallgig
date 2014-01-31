@@ -7,6 +7,8 @@ Wallgig::Application.routes.draw do
     resources :reports, only: [:new, :create]
   end
 
+  root 'wallpapers#index'
+
   resources :groups do
     resources :forums do
       resources :forum_topics, path: :topics, except: [:index], shallow: true do
@@ -38,8 +40,6 @@ Wallgig::Application.routes.draw do
   end
 
   resources :categories
-
-  root 'wallpapers#index'
 
   # Account
   namespace :account do
