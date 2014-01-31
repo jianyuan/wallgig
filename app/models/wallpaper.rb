@@ -334,6 +334,10 @@ class Wallpaper < ActiveRecord::Base
     end if source.present?
   end
 
+  def image_name
+    nil # temporarily disabled image name
+  end
+
   private
 
   def check_duplicate_image_hash
