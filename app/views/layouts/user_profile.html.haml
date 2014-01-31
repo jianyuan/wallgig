@@ -6,16 +6,21 @@
         .container
           .pull-right
             - if myself
-              - if @user.profile.cover_wallpaper.present?
-                .btn-group
-                  %button{:type => 'button', :class => 'btn btn-lg btn-info dropdown-toggle', :data => {:toggle => 'dropdown'}}
-                    %span.glyphicon.glyphicon-picture
-                    Edit cover
-                  %ul.dropdown-menu.pull-right{:role => 'menu'}
+              .btn-group
+                %button{:type => 'button', :class => 'btn btn-lg btn-default dropdown-toggle', :data => {:toggle => 'dropdown'}}
+                  %span.glyphicon.glyphicon-cog
+                  Settings
+                %ul.dropdown-menu.pull-right{:role => 'menu'}
+                  - if @user.profile.cover_wallpaper.present?
                     %li
                       = link_to remove_profile_cover_account_profile_path, data: { method: :delete, confirm: 'Are you sure?' } do
                         %span.glyphicon.glyphicon-remove
                         Remove cover
+                  - else
+                    %li
+                      %a{:href => '#', :data => {:action => 'explain-add-profile-cover'}}
+                        %span.glyphicon.glyphicon-picture
+                        Add profile cover
             / - else
             /   = link_to '#', class: 'btn btn-lg btn-primary' do
             /     %span.glyphicon.glyphicon-plus
