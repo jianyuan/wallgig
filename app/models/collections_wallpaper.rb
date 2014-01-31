@@ -15,7 +15,7 @@ class CollectionsWallpaper < ActiveRecord::Base
   belongs_to :wallpaper
 
   validates :collection_id, presence: true
-  validates :wallpaper_id, presence: true
+  validates :wallpaper_id,  presence: true, uniqueness: { scope: :collection_id }
 
   acts_as_list
 end
