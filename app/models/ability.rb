@@ -70,9 +70,9 @@ class Ability
       can :read,   ForumTopic, forum: { guest_can_read:  true }
       can :create, ForumTopic, forum: { guest_can_post:  true }
       can :reply,  ForumTopic, forum: { guest_can_reply: true }
-      can :read,   ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_read:  true }
-      can :create, ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_post:  true }
-      can :reply,  ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_reply: true }
+      # can :read,   ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_read:  true }
+      # can :create, ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_post:  true }
+      # can :reply,  ForumTopic, forum: { group: { users_groups: { user_id: user.id } }, member_can_reply: true }
       can [:crud, :moderate], ForumTopic, forum: { group: { users_groups: { user_id: user.id, role: ['admin', 'moderator'] } } }
       cannot :reply, ForumTopic, locked: true
     else
