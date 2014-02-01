@@ -1,13 +1,13 @@
-- title [@collection.user.username, @collection.name]
 .page-header
-  %h2= @collection.name
-  .media.media-user
-    = link_to @collection.user, class: 'pull-left' do
-      = image_tag user_avatar_url(@collection.user, 20), alt: @collection.user.username, class: 'media-object'
-    = link_to_user @collection.user
+  - if @collection.owner_type == 'User'
+    %h2= title [@collection.owner.username, @collection.name], @collection.name
+    .media.media-user
+      = link_to @collection.owner, class: 'pull-left' do
+        = image_tag user_avatar_url(@collection.owner, 20), alt: @collection.owner.username, class: 'media-object'
+      = link_to_user @collection.owner
   %hr/
   %ul.list-inline
-    - if @collection.user == current_user
+    - if can? :update, @collection
       %li= link_to 'Edit collection', edit_account_collection_path(@collection)
     %li= pluralize @collection.wallpapers.size, 'wallpaper'
     %li= pluralize @collection.impressions_count, 'view'
