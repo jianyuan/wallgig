@@ -9,7 +9,7 @@
           - case comment.commentable.class.name
           - when 'User'
             = link_to comment.commentable, class: 'pull-left' do
-              = image_tag gravatar_url(comment.commentable, 50), alt: comment.commentable.username, class: 'media-object'
+              = image_tag user_avatar_url(comment.commentable, 50), alt: comment.commentable.username, class: 'media-object'
             .media-body
               %h4.media-heading= link_to_user comment.commentable
           - when 'Wallpaper'

@@ -21,7 +21,7 @@
               %span.glyphicon.glyphicon-eye-open
               = collection.impressions_count
             = link_to collection.user do
-              = image_tag gravatar_url(collection.user, 20), alt: collection.user.username
+              = image_tag user_avatar_url(collection.user, 20), alt: collection.user.username
               = username_tag collection.user
   - if collections.respond_to? :total_pages
     = link_to_next_page collections, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params

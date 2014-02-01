@@ -2,7 +2,7 @@
   .row
     .col-sm-2
       = link_to comment.user do
-        = image_tag gravatar_url(comment.user, 50), alt: comment.user.username, width: 50, height: 50
+        = image_tag user_avatar_url(comment.user, 50), alt: comment.user.username, width: 50, height: 50
       %h4= link_to_user comment.user
       %h5= @group.title_for(comment.user) || role_name_for(comment.user)
     .col-sm-10

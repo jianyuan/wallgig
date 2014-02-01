@@ -8,7 +8,7 @@
       .panel-body
         .media.media-user
           = link_to @wallpaper.user, class: 'pull-left' do
-            = image_tag gravatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
+            = image_tag user_avatar_url(@wallpaper.user, 30), alt: @wallpaper.user.username, class: 'media-object'
           .media-body
             %h3.media-heading= link_to_user @wallpaper.user
 
@@ -116,7 +116,7 @@
         = simple_form_for :comment, url: wallpaper_comments_path(@wallpaper), remote: true, data: { provide: 'comments' } do |f|
           .row
             .col-sm-2
-              = image_tag gravatar_url(current_user, 30), alt: current_user.username, class: 'media-object'
+              = image_tag user_avatar_url(current_user, 30), alt: current_user.username, class: 'media-object'
             .col-sm-10
               = f.input :comment, as: :text, label: false, placeholder: 'Your comment', input_html: { data: { focus_placeholder: 'Shift+Enter for newline. Enter to post.' } }
       - comments = @wallpaper.comments.includes(:user).recent

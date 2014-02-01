@@ -30,4 +30,13 @@ module UsersHelper
       'Member'
     end
   end
+
+  def user_avatar_url(user, size = 200)
+    avatar = user.profile.avatar
+    if avatar.present?
+      avatar.thumb("#{size}x#{size}#").url
+    else
+      gravatar_url(user, size)
+    end
+  end
 end

@@ -11,7 +11,7 @@
           - @officers.each do |officer|
             .media
               = link_to officer.user, class: 'pull-left' do
-                = image_tag gravatar_url(officer.user, 40), alt: officer.user.username, width: 40, height: 40, class: 'media-object'
+                = image_tag user_avatar_url(officer.user, 40), alt: officer.user.username, width: 40, height: 40, class: 'media-object'
               .media-body
                 %h4.media-heading
                   = link_to_user officer.user

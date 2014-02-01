@@ -3,7 +3,7 @@
   %h2= @collection.name
   .media.media-user
     = link_to @collection.user, class: 'pull-left' do
-      = image_tag gravatar_url(@collection.user, 20), alt: @collection.user.username, class: 'media-object'
+      = image_tag user_avatar_url(@collection.user, 20), alt: @collection.user.username, class: 'media-object'
     = link_to_user @collection.user
   %hr/
   %ul.list-inline
