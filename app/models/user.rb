@@ -34,7 +34,7 @@
 class User < ActiveRecord::Base
   attr_accessor :login
 
-  has_many :collections, dependent: :destroy
+  has_many :collections, as: :owner, dependent: :destroy
 
   has_many :wallpapers, dependent: :nullify
   # has_many :favourites, dependent: :destroy

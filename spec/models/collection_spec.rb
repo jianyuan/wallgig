@@ -11,6 +11,8 @@
 #  created_at        :datetime
 #  updated_at        :datetime
 #  impressions_count :integer          default(0)
+#  owner_id          :integer
+#  owner_type        :string(255)
 #
 
 require 'spec_helper'

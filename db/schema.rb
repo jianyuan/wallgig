@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140201000927) do
+ActiveRecord::Schema.define(version: 20140201131337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,9 +54,12 @@ ActiveRecord::Schema.define(version: 20140201000927) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "impressions_count", default: 0
+    t.integer  "owner_id"
+    t.string   "owner_type"
   end
 
   add_index "collections", ["ancestry"], name: "index_collections_on_ancestry", using: :btree
+  add_index "collections", ["owner_id", "owner_type"], name: "index_collections_on_owner_id_and_owner_type", using: :btree
   add_index "collections", ["user_id"], name: "index_collections_on_user_id", using: :btree
 
   create_table "collections_wallpapers", force: true do |t|

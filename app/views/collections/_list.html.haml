@@ -20,9 +20,10 @@
             .pull-right.text-muted
               %span.glyphicon.glyphicon-eye-open
               = collection.impressions_count
-            = link_to collection.user do
-              = image_tag user_avatar_url(collection.user, 20), alt: collection.user.username
-              = username_tag collection.user
+            - if collection.owner.is_a?(User)
+              = link_to collection.owner do
+                = image_tag user_avatar_url(collection.owner, 20), alt: collection.owner.username
+                = username_tag collection.owner
   - if collections.respond_to? :total_pages
     = link_to_next_page collections, 'Next Page', class: 'btn btn-block btn-default btn-lg', params: params
 

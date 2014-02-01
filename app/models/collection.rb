@@ -11,15 +11,17 @@
 #  created_at        :datetime
 #  updated_at        :datetime
 #  impressions_count :integer          default(0)
+#  owner_id          :integer
+#  owner_type        :string(255)
 #
 
 class Collection < ActiveRecord::Base
-  # TODO polymorphic
-  belongs_to :user
+  belongs_to :owner, polymorphic: true
+
   has_many :collections_wallpapers, dependent: :destroy
   has_many :wallpapers, -> { order('collections_wallpapers.position ASC') }, through: :collections_wallpapers
 
-  acts_as_list scope: :user
+  acts_as_list scope: :owner
 
   is_impressionable counter_cache: true
 

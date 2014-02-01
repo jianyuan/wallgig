@@ -40,7 +40,7 @@ class Ability
       can :crud, Favourite, user_id: user.id
 
       # Collection
-      can :crud, Collection, user_id: user.id
+      can :crud, Collection, owner_id: user.id, owner_type: 'User'
 
       # Comment
       can :crud, Comment, user_id: user.id
