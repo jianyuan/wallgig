@@ -30,6 +30,9 @@ $navbar-height: 52px;
 
   .media-heading {
     color: white;
+    small {
+      color: #ddd;
+    }
   }
 
   .text-muted {
