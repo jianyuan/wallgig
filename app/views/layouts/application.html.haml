@@ -100,6 +100,13 @@
           = content_for?(:content) ? yield(:content) : yield
     = javascript_include_tag "application", "data-turbolinks-track" => true, "data-turbolinks-eval" => false
     = yield :javascript_for_page
+    :javascript
+      var Wallgig = Wallgig || {};
+      Wallgig.CurrentUser = {
+        Settings: {
+          infinite_scroll: #{current_settings.infinite_scroll.to_json}
+        }
+      };
     = render partial: 'shared/segment_io'
 
     - if user_signed_in? && current_settings.needs_screen_resolution?

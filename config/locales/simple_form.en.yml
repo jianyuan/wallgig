@@ -31,4 +31,4 @@ en:
         login: "Username or Email"
       user_setting:
         per_page: "Thumbnails per page"
-        infinite_scroll: "User infinite scroll"
+        infinite_scroll: "Use infinite scroll"

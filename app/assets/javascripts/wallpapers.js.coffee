@@ -49,7 +49,8 @@ $ ->
       window.analytics.page(null, null, { path: url })
 
     applyLazyLoad()
-    $('[rel=next]').bind('inview', loadNextPage)
+    if Wallgig.CurrentUser.Settings.infinite_scroll
+      $('[rel=next]').bind('inview', loadNextPage)
 
     # Favourite action
     $('body').on 'click', '[data-action=favourite]', (event) ->
