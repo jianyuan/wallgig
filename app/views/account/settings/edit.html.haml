@@ -2,7 +2,7 @@
   .col-lg-4.col-lg-offset-4
     .page-header
       %h1 Edit settings
-    = simple_form_for @settings, url: account_settings_path do |f|
+    = simple_form_for @settings, url: account_settings_path, method: :patch do |f|
       = f.error_notification
 
       .form-inputs
