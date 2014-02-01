@@ -1,7 +1,7 @@
 ---
 :verbose: false
 :pidfile: ./tmp/pids/sidekiq.pid
-:concurrency: 25
+:concurrency: 10
 :queues:
   - [wallpapers, 7]
   - [default, 5]
