@@ -11,6 +11,7 @@
 #  updated_at               :datetime
 #  username_color_hex       :string(255)
 #  title                    :string(255)
+#  avatar_uid               :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

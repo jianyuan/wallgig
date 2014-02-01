@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140131035052) do
+ActiveRecord::Schema.define(version: 20140201000927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 20140131035052) do
     t.datetime "updated_at"
     t.string   "username_color_hex"
     t.string   "title"
+    t.string   "avatar_uid"
   end
 
   add_index "user_profiles", ["cover_wallpaper_id"], name: "index_user_profiles_on_cover_wallpaper_id", using: :btree

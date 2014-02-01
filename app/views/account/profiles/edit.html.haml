@@ -1,0 +1,16 @@
+.row
+  .col-lg-4.col-lg-offset-4
+    .page-header
+      %h1 Edit profile
+    = simple_form_for @profile, url: account_profile_path do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :avatar, as: :file
+
+        - if can? :update_title_and_color, @profile
+          = f.input :title
+          = f.input :username_color_hex, placeholder: 'e.g. 000000'
+
+      .form-actions
+        = f.button :submit, 'Update profile', class: 'btn btn-primary'

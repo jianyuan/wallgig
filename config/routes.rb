@@ -55,15 +55,15 @@ Wallgig::Application.routes.draw do
       resources :wallpapers
     end
 
+    # Profile
     resource :profile do
       member do
         delete :remove_profile_cover
       end
     end
 
-    resource :settings, only: [:edit, :update] do
-      
-    end
+    # Settings
+    resource :settings, only: [:edit, :update]
   end
 
   # Collections
