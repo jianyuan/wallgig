@@ -11,14 +11,10 @@ ActiveAdmin.register Wallpaper do
     redirect_to :back, notice: 'Wallpaper indices updated!'
   end
 
-  batch_action :queue_process do |selection|
-    Wallpaper.find(selection).each &:queue_process_image
-    redirect_to :back, notice: 'Wallpaper queued for processing!'
-  end
-
-  batch_action :queue_create_thumbnails do |selection|
+  batch_action :reprocess do |selection|
     Wallpaper.find(selection).each &:queue_create_thumbnails
-    redirect_to :back, notice: 'Wallpaper queued for thumbnail creation!'
+    Wallpaper.find(selection).each &:queue_process_image
+    redirect_to :back, notice: 'Wallpaper queued for reprocessing!'
   end
 
   %i(user tags purity purity_locked processing image_width image_height source created_at updated_at).each do |a|

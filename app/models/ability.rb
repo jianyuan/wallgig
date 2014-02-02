@@ -34,7 +34,7 @@ class Ability
       can :crud, Wallpaper, user_id: user.id
       can :read, Wallpaper, processing: false
       can [:update, :update_purity], Wallpaper
-      cannot :update_purity, Wallpaper, purity_locked: true
+      cannot :update_purity, Wallpaper, purity_locked: true unless user.admin? || user.moderator?
 
       # Favourite
       can :crud, Favourite, user_id: user.id

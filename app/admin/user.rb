@@ -1,4 +1,6 @@
 ActiveAdmin.register User do
+  actions :all, except: [:destroy]
+
   permit_params :email, :username, :password, :moderator, :admin, :developer, :locked_at
 
   %i(email username moderator admin developer).each do |a|
