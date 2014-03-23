@@ -54,7 +54,7 @@ class WallpaperDecorator < Draper::Decorator
     options[:class] << ' btn-info' if context[:favourited]
 
     h.link_to url, options do
-      "<span class='glyphicon glyphicon-star'></span>" \
+      "<span class='fa fa-star'></span>" \
       "<span class='count'>#{cached_votes_total}</span>".html_safe
     end
   end
